@@ -1,21 +1,24 @@
 <head>
-  <title>eye-control</title>
+	<title>Todo List</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+	<div id="mainMap"></div>
 
-  {{> hello}}
+	<script type="text/javascript">
+		var mainMap;
+		
+		function initMap() {
+			mainMap = new google.maps.Map(document.getElementById('mainMap'), {
+			center: {lat: 51.507194, lng: -0.118085},
+			zoom: 8
+		});
+	}
+	</script>
 
-  <div id="render-target"></div>
+	<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs&callback=initMap">
+	</script>
+
+	<div id="render-target"></div>
 </body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-
-  <p>The people working on this project are:</p>
-  {{#each people}}
-  	<p>{{name}}</p>
-  {{/each}}
-</template>
