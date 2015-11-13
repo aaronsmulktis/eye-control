@@ -1,0 +1,21 @@
+<head>
+  <title>eye-control</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> hello}}
+
+  <div id="render-target"></div>
+</body>
+
+<template name="hello">
+  <button>Click Me</button>
+  <p>You've pressed the button {{counter}} times.</p>
+
+  <p>The people working on this project are:</p>
+  {{#each people}}
+  	<p>{{name}}</p>
+  {{/each}}
+</template>
