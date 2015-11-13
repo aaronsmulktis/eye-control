@@ -31,6 +31,19 @@ header {
   position: relative;
 }
 
+#topBar {
+    width: 100%;
+    background: white;
+    height: 50px;
+}
+
+#viewDetails {
+    width: 100px;
+    background: aliceblue;
+    height: 400px;
+    float: left;
+}
+
 #login-buttons {
   display: block;
 }

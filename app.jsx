@@ -42,7 +42,22 @@ App = React.createClass({
     return (
       <div className="container">
         <header>
-          <h1>Todo List</h1>
+
+          <div id="topBar">
+      
+          </div>
+
+          <div id="contentContainer">
+            <div id="viewDetails">
+              
+            </div>
+
+            <div id="mainContent">
+              <div id="mainMap"></div>
+
+              <div id="propDetails"></div>
+            </div>
+          </div>
 
           {/* This is a comment */}
           <form className="new-task" onSubmit={this.handleSubmit} >
