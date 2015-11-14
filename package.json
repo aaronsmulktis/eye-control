@@ -1,0 +1,20 @@
+{
+  "name": "eye-control",
+  "version": "0.1.0",
+  "description": "",
+  "main": "eye-control.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronsmulktis/eye-control.git"
+  },
+  "author": "Aaron Smulktis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aaronsmulktis/eye-control/issues"
+  },
+  "homepage": "https://github.com/aaronsmulktis/eye-control#readme",
+  "dependencies": {}
+}

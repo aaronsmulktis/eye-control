@@ -40,39 +40,77 @@ App = React.createClass({
 
   render() {
     return (
-      <div className="container">
-        <header>
 
-          <div id="topBar">
-      
+      <div id="contentContainer">
+        <div id="viewDetails" className="col-sm-4">
+          <nav id="viewMenu" className="navbar navbar-fixed">
+            <span className="pull-right glyphicon glyphicon-menu-hamburger"></span>
+          </nav>
+          <div id="viewVR"></div>
+          <div id="viewOptions">
+            <ul className="list-inline">
+              <li><span className="glyphicon glyphicon-comment"></span></li>
+              <li><span className="glyphicon glyphicon-headphones"></span></li>
+              <li><span className="glyphicon glyphicon-globe"></span></li>
+              <li><span className="glyphicon glyphicon-map-marker"></span></li>
+            </ul>
+          </div>
+          <div id="viewNotes">
+            <header>
+              {/* This is a comment */}
+              <form className="new-task" onSubmit={this.handleSubmit} >
+                <input
+                  type="text"
+                  ref="textInput"
+                  placeholder="Add a note..." />
+              </form>
+              <ul>
+                {this.renderTasks()}
+              </ul>
+            </header>
+          </div>
+        </div>
+
+        <div id="mainContent" className="col-sm-8">
+
+          <nav id="topBar" className="navbar navbar-fixed">
+            <div className="container-fluid">
+
+              <div className="navbar-header">
+                <button type="button" className="navbar-toggle collapsed">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </button>
+              </div>
+
+              <div className="collapse navbar-collapse">
+                <ul className="navbar-nav navbar-right">
+                  <li><a href="#">Map</a></li>
+                  <li><a href="#">Add Property</a></li>
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Logo</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+          <div id="searchBar">
+            <form className="navbar-form navbar-left" role="search">
+              <div className="form-group">
+                <input type="text" className="form-control" placeholder="Search"></input>
+              </div>
+              <button type="submit" className="btn btn-default">Submit</button>
+            </form>
           </div>
 
-          <div id="contentContainer">
-            <div id="viewDetails">
-              
-            </div>
+          <div id="mainMap"></div>
 
-            <div id="mainContent">
-              <div id="mainMap"></div>
-
-              <div id="propDetails"></div>
-            </div>
-          </div>
-
-          {/* This is a comment */}
-          <form className="new-task" onSubmit={this.handleSubmit} >
-            <input
-              type="text"
-              ref="textInput"
-              placeholder="Type to add new tasks" />
-          </form>
-
-        </header>
- 
-        <ul>
-          {this.renderTasks()}
-        </ul>
+          <div id="propDetails"></div>
+        </div>
       </div>
+ 
     );
   }
 });
