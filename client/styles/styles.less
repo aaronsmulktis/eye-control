@@ -1,42 +1,15 @@
 @import "{}/client/styles/globals.import.less";
 @import "{}/client/styles/mixins.import.less";
 
-body {
-  font-family: sans-serif;
-  background-color: @brand;
-  /*background-image: linear-gradient(to bottom, antiquewhite, aliceblue 80%);*/
-  background-attachment: fixed;
-
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  padding: 0;
-  margin: 0;
-
-  font-size: 14px;
-  color: @brand;
-}
-
-header {
-}
-
-#topBar {
-    /*width: 100%;*/
-    background: white;
-    height: 50px;
-}
-
-#topBar ul li {
-
+.navbar-brand {
+  font-weight: 700;
 }
 
 #viewVR {
   height: 200px;
   background: #d2edf4;
-  background-image: linear-gradient(to bottom, lightgrey, grey 100%);
+  background-image: linear-gradient(left bottom, darkgrey, grey 100%);
+  content: 'VR Feed Here';
 }
 
 #viewDetails {

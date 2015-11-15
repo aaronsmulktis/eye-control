@@ -1,3 +1,47 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);
+
+body {
+	background-color: @brand;
+	/*background-image: linear-gradient(left top, @one, @two 140%);*/
+	background: -webkit-linear-gradient(left top, @one, @two); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, @one, @two); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, @one, @two); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, @one, @two);
+
+	background-attachment: fixed;
+
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	padding: 0;
+	margin: 0;
+
+	font-family: 'Ubuntu Mono', sans-serif;
+	font-size: 14px;
+	color: @brand;
+}
+
 a {
 	color: @brand;
+}
+
+h1 {
+
+}
+
+header {
+}
+
+#topBar {
+    /*width: 100%;*/
+    background: white;
+    border-radius: 0;
+    margin: 0;
+}
+
+#topBar ul li {
+  border: 0;
 }
