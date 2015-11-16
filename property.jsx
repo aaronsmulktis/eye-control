@@ -43,7 +43,7 @@ Property = React.createClass({
 
       <div id="contentContainer">
 
-        <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1">
+        <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
 
           {this.props.header}
 
@@ -51,7 +51,7 @@ Property = React.createClass({
 
           <div id="viewVR"></div>
 
-          <div id="propDetails" className="row">
+          <div id="propDetails">
             <div id="viewDetails" className="col-sm-4">
               <div id="viewOptions">
                 <ul className="list-inline">
