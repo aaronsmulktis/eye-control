@@ -9,6 +9,14 @@
 	</div>
 
 	<script type="text/javascript">
+		var homes = [
+		  ['40 Warwick Ave.', 51.523325, -0.183299, 4],
+		  ['Buckingham Palace', 51.501483, -0.141948, 5],
+		  ['Ministry of Sound', 51.497740, -0.099440, 3],
+		  ['22 Hugon Road', 51.467892, -0.191422, 2],
+		  ['Radcliff House', 51.490478, -0.061075, 1]
+		];
+
 		var mainMap;
 		
 		var styles = [
@@ -44,13 +52,79 @@
 			setMarkers(mainMap);
 		}
 
-		var homes = [
-		  ['40 Warwick Ave.', 51.523325, -0.183299, 4],
-		  ['Buckingham Palace', 51.501483, -0.141948, 5],
-		  ['Ministry of Sound', 51.497740, -0.099440, 3],
-		  ['22 Hugon Road', 51.467892, -0.191422, 2],
-		  ['Radcliff House', 51.490478, -0.061075, 1]
-		];
+		// function createMarker(lat, lon, html) {
+		//     var newMarker = new google.maps.Marker({
+		//         position: new google.maps.LatLng(lat, lon),
+		//         map: mainMap,
+		//         title: html
+		//     });
+		    
+		//     newMarker['infowindow'] = new google.maps.InfoWindow({
+		//             content: html
+		//         });
+
+		//     google.maps.event.addListener(newMarker, 'mouseover', function() {
+		//         this['infowindow'].open(map, this);
+		//     });
+		    
+		//     marker.push(newMarker);
+		// }
+
+		// ======================== //
+
+		// var ships = [[63.44204833, 10.40340333], [63.49261667, 9.92661167]];
+		// var map;
+
+		// var infowindow = [];
+		// var marker = [];
+
+		// function initialize() {
+		//     var myLatlng = new google.maps.LatLng(63.44204833, 10.40340333);
+		//     var myOptions = {
+		//         zoom: 9,
+		//         center: myLatlng,
+		//         mapTypeId: google.maps.MapTypeId.TERRAIN
+		//     }
+		//     map = new google.maps.Map(document.getElementById("mainMap"), myOptions);
+
+		// }
+
+		// function createMarker(lat, lon, html) {
+		//     var newmarker = new google.maps.Marker({
+		//         position: new google.maps.LatLng(lat, lon),
+		//         map: map,
+		//         title: html
+		//     });
+		    
+		//     newmarker['infowindow'] = new google.maps.InfoWindow({
+		//             content: html
+		//         });
+
+		//     google.maps.event.addListener(newmarker, 'mouseover', function() {
+		//         this['infowindow'].open(map, this);
+		//     });
+		    
+		//     marker.push(newmarker);
+		// }
+
+		// function processShips(ships) {
+		//     for (var i = 0; i < ships.length; i++) {
+		//         createMarker(ships[i][0], ships[i][1], 'bla' + i);
+		//     }
+		// }
+
+		// function load(ships) {
+		//     initialize();
+		//     processShips(ships);
+		// }
+
+		// function gotoPoint(myPoint) {
+		//     map.setCenter(new google.maps.LatLng(marker[myPoint-1].position.lat(), marker[myPoint-1].position.lng()));
+		//     marker[myPoint-1]['infowindow'].open(map, marker[myPoint-1]);
+		// }
+
+		// window.onload = load(ships);
+
 
 		function setMarkers(mainMap) {
 
@@ -75,7 +149,7 @@
 		      position: {lat: home[1], lng: home[2]},
 		      map: mainMap,
 		      icon: house,
-		      // shape: shape,
+		      shape: shape,
 		      path: google.maps.SymbolPath.CIRCLE,
 		      title: home[0],
 		      zIndex: home[3]
@@ -85,8 +159,8 @@
 
 	</script>
 
-	<script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs&callback=initMap">
-	</script>
+	<script
+ 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs&callback=initMap">
+ 	</script>
 
 </body>
