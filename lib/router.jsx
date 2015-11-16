@@ -1,8 +1,24 @@
 FlowRouter.route('/', {
   action: function() {
-    ReactLayout.render(App, {
-      header: <Header />,
-      map: <Map />
+    ReactLayout.render(Map, {
+      header: <Header />
+    });
+    initialize();
+  }
+});
+
+FlowRouter.route('/add', {
+  action: function() {
+    ReactLayout.render(Add, {
+      header: <Header />
+    });
+  }
+});
+
+FlowRouter.route('/about', {
+  action: function() {
+    ReactLayout.render(About, {
+      header: <Header />
     });
   }
 });
@@ -10,8 +26,7 @@ FlowRouter.route('/', {
 FlowRouter.route('/home1', {
   action: function() {
     ReactLayout.render(Property, {
-      header: <Header />,
-      property: <property />
+      header: <Header />
     });
   }
 });

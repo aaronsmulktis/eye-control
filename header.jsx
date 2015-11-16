@@ -24,9 +24,9 @@ Header = React.createClass({
               </form>
             </div>
             <ul className="navbar-nav navbar-right">
-              <li><a href="/map">Map</a></li>
-              <li><a href="#">Add Property</a></li>
-              <li><a href="#">About</a></li>
+              <li><a href="/">Map</a></li>
+              <li><a href="/add">Add Property</a></li>
+              <li><a href="/about">About</a></li>
             </ul>
           </div>
         </div>

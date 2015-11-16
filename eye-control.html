@@ -1,12 +1,8 @@
 <head>
-	<title>Todo List</title>
+	<title>Eye Control</title>
 </head>
 
 <body>
-
-	<div id="globalContainer">
-
-	</div>
 
 	<script type="text/javascript">
 		var homes = [
@@ -118,14 +114,6 @@
 		        createMarker(homes[i][1], homes[i][2], homes[i][0], homes[i][3]);
 		    }
 		}
-
-		// Prevent Default on All Hash Links
-		$(function() {
-		    $('a[href="/"]').click( function(e) {
-				e.preventDefault();
-				window.location = 'localhost:3000';
-		    });
-		});
 
 	</script>
 

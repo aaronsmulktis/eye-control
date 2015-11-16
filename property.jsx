@@ -47,8 +47,6 @@ Property = React.createClass({
 
           {this.props.header}
 
-          {this.props.property}
-
           <div id="viewVR"></div>
 
           <div id="propDetails">
