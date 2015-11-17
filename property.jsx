@@ -47,7 +47,9 @@ Property = React.createClass({
 
           {this.props.header}
 
-          <div id="viewVR"></div>
+          <div id="viewVR">
+            <div className="tint"></div>
+          </div>
 
           <div id="propDetails">
             <div id="viewDetails" className="col-sm-4 noPadding">
