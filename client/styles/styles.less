@@ -6,11 +6,37 @@
 }
 
 #viewVR {
-  height: 200px;
-  background: #d2edf4;
-  background-image: linear-gradient(left bottom, darkgrey, grey 100%);
-  content: 'VR Feed Here';
+  height: 333px;
+  /*background: #d2edf4;
+  background-image: linear-gradient(left bottom, darkgrey, grey 100%);*/
+  background: url('../img/MasterBedroomSmall-lg.jpg') no-repeat;
+  background-position: center center;
+  background-size: cover;
+  /*-webkit-filter: blur(5px);
+          filter: blur(5px);*/
 }
+
+/*#viewVR.sharp {
+  -webkit-animation: goSharp 5s;
+          animation: goSharp 5s;
+}
+
+@-webkit-keyframes goSharp {
+  0% {
+    -webkit-filter: contrast(80%);
+            filter: contrast(80%);
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+  }
+}
+@keyframes goSharp {
+  0% {
+    -webkit-filter: contrast(80%);
+            filter: contrast(80%);
+    -webkit-filter: blur(0);
+            filter: blur(0);
+  }
+}*/
 
 #propDetails {
     /*width: 100px;*/
@@ -28,7 +54,8 @@
 }
 
 .propList ul li:hover {
-  background: lighten(@accent, 20%);
+  background: lighten(@brand, 20%);
+  color: white
 }
 
 .new-task input {
@@ -45,10 +72,28 @@
   outline: 0;
 }
 
+#placque {
+  display: flex;
+  /* text-align: center; */
+  padding: 40px;
+}
+
+#placque #circ {
+  background: @sky;
+  color: white;
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  padding: 40px;
+  text-align: center;
+  display: table-cell;
+  border: 1px solid darken(@three, 5%);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.33);
+}
+
 ul {
   margin: 0;
   padding: 0;
-  background: white;
 }
 
 .delete {

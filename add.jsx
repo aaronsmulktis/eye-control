@@ -66,6 +66,8 @@ Add = React.createClass({
           <div className="addForm row-fluid">
             <div className="col-sm-8 col-sm-offset-2">
 
+              <hr></hr>
+
               <form role="addHome vertCenter" onSubmit={this.addProperty}>
                 <div className="form-group">
                   <input type="text" className="form-control" ref="nameInput" placeholder="Name"></input>
@@ -97,6 +99,8 @@ Add = React.createClass({
 
             </div>
           </div>
+
+          <hr></hr>
 
           <div className="propList row-fluid">
             <ul>

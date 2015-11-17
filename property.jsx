@@ -23,7 +23,7 @@ Property = React.createClass({
     });
   },
  
-  handleSubmit(event) {
+  addNote(event) {
     event.preventDefault();
  
     // Find the text field via the React ref
@@ -50,8 +50,8 @@ Property = React.createClass({
           <div id="viewVR"></div>
 
           <div id="propDetails">
-            <div id="viewDetails" className="col-sm-4">
-              <div id="viewOptions">
+            <div id="viewDetails" className="col-sm-4 noPadding">
+              <div id="viewOptions" className="20padding">
                 <ul className="list-inline">
                   <li><span className="glyphicon glyphicon-comment"></span></li>
                   <li><span className="glyphicon glyphicon-headphones"></span></li>
@@ -62,7 +62,7 @@ Property = React.createClass({
               <div id="viewNotes">
                 <header>
                   {/* This is a comment */}
-                  <form className="new-task" onSubmit={this.handleSubmit} >
+                  <form className="new-task" onSubmit={this.addNote} >
                     <input
                       type="text"
                       ref="textInput"
@@ -75,8 +75,19 @@ Property = React.createClass({
               </div>
             </div>
 
-            <div className="col-sm-4"></div>
-            <div className="col-sm-4"></div>
+            <div id="placque" className="col-sm-4">
+              <div id="circ">
+                <h4>Official Name of Place</h4>
+                <p>Est. 1894</p>
+              </div>
+            </div>
+            <div id="room" className="col-sm-4">
+              <div id="roomPics">
+                <ol>
+                  <li></li>
+                </ol>
+              </div>
+            </div>
 
           </div>
         
