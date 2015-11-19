@@ -1,3 +1,4 @@
+@import "{}/client/styles/overrides.import.less";
 @import "{}/client/styles/globals.import.less";
 @import "{}/client/styles/mixins.import.less";
 
@@ -38,6 +39,10 @@
   }
 }*/
 
+/*.homeClip {
+  width: 200px;
+}*/
+
 #propDetails {
     /*width: 100px;*/
     background: white;
@@ -58,9 +63,18 @@
   color: white
 }
 
-.new-task input {
+a.homeLink {
+  display: inline-block;
+  padding: 15px;
+}
+
+.new-note {
+  background: #eee;
+}
+
+.new-note input {
   box-sizing: border-box;
-  padding: 10px 0;
+  padding: 10px 25px;
   background: transparent;
   border: none;
   width: 100%;
@@ -68,7 +82,7 @@
   font-size: 1em;
 }
 
-.new-task input:focus{
+.new-note input:focus{
   outline: 0;
 }
 
@@ -89,6 +103,24 @@
   display: table-cell;
   border: 1px solid darken(@three, 5%);
   box-shadow: 1px 1px 2px rgba(0,0,0,0.33);
+}
+
+#addRoomBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: lighten(@three, 25%);
+}
+
+#addRoomBtn a {
+  padding: 10px 25px;
+  display: block;
+  color: white;
+}
+
+#addRoomBtn a:hover {
+  background: @three;
+  color: darken(white, 25%);
 }
 
 ul {
@@ -154,7 +186,7 @@ header .hide-completed {
     clear: both;
   }
 
-  .new-task input {
+  .new-note input {
     padding-bottom: 5px;
   }
 }

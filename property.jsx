@@ -12,6 +12,11 @@ Property = React.createClass({
         sort: {
           createdAt: -1
         }
+      }).fetch(),
+      rooms: Homes.find({}, {
+        sort: {
+          createdAt: -1
+        }
       }).fetch()
     }
   },
@@ -22,14 +27,36 @@ Property = React.createClass({
       return <Task key={task._id} task={task} />;
     });
   },
+
+  renderRoomBoxes() {
+    // Get tasks from this.data.tasks
+    return this.data.rooms.map((room) => {
+      return <RoomBox key={room._id} home={room} />;
+    });
+  },
  
   addNote(event) {
     event.preventDefault();
  
     // Find the text field via the React ref
-    var text = React.findDOMNode(this.refs.textInput).value.trim();
+    var text = React.findDOMNode(this.refs.noteInput).value.trim();
  
     Tasks.insert({
+      text: text,
+      createdAt: new Date() // current time
+    });
+ 
+    // Clear form
+    React.findDOMNode(this.refs.textInput).value = "";
+  },
+
+  addRoom(event) {
+    event.preventDefault();
+ 
+    // Find the text field via the React ref
+    var text = React.findDOMNode(this.refs.roomInput).value.trim();
+ 
+    Rooms.insert({
       text: text,
       createdAt: new Date() // current time
     });
@@ -54,7 +81,7 @@ Property = React.createClass({
           <div id="propDetails">
             <div id="viewDetails" className="col-sm-4 noPadding">
               <div id="viewOptions" className="20padding">
-                <ul className="list-inline">
+                <ul className="list-inline nav-justified">
                   <li><span className="glyphicon glyphicon-comment"></span></li>
                   <li><span className="glyphicon glyphicon-headphones"></span></li>
                   <li><span className="glyphicon glyphicon-globe"></span></li>
@@ -64,10 +91,10 @@ Property = React.createClass({
               <div id="viewNotes">
                 <header>
                   {/* This is a comment */}
-                  <form className="new-task" onSubmit={this.addNote} >
+                  <form className="new-note" onSubmit={this.addNote} >
                     <input
                       type="text"
-                      ref="textInput"
+                      ref="noteInput"
                       placeholder="Add a note..." />
                   </form>
                   <ul>
@@ -78,15 +105,26 @@ Property = React.createClass({
             </div>
 
             <div id="placque" className="col-sm-4">
-              <div id="circ">
+              <div id="circ" className="center-block">
                 <h4>Official Name of Place</h4>
                 <p>Est. 1894</p>
               </div>
             </div>
-            <div id="room" className="col-sm-4">
+            <div id="room" className="col-sm-4 noPadding">
+              <header id="roomHeader">
+                <form className="new-note" onSubmit={this.addNote} >
+                  <input
+                    type="text"
+                    ref="roomInput"
+                    placeholder="Filter rooms.." />
+                </form>
+                <div id="addRoomBtn" className="">
+                  <a href="#addRoom"><i className="fa fa-plus"></i></a>
+                </div>
+              </header>
               <div id="roomPics">
-                <ol>
-                  <li></li>
+                <ol className="noPadding">
+                  {this.renderRoomBoxes()}
                 </ol>
               </div>
             </div>
