@@ -116,7 +116,7 @@ Property = React.createClass({
             <div id="room" className="col-sm-4 noPadding">
               <h3>Rooms</h3>
               <header id="roomHeader">
-                <form className="new-note" onSubmit={this.addNote} >
+                <form className="new-note">
                   <input
                     type="text"
                     ref="roomInput"
