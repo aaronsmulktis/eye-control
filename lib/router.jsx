@@ -3,9 +3,6 @@ FlowRouter.route('/', {
     ReactLayout.render(Map, {
       header: <Header />
     });
-    document.addEventListener('DOMContentLoaded', function () {
-      initialize();
-    });
   }
 });
 
