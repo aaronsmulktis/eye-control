@@ -36,7 +36,9 @@ var styles = [
 ];
 
 function initialize() {
-
+    if (!google) {
+        return;
+    }
     mainMap = new google.maps.Map(document.getElementById('mainMap'), {
         center: {lat: 51.507194, lng: -0.118085},
         zoom: 12,
@@ -124,36 +126,33 @@ jQuery(document).ready(function($) {
     var deleteLinks = document.querySelectorAll('.delete');
 
     for (var i = 0; i < deleteLinks.length; i++) {
-      deleteLinks[i].addEventListener('click', function(event) {
-          event.preventDefault();
+        deleteLinks[i].addEventListener('click', function(event) {
+            event.preventDefault();
 
-          var choice = confirm(this.getAttribute('data-confirm'));
+            var choice = confirm(this.getAttribute('data-confirm'));
 
-          if (choice) {
-            document.querySelector(".trigger").onclick()
-          }
-      });
-    }
-
-    $(function() {
-        $('#addRoomBtn').on('click', function(e) {
-            e.preventDefault();
-            // $("#email-signup").fadeIn(500);
-            // $('#fieldName').focus();
-            $("#addRoom").fadeIn(500);
-        });
-
-        $('#addRoom .close').on('click', function(e) {
-            e.preventDefault();
-            // $("#email-signup").fadeIn(500);
-            // $('#fieldName').focus();
-            $("#addRoom").fadeOut(500);
-        });
-
-        $(document).keyup(function(e) {
-             if (e.keyCode == 27) {
-                $("#addRoom").fadeOut(500);
+            if (choice) {
+                document.querySelector(".trigger").onclick()
             }
         });
+    }
+    $('#addRoomBtn').on('click', function(e) {
+        e.preventDefault();
+        // $("#email-signup").fadeIn(500);
+        // $('#fieldName').focus();
+        $("#addRoom").fadeIn(500);
+    });
+
+    $('#addRoom .close').on('click', function(e) {
+        e.preventDefault();
+        // $("#email-signup").fadeIn(500);
+        // $('#fieldName').focus();
+        $("#addRoom").fadeOut(500);
+    });
+
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) {
+            $("#addRoom").fadeOut(500);
+        }
     });
 });
