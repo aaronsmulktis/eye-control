@@ -4,7 +4,7 @@
 Property = React.createClass({
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
- 
+
   // Loads items from the Tasks collection and puts them on this.data.tasks
   getMeteorData() {
     return {
@@ -20,7 +20,7 @@ Property = React.createClass({
       }).fetch()
     }
   },
- 
+
   renderTasks() {
     // Get tasks from this.data.tasks
     return this.data.tasks.map((task) => {
@@ -34,33 +34,33 @@ Property = React.createClass({
       return <RoomBox key={room._id} home={room} />;
     });
   },
- 
+
   addNote(event) {
     event.preventDefault();
- 
+
     // Find the text field via the React ref
     var text = React.findDOMNode(this.refs.noteInput).value.trim();
- 
+
     Tasks.insert({
       text: text,
       createdAt: new Date() // current time
     });
- 
+
     // Clear form
     React.findDOMNode(this.refs.textInput).value = "";
   },
 
   addRoom(event) {
     event.preventDefault();
- 
+
     // Find the text field via the React ref
     var text = React.findDOMNode(this.refs.roomInput).value.trim();
- 
+
     Rooms.insert({
       text: text,
       createdAt: new Date() // current time
     });
- 
+
     // Clear form
     React.findDOMNode(this.refs.textInput).value = "";
   },
@@ -75,7 +75,7 @@ Property = React.createClass({
           {this.props.header}
 
           <div id="viewVR">
-            <div className="tint"></div>
+            <iframe src={this.props.sphere} frameborder="0" class="vr-iframe" height="100%" width="100%"></iframe>
           </div>
 
           <div id="propDetails">
@@ -130,11 +130,11 @@ Property = React.createClass({
             </div>
 
           </div>
-        
+
         </div>
 
       </div>
- 
+
     );
   }
 });
