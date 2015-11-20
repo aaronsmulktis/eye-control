@@ -1,3 +1,4 @@
+/*global google*/
 
 var homes = [
   ['40 Warwick Ave.', 51.523325, -0.183299, '/home1'],
@@ -36,14 +37,14 @@ var styles = [
 
 function initialize() {
 
-	mainMap = new google.maps.Map(document.getElementById('mainMap'), {
-		center: {lat: 51.507194, lng: -0.118085},
-		zoom: 12,
-		styles: styles
-	});
+    mainMap = new google.maps.Map(document.getElementById('mainMap'), {
+        center: {lat: 51.507194, lng: -0.118085},
+        zoom: 12,
+        styles: styles
+    });
 
-	processHomes(homes);
-	// setMarkers(mainMap);
+    processHomes(homes);
+    // setMarkers(mainMap);
 }
 
 // function initialize() {
@@ -58,30 +59,30 @@ function initialize() {
 // }
 
 function createMarker(lat, lon, html, link) {
-	var house = {
-		// path: 'M 0.9,7.4 6,2.3 11.1,7.3 9.8,9.7 6.9,9.7 6.9,6.9 5.9,6.9 5.1,6.9 5.1,9.7 2.2,9.7 z',
-		path: google.maps.SymbolPath.CIRCLE,
-		fillColor: 'red',
-		fillOpacity: 0.66,
-		// strokeColor: black,
-		strokeWeight: 0.33,
-		scale: 8,
-	};
+    var house = {
+        // path: 'M 0.9,7.4 6,2.3 11.1,7.3 9.8,9.7 6.9,9.7 6.9,6.9 5.9,6.9 5.1,6.9 5.1,9.7 2.2,9.7 z',
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'red',
+        fillOpacity: 0.66,
+        // strokeColor: black,
+        strokeWeight: 0.33,
+        scale: 8
+    };
 
-	var shape = {
-		coords: [1, 1, 1, 20, 18, 20, 18, 1],
-		type: 'poly'
-	};
+    var shape = {
+        coords: [1, 1, 1, 20, 18, 20, 18, 1],
+        type: 'poly'
+    };
 
     var newMarker = new google.maps.Marker({
         position: new google.maps.LatLng(lat, lon),
         map: mainMap,
         icon: house,
-		shape: shape,
-		path: google.maps.SymbolPath.CIRCLE,
+        shape: shape,
+        path: google.maps.SymbolPath.CIRCLE,
         title: html
     });
-    
+
     newMarker['infowindow'] = new google.maps.InfoWindow({
             content: html
         });
@@ -96,15 +97,15 @@ function createMarker(lat, lon, html, link) {
     });
 
     google.maps.event.addListener(newMarker, 'mouseout', function(){
-		this['infowindow'].close(mainMap, this);
-	});
-    
+        this['infowindow'].close(mainMap, this);
+    });
+
     marker.push(newMarker);
 }
 
 function processHomes(homes) {
     for (var i = 0; i < homes.length; i++) {
-    	console.log(homes[i][3]);
+        console.log(homes[i][3]);
         createMarker(homes[i][1], homes[i][2], homes[i][0], homes[i][3]);
     }
 }
@@ -120,39 +121,39 @@ jQuery(window).on('load', function($) {
 });
 
 jQuery(document).ready(function($) {
-	var deleteLinks = document.querySelectorAll('.delete');
+    var deleteLinks = document.querySelectorAll('.delete');
 
-	for (var i = 0; i < deleteLinks.length; i++) {
-	  deleteLinks[i].addEventListener('click', function(event) {
-	      event.preventDefault();
+    for (var i = 0; i < deleteLinks.length; i++) {
+      deleteLinks[i].addEventListener('click', function(event) {
+          event.preventDefault();
 
-	      var choice = confirm(this.getAttribute('data-confirm'));
+          var choice = confirm(this.getAttribute('data-confirm'));
 
-	      if (choice) {
-	        document.querySelector(".trigger").onclick()
-	      }
-	  });
-	}
-	
+          if (choice) {
+            document.querySelector(".trigger").onclick()
+          }
+      });
+    }
+
     $(function() {
-    	$('#addRoomBtn').on('click', function(e) {
-			e.preventDefault();
-			// $("#email-signup").fadeIn(500);
-			// $('#fieldName').focus();
-			$("#addRoom").fadeIn(500);
-		});
+        $('#addRoomBtn').on('click', function(e) {
+            e.preventDefault();
+            // $("#email-signup").fadeIn(500);
+            // $('#fieldName').focus();
+            $("#addRoom").fadeIn(500);
+        });
 
-		$('#addRoom .close').on('click', function(e) {
-			e.preventDefault();
-			// $("#email-signup").fadeIn(500);
-			// $('#fieldName').focus();
-			$("#addRoom").fadeOut(500);
-		});
+        $('#addRoom .close').on('click', function(e) {
+            e.preventDefault();
+            // $("#email-signup").fadeIn(500);
+            // $('#fieldName').focus();
+            $("#addRoom").fadeOut(500);
+        });
 
-		$(document).keyup(function(e) {
-		     if (e.keyCode == 27) {
-		        $("#addRoom").fadeOut(500);
-		    }
-		});
-	});
+        $(document).keyup(function(e) {
+             if (e.keyCode == 27) {
+                $("#addRoom").fadeOut(500);
+            }
+        });
+    });
 });
