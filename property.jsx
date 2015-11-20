@@ -123,7 +123,7 @@ Property = React.createClass({
                     placeholder="Filter.." />
                 </form>
                 <div id="addRoomBtn" className="">
-                  <a href="#addRoom"><i className="fa fa-plus"></i> Add Room</a>
+                  <a href="#"><i className="fa fa-plus"></i> Add Room</a>
                 </div>
               </header>
               <div id="roomPics">

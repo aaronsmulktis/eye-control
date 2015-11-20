@@ -129,11 +129,11 @@ jQuery(document).ready(function($) {
 	      var choice = confirm(this.getAttribute('data-confirm'));
 
 	      if (choice) {
-	        document.querySelector(this).onclick()
+	        document.querySelector(".trigger").onclick()
 	      }
 	  });
 	}
-
+	
     $(function() {
     	$('#addRoomBtn').on('click', function(e) {
 			e.preventDefault();

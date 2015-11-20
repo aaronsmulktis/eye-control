@@ -17,7 +17,7 @@ Task = React.createClass({
     
     return (
       <li className={taskClassName}>
-        <a href="#" className="delete" data-confirm="You sure to delete this?" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
+        <a href="#" className="delete" data-confirm="You sure to delete this?" onClick={this.deleteThisTask}><i className="fa fa-close"></i></a>
  
         <span className="text">{this.props.task.text}</span>
       </li>

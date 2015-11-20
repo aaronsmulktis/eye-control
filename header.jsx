@@ -11,6 +11,7 @@ Header = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
+            <p>Virtuosity</p>
             <a href="/" className="navbar-brand">Eye <i id="logoEye" className="fa fa-eye 90degCC"></i> Control</a>
           </div>
 
