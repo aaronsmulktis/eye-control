@@ -17,7 +17,7 @@ Home = React.createClass({
     
     return (
       <li className={homeClassName + ' noPadding homeClip'}>
-        <a href="#" className="pull-right delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
+        <a href="#" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
         <a className="homeLink" href="/home1">
           <div className="homePic col-sm-4">
             <img src="img/MasterBedroomSmall-xs.jpg"></img>
