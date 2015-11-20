@@ -86,8 +86,9 @@ Property = React.createClass({
               <div id="viewOptions" className="20padding">
                 <ul className="list-inline nav-justified">
                   <li><span className="glyphicon glyphicon-comment"></span></li>
+                  <li><span className="glyphicon glyphicon-home"></span></li>
                   <li><span className="glyphicon glyphicon-headphones"></span></li>
-                  <li><span className="glyphicon glyphicon-globe"></span></li>
+                  <li><span className="glyphicon glyphicon-heart"></span></li>
                   <li><span className="glyphicon glyphicon-map-marker"></span></li>
                 </ul>
               </div>
