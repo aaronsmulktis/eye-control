@@ -14,10 +14,10 @@ RoomBox = React.createClass({
     // Give tasks a different className when they are checked off,
     // so that we can style them nicely in CSS
     const roomClassName = this.props.room.name;
-    
+
     return (
       <li draggable="true" className={roomClassName + ' noPadding roomBox container-fluid'}>
-        <a href="#" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
+        <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
         <div className="roomPic col-sm-4 noPadding" style={{backgroundImage: 'url(img/MasterBedroomSmall-xs.jpg)'}}>
         </div>
         <div className="propDetails col-sm-8">

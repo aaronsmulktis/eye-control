@@ -14,10 +14,10 @@ Home = React.createClass({
     // Give tasks a different className when they are checked off,
     // so that we can style them nicely in CSS
     const homeClassName = this.props.home.name;
-    
+
     return (
       <li className={homeClassName + ' noPadding homeClip'}>
-        <a href="#" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
+        <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
         <a className="homeLink" href="/home1">
           <div className="homePic col-sm-4">
             <img src="img/MasterBedroomSmall-xs.jpg"></img>
