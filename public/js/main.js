@@ -8,6 +8,7 @@ var homes = [
   ['Radcliff House', 51.490478, -0.061075, '/home1']
 ];
 
+var fadeTime = 300;
 var mainMap;
 
 var infowindow = [];
@@ -136,23 +137,23 @@ jQuery(document).ready(function($) {
             }
         });
     }
-    $('#addRoomBtn').on('click', function(e) {
+    $(document).on('click', '#addRoomBtn', function(e) {
         e.preventDefault();
-        // $("#email-signup").fadeIn(500);
+        // $("#email-signup").fadeIn(fadeTime);
         // $('#fieldName').focus();
-        $("#addRoom").fadeIn(500);
+        $("#addRoom").fadeIn(fadeTime);
     });
 
-    $('#addRoom .close').on('click', function(e) {
+    $(document).on('click', '#addRoom .close', function(e) {
         e.preventDefault();
-        // $("#email-signup").fadeIn(500);
+        // $("#email-signup").fadeIn(fadeTime);
         // $('#fieldName').focus();
-        $("#addRoom").fadeOut(500);
+        $("#addRoom").fadeOut(fadeTime);
     });
 
     $(document).keyup(function(e) {
         if (e.keyCode == 27) {
-            $("#addRoom").fadeOut(500);
+            $("#addRoom").fadeOut(fadeTime);
         }
     });
 });
