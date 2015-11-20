@@ -85,11 +85,31 @@ Property = React.createClass({
             <div id="viewDetails" className="col-sm-4 noPadding">
               <div id="viewOptions" className="20padding">
                 <ul className="list-inline nav-justified">
-                  <li><span className="glyphicon glyphicon-comment"></span></li>
-                  <li><span className="glyphicon glyphicon-home"></span></li>
-                  <li><span className="glyphicon glyphicon-headphones"></span></li>
-                  <li><span className="glyphicon glyphicon-heart"></span></li>
-                  <li><span className="glyphicon glyphicon-map-marker"></span></li>
+                  <li>
+                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <span className="glyphicon glyphicon-comment"></span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <span className="glyphicon glyphicon-home"></span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <span className="glyphicon glyphicon-headphones"></span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <span className="glyphicon glyphicon-heart"></span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <span className="glyphicon glyphicon-map-marker"></span>
+                    </button>
+                  </li>
                 </ul>
               </div>
               <div id="viewNotes">

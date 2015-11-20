@@ -5,3 +5,30 @@
 .nav-justified > li {
 	text-align: center;
 }
+
+.btn-default {
+	background-color: #eee;
+	border-color: darken(#eee, 10%);
+}
+
+.btn-default:active, .btn-default:active.active, .btn-default.active {
+	background-color: @three;
+	border-color: darken(@three, 10%);
+	color: white;
+}
+
+.btn-default:active:hover, .btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, .btn-default:active:focus, .btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, .btn-default:active.focus, .btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
+	background-color: @three;
+	border-color: darken(@three, 10%);
+	color: white;
+	outline: none;
+}
+
+.btn-default:focus, .btn-default.focus {
+	border-color: darken(#eee, 10%);
+	outline: none;
+}
+
+.btn:active, .btn.active {
+	box-shadow: inherit;
+}
