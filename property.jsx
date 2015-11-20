@@ -111,15 +111,16 @@ Property = React.createClass({
               </div>
             </div>
             <div id="room" className="col-sm-4 noPadding">
+              <h3>Rooms</h3>
               <header id="roomHeader">
                 <form className="new-note" onSubmit={this.addNote} >
                   <input
                     type="text"
                     ref="roomInput"
-                    placeholder="Filter rooms.." />
+                    placeholder="Filter.." />
                 </form>
                 <div id="addRoomBtn" className="">
-                  <a href="#addRoom"><i className="fa fa-plus"></i></a>
+                  <a href="#addRoom"><i className="fa fa-plus"></i> Room</a>
                 </div>
               </header>
               <div id="roomPics">

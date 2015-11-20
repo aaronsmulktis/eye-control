@@ -16,7 +16,7 @@ RoomBox = React.createClass({
     const homeClassName = this.props.home.name;
     
     return (
-      <li className={homeClassName + ' noPadding roomBox container-fluid'}>
+      <li draggable="true" className={homeClassName + ' noPadding roomBox container-fluid'}>
         <div className="homePic col-sm-4 noPadding">
           <img src="img/MasterBedroomSmall-xs.jpg"></img>
         </div>

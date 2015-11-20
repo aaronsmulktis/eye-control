@@ -11,14 +11,14 @@ Header = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a href="/" className="navbar-brand">Eye <i className="fa fa-eye 90degCC"></i> Control</a>
+            <a href="/" className="navbar-brand">Eye <i id="logoEye" className="fa fa-eye 90degCC"></i> Control</a>
           </div>
 
           <div className="collapse navbar-collapse">
             <div id="searchBar" className="navbar-left">
               <form className="navbar-form navbar-left" role="search">
                 <div className="form-group">
-                  <input type="text" className="form-control" placeholder="Lookup anything..."></input>
+                  <input type="text" className="form-control" placeholder="Go anywhere.."></input>
                 </div>
                 <button type="submit" className="btn btn-default">Go</button>
               </form>

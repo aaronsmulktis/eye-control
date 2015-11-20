@@ -63,8 +63,10 @@ Add = React.createClass({
 
           {this.props.header}
 
-          <div className="addForm row-fluid">
+          <div className="addForm container-fluid">
             <div className="col-sm-8 col-sm-offset-2">
+
+              <h4>Add a new property</h4>
 
               <hr></hr>
 
@@ -75,10 +77,10 @@ Add = React.createClass({
                 <div className="form-group">
                   <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group col-sm-6 noPadding">
                   <input type="text" className="form-control" ref="longitudeInput" placeholder="Latitude"></input>
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group col-sm-6 noPadRight">
                   <input type="text" className="form-control" ref="latitudeInput" placeholder="Longitude"></input>
                 </div>
                 <div className="form-group">
@@ -100,7 +102,9 @@ Add = React.createClass({
             </div>
           </div>
 
-          <hr></hr>
+          <h3 className="text-center">All Properties</h3>
+
+          <hr className="noMarBottom"></hr>
 
           <div className="propList row-fluid">
             <ul>

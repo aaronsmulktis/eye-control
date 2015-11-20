@@ -17,16 +17,14 @@ Home = React.createClass({
     
     return (
       <li className={homeClassName + ' noPadding homeClip'}>
+        <a href="#" className="pull-right delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
         <a className="homeLink" href="/home1">
           <div className="homePic col-sm-4">
             <img src="img/MasterBedroomSmall-xs.jpg"></img>
           </div>
-          <div className="propDetails col-sm-4">
+          <div className="propDetails col-sm-8">
             <h3 className="text">{this.props.home.name}</h3>
             <p className="text">{this.props.home.address}</p>
-            <a href="#" className="pull-right delete" onClick={this.deleteThisHome}>
-              &times;
-            </a>
           </div>
         </a>
       </li>
