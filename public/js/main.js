@@ -137,23 +137,4 @@ jQuery(document).ready(function($) {
             }
         });
     }
-    $(document).on('click', '#addRoomBtn', function(e) {
-        e.preventDefault();
-        // $("#email-signup").fadeIn(fadeTime);
-        // $('#fieldName').focus();
-        $("#addRoom").fadeIn(fadeTime);
-    });
-
-    $(document).on('click', '#addRoom .close', function(e) {
-        e.preventDefault();
-        // $("#email-signup").fadeIn(fadeTime);
-        // $('#fieldName').focus();
-        $("#addRoom").fadeOut(fadeTime);
-    });
-
-    $(document).keyup(function(e) {
-        if (e.keyCode == 27) {
-            $("#addRoom").fadeOut(fadeTime);
-        }
-    });
 });

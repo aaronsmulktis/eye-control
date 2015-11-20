@@ -68,8 +68,27 @@ Property = React.createClass({
     React.findDOMNode(this.refs.descInput).value = "";
   },
 
-  render() {
-    return (
+    render() {
+        $(document).on('click', '#addRoomBtn', function(e) {
+            e.preventDefault();
+            // $("#email-signup").fadeIn(fadeTime);
+            // $('#fieldName').focus();
+            $("#addRoom").fadeIn(fadeTime);
+        });
+
+        $(document).on('click', '#addRoom .close', function(e) {
+            e.preventDefault();
+            // $("#email-signup").fadeIn(fadeTime);
+            // $('#fieldName').focus();
+            $("#addRoom").fadeOut(fadeTime);
+        });
+
+        $(document).keyup(function(e) {
+            if (e.keyCode == 27) {
+                $("#addRoom").fadeOut(fadeTime);
+            }
+        });
+        return (
 
       <div id="contentContainer">
 
@@ -123,7 +142,7 @@ Property = React.createClass({
                     placeholder="Filter.." />
                 </form>
                 <div id="addRoomBtn" className="">
-                  <a href="#"><i className="fa fa-plus"></i> Add Room</a>
+                  <a href="javascript;"><i className="fa fa-plus"></i> Add Room</a>
                 </div>
               </header>
               <div id="roomPics">
@@ -138,7 +157,7 @@ Property = React.createClass({
         {/* Add Room Modal */}
 
           <div id="addRoom" className="container-fluid">
-            <a href="#" className="close"><i className="fa fa-close fa-lg"></i></a>
+            <a href="javascript:;" className="close"><i className="fa fa-close fa-lg"></i></a>
             <h3>Add a room to 100 Freeman St.</h3>
             <form role="addHome vertCenter" onSubmit={this.addRoom}>
               <div className="form-group">
