@@ -149,7 +149,7 @@ Property = React.createClass({
 
             <div id="placque" className="col-sm-4">
               <div id="circ" className="center-block">
-                <h4>Official Name of Place</h4>
+                <h4 contentEditable="true">Official Name of Place</h4>
                 <p>Est. 1894</p>
               </div>
             </div>
