@@ -165,6 +165,8 @@ Property = React.createClass({
       // Clear form
       React.findDOMNode(this.refs.nameInput).value = "";
       React.findDOMNode(this.refs.descInput).value = "";
+
+      this._togglePopup;
   },
     
   _renderAddRoom() {
