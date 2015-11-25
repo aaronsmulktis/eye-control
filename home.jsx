@@ -1,7 +1,7 @@
-// Task component - represents a single todo item
+// Home component - represents a single home list item
 Home = React.createClass({
   propTypes: {
-    // This component gets the task to display through a React prop.
+    // This component gets the home to display through a React prop.
     // We can use propTypes to indicate it is required
     home: React.PropTypes.object.isRequired
   },
@@ -11,7 +11,7 @@ Home = React.createClass({
   },
 
   render() {
-    // Give tasks a different className when they are checked off,
+    // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
     const homeClassName = this.props.home.name;
 

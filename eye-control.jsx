@@ -1,5 +1,4 @@
-// Define a collection to hold our tasks
-Tasks = new Mongo.Collection("tasks");
+Notes = new Mongo.Collection("notes");
 Homes = new Mongo.Collection("homes");
 Rooms = new Mongo.Collection("rooms");
 

@@ -5,7 +5,7 @@ Add = React.createClass({
 
   mixins: [ReactMeteorData],
  
-  // Loads items from the Tasks collection and puts them on this.data.tasks
+  // Loads items from the Notes collection and puts them on this.data.notes
   getMeteorData() {
     return {
       homes: Homes.find({}, {
@@ -17,7 +17,7 @@ Add = React.createClass({
   },
  
   renderHomes() {
-    // Get tasks from this.data.tasks
+    // Get homes from this.data.homes
     return this.data.homes.map((home) => {
       return <Home key={home.name} home={home} />;
     });

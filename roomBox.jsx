@@ -1,7 +1,7 @@
-// Task component - represents a single todo item
+// Room Box component - represents a single todo item
 RoomBox = React.createClass({
   propTypes: {
-    // This component gets the task to display through a React prop.
+    // This component gets the room to display through a React prop.
     // We can use propTypes to indicate it is required
     roomBox: React.PropTypes.object.isRequired
   },
@@ -10,8 +10,18 @@ RoomBox = React.createClass({
     Rooms.remove(this.props.room._id);
   },
 
+  getInitialState() {
+      return {
+          condition:false
+      }
+  },
+
+  handleClick() {
+      this.setState( { condition : !this.state.condition } );
+  },
+
   render() {
-    // Give tasks a different className when they are checked off,
+    // Give rooms a different className when they are checked off,
     // so that we can style them nicely in CSS
     const roomClassName = this.props.room.name;
 

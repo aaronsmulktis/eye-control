@@ -1,14 +1,12 @@
-// MapKey = AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs;
-
 // Property component
 Property = React.createClass({
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
 
-  // Loads items from the Tasks collection and puts them on this.data.tasks
+  // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
     return {
-      tasks: Tasks.find({}, {
+      notes: Notes.find({}, {
         sort: {
           createdAt: -1
         }
@@ -21,74 +19,64 @@ Property = React.createClass({
     }
   },
 
-  renderTasks() {
-    // Get tasks from this.data.tasks
-    return this.data.tasks.map((task) => {
-      return <Task key={task._id} task={task} />;
+  getInitialState() {
+    return {
+      isPopup: false
+    }
+  },
+  
+  renderNotes() {
+    // Get notes from this.data.notes
+    let notes = this.data.notes.map((note) => {
+      return <Note key={note._id} note={note} />;
     });
+
+    return (
+      <div id="viewNotes">
+        <header>
+          {/* This is a comment */}
+          <form className="new-note" onSubmit={this._addNote} >
+            <input
+              type="text"
+              ref="noteInput"
+              placeholder="Add a note..." />
+          </form>
+          <ul>
+            {notes}
+          </ul>
+        </header>
+      </div>
+    );
   },
 
   renderRoomBoxes() {
-    // Get tasks from this.data.tasks
+    // Get rooms from this.data.rooms
     return this.data.rooms.map((room) => {
       return <RoomBox key={room._id} room={room} />;
     });
   },
 
-  addNote(event) {
-    event.preventDefault();
+  render() {
+//         $(document).on('click', '#addRoomBtn', function(e) {
+//             e.preventDefault();
+//             // $("#email-signup").fadeIn(fadeTime);
+//             // $('#fieldName').focus();
+//             $("#addRoom").fadeIn(fadeTime);
+//         });
 
-    // Find the text field via the React ref
-    var text = React.findDOMNode(this.refs.noteInput).value.trim();
+//         $(document).on('click', '#addRoom .close', function(e) {
+//             e.preventDefault();
+//             // $("#email-signup").fadeIn(fadeTime);
+//             // $('#fieldName').focus();
+//             $("#addRoom").fadeOut(fadeTime);
+//         });
 
-    Tasks.insert({
-      text: text,
-      createdAt: new Date() // current time
-    });
-
-    // Clear form
-    React.findDOMNode(this.refs.noteInput).value = "";
-  },
-
-  addRoom(event) {
-    event.preventDefault();
-
-    // Find the text field via the React ref
-    var name = React.findDOMNode(this.refs.nameInput).value.trim();
-    var desc = React.findDOMNode(this.refs.descInput).value.trim();
-
-    Rooms.insert({
-      name: name,
-      desc: desc,
-      createdAt: new Date() // current time
-    });
-
-    // Clear form
-    React.findDOMNode(this.refs.nameInput).value = "";
-    React.findDOMNode(this.refs.descInput).value = "";
-  },
-
-    render() {
-        $(document).on('click', '#addRoomBtn', function(e) {
-            e.preventDefault();
-            // $("#email-signup").fadeIn(fadeTime);
-            // $('#fieldName').focus();
-            $("#addRoom").fadeIn(fadeTime);
-        });
-
-        $(document).on('click', '#addRoom .close', function(e) {
-            e.preventDefault();
-            // $("#email-signup").fadeIn(fadeTime);
-            // $('#fieldName').focus();
-            $("#addRoom").fadeOut(fadeTime);
-        });
-
-        $(document).keyup(function(e) {
-            if (e.keyCode == 27) {
-                $("#addRoom").fadeOut(fadeTime);
-            }
-        });
-        return (
+//         $(document).keyup(function(e) {
+//             if (e.keyCode == 27) {
+//                 $("#addRoom").fadeOut(fadeTime);
+//             }
+//         });
+    return (
 
       <div id="contentContainer">
 
@@ -102,58 +90,12 @@ Property = React.createClass({
 
           <div id="propDetails">
             <div id="viewDetails" className="col-sm-4 noPadding">
-              <div id="viewOptions" className="20padding">
-                <ul className="list-inline nav-justified">
-                  <li>
-                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <span className="glyphicon glyphicon-comment"></span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <span className="glyphicon glyphicon-home"></span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <span className="glyphicon glyphicon-headphones"></span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <span className="glyphicon glyphicon-heart"></span>
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <span className="glyphicon glyphicon-map-marker"></span>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              <div id="viewNotes">
-                <header>
-                  {/* This is a comment */}
-                  <form className="new-note" onSubmit={this.addNote} >
-                    <input
-                      type="text"
-                      ref="noteInput"
-                      placeholder="Add a note..." />
-                  </form>
-                  <ul>
-                    {this.renderTasks()}
-                  </ul>
-                </header>
-              </div>
+              {this._renderViewOptions()}
+              {this.renderNotes()}
             </div>
 
-            <div id="placque" className="col-sm-4">
-              <div id="circ" className="center-block">
-                <h4 id="circTitle" contentEditable="true">Official Name of Place</h4>
-                <p>Est. 1894</p>
-                <a href="javascript:;"><i className="fa fa-pencil"></i></a>
-              </div>
-            </div>
+            {this._renderPlacque()}
+
             <div id="room" className="col-sm-4 noPadding">
               <h3>Rooms</h3>
               <header id="roomHeader">
@@ -164,8 +106,9 @@ Property = React.createClass({
                     placeholder="Filter.." />
                 </form>
                 <div id="addRoomBtn" className="">
-                  <a href="javascript;"><i className="fa fa-plus"></i> Add Room</a>
+                  <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
                 </div>
+                  
               </header>
               <div id="roomPics">
                 <ol className="noPadding">
@@ -176,30 +119,121 @@ Property = React.createClass({
 
           </div>
 
-        {/* Add Room Modal */}
-
-          <div id="addRoom" className="container-fluid">
-            <a href="javascript:;" className="close"><i className="fa fa-close fa-lg"></i></a>
-            <h3>Add a room to 100 Freeman St.</h3>
-            <form role="addHome vertCenter" onSubmit={this.addRoom}>
-              <div className="form-group">
-                <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
-              </div>
-              <div className="form-group">
-                <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
-              </div>
-              <div className="form-group">
-                <label for="propPic">Room Picture:</label>
-                <input type="file" ref="propPicInput" placeholder></input>
-              </div>
-              <button type="submit" className="btn btn-default">Add Room</button>
-            </form>
-          </div>
+          {/* Add Room Modal */}
+          {this._renderAddRoom()}
 
         </div>
 
       </div>
 
+    );
+  },
+    
+  _togglePopup() {
+    this.setState({ isPopup: !this.state.isPopup });
+  },
+
+  _addNote(e) {
+    e.preventDefault();
+
+    // Find the text field via the React ref
+    var text = React.findDOMNode(this.refs.noteInput).value.trim();
+
+    Notes.insert({
+      text: text,
+      createdAt: new Date() // current time
+    });
+
+    // Clear form
+    React.findDOMNode(this.refs.noteInput).value = "";
+    
+  },
+    
+  _addRoom(e) {
+      e.preventDefault();
+
+      // Find the text field via the React ref
+      let name = React.findDOMNode(this.refs.nameInput).value.trim();
+      let desc = React.findDOMNode(this.refs.descInput).value.trim();
+
+      Rooms.insert({
+        name: name,
+        desc: desc,
+        createdAt: new Date() // current time
+      });
+
+      // Clear form
+      React.findDOMNode(this.refs.nameInput).value = "";
+      React.findDOMNode(this.refs.descInput).value = "";
+  },
+    
+  _renderAddRoom() {
+    
+    if(!this.state.isPopup) return null;
+    return (
+      <div id="addRoom" className="container-fluid">
+        <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
+        <h3>Add a room to 100 Freeman St.</h3>
+        <form role="addHome vertCenter" onSubmit={this._addRoom}>
+          <div className="form-group">
+            <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
+          </div>
+          <div className="form-group">
+            <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
+          </div>
+          <div className="form-group">
+            <label for="propPic">Room Picture:</label>
+            <input type="file" ref="propPicInput" placeholder></input>
+          </div>
+          <button type="submit" className="btn btn-default">Add Room</button>
+        </form>
+      </div>
+    );
+  },
+
+  _renderViewOptions() {
+    return (
+      <div id="viewOptions" className="20padding">
+        <ul className="list-inline nav-justified">
+          <li>
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span className="glyphicon glyphicon-comment"></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span className="glyphicon glyphicon-home"></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span className="glyphicon glyphicon-headphones"></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span className="glyphicon glyphicon-heart"></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span className="glyphicon glyphicon-map-marker"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    );
+  },
+
+  _renderPlacque() {
+    return (
+      <div id="placque" className="col-sm-4">
+        <div id="circ" className="center-block">
+          <h4 id="circTitle" contentEditable="true">Official Name of Place</h4>
+          <p>Est. 1894</p>
+          <a href="javascript:;"><i className="fa fa-pencil"></i></a>
+        </div>
+      </div>
     );
   }
 });

@@ -6,7 +6,7 @@ Map = React.createClass({
 
   mixins: [ReactMeteorData],
  
-  // Loads items from the Tasks collection and puts them on this.data.tasks
+  // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
     return {
       homes: Homes.find({}, {
@@ -18,7 +18,6 @@ Map = React.createClass({
   },
  
   renderHomes() {
-    // Get tasks from this.data.tasks
     return this.data.homes.map((home) => {
       return <Home key={home._id} home={home} />;
     });
