@@ -27,6 +27,9 @@ FlowRouter.route('/api/v1/coord/update', {
   action: function() {
     var coord = FlowRouter.getQueryParam("coord");
     Coords.update({_id:"headset"}, {$set: {coord: coord}});
+    ReactLayout.render(About, {
+      header: <Header />
+    });
   }
 });
 
