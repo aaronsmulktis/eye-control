@@ -97,7 +97,7 @@ Property = React.createClass({
           {this.props.header}
 
           <div id="viewVR">
-            <iframe src={this.props.sphere} frameborder="0" class="vr-iframe" height="100%" width="100%"></iframe>
+            <iframe src={this.props.sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
           </div>
 
           <div id="propDetails">

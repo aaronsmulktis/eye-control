@@ -23,6 +23,13 @@ FlowRouter.route('/about', {
   }
 });
 
+FlowRouter.route('/api/v1/coord/update', {
+  action: function() {
+    var coord = FlowRouter.getQueryParam("coord");
+    Coords.update({_id:"headset"}, {$set: {coord: coord}});
+  }
+});
+
 FlowRouter.route('/home1', {
   action: function() {
     ReactLayout.render(Property, {

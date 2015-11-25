@@ -137,6 +137,35 @@ jQuery(document).ready(function($) {
             }
         });
     }
+
+    var query = Coords.find();
+    var handle = query.observeChanges({
+        added: function (id, coord) {
+            if (id !== "headset") {
+                return;
+            }
+            var frame = $('.vr-iframe').first()[0];
+            var idx = frame.src.indexOf('#'), url = frame.src;
+            if ( idx > -1 ){
+                url = url.substr(0, idx);
+            }
+
+            frame.src = url + '#' + coord.coord;
+        },
+        changed: function (id, coord) {
+            if (id !== "headset") {
+                return;
+            }
+            var frame = $('.vr-iframe').first()[0];
+            var idx = frame.src.indexOf('#'), url = frame.src;
+            if ( idx > -1 ){
+                url = url.substr(0, idx);
+            }
+
+            frame.src = url + '#' + coord.coord;
+        }
+    });
+
 });
 
 // HTML5 Events
