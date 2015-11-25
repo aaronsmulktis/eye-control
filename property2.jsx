@@ -1,7 +1,7 @@
 // MapKey = AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs;
 
 // Property component
-Property = React.createClass({
+Property2 = React.createClass({
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
 
@@ -149,9 +149,8 @@ Property = React.createClass({
 
             <div id="placque" className="col-sm-4">
               <div id="circ" className="center-block">
-                <h4 id="circTitle" contentEditable="true">Official Name of Place</h4>
+                <h4 id="circTitle" contentEditable="true">100 Freeman St.</h4>
                 <p>Est. 1894</p>
-                <a href="javascript:;"><i className="fa fa-pencil"></i></a>
               </div>
             </div>
             <div id="room" className="col-sm-4 noPadding">

@@ -31,3 +31,12 @@ FlowRouter.route('/home1', {
     });
   }
 });
+
+FlowRouter.route('/home2', {
+  action: function() {
+    ReactLayout.render(Property2, {
+      header: <Header />,
+      sphere: 'http://vault.ruselaboratories.com/desktop?image_url=https://www.dropbox.com/s/tzvc9t2otjhd3qt/nctech-iris360-prototype-sample02.jpg?dl=0'
+    });
+  }
+});

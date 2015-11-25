@@ -16,7 +16,8 @@ RoomBox = React.createClass({
     const roomClassName = this.props.room.name;
 
     return (
-      <li draggable="true" className={roomClassName + ' noPadding roomBox container-fluid'}>
+      <li draggable="true" id="roomBox" className={roomClassName + ' noPadding roomBox container-fluid'}>
+        <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
         <div className="roomPic col-sm-4 noPadding" style={{backgroundImage: 'url(img/MasterBedroomSmall-xs.jpg)'}}>
         </div>

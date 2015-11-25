@@ -113,6 +113,7 @@ function processHomes(homes) {
     }
 }
 
+
 // function goSharp() {
 //   $('#viewVR').toggleClass('sharp');
 // }
