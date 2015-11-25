@@ -145,6 +145,9 @@ jQuery(document).ready(function($) {
                 return;
             }
             var frame = $('.vr-iframe').first()[0];
+            if (!frame) {
+                return;
+            }
             var idx = frame.src.indexOf('#'), url = frame.src;
             if ( idx > -1 ){
                 url = url.substr(0, idx);
@@ -157,6 +160,9 @@ jQuery(document).ready(function($) {
                 return;
             }
             var frame = $('.vr-iframe').first()[0];
+            if (!frame) {
+                return;
+            }
             var idx = frame.src.indexOf('#'), url = frame.src;
             if ( idx > -1 ){
                 url = url.substr(0, idx);
