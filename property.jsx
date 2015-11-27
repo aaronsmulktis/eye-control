@@ -49,12 +49,12 @@ Property = React.createClass({
 		);
 	},
 
-	renderRoomBoxes() {
-		// Get rooms from this.data.rooms
-		return this.data.rooms.map((room) => {
-			return <RoomBox key={room._id} room={room} />;
-		});
-	},
+	// renderRoomBoxes() {
+	// 	// Get rooms from this.data.rooms
+	// 	return this.data.rooms.map((room) => {
+	// 		return <RoomBox key={room._id} room={room} />;
+	// 	});
+	// },
 
 	render() {
 		//         $(document).on('click', '#addRoomBtn', function(e) {
@@ -115,7 +115,7 @@ Property = React.createClass({
 							<div id="roomPics">
 								<ol className="noPadding">
 			
-									{this.renderRoomBoxes()}
+									{{#sortable items=<rooms /> sortField="order"}}
 			
 								</ol>
 							</div>

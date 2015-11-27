@@ -15,6 +15,8 @@ if (Meteor.isServer) {
 	// This code is executed on the server only
 
 	Meteor.startup(function () {
-		
+		// Support draggable roomlist
+		// The actual name not the variable name
+		Sortable.collections = <rooms />;
 	});
 }
