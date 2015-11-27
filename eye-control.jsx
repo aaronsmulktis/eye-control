@@ -2,6 +2,9 @@ Notes = new Mongo.Collection("notes");
 Homes = new Mongo.Collection("homes");
 Rooms = new Mongo.Collection("rooms");
 
+// Support draggable roomlist
+Sortable.collections = <Rooms>;
+
 if (Meteor.isClient) {
   // This code is executed on the client only
  
