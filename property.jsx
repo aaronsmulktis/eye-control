@@ -1,4 +1,4 @@
-var sortable = Meteor.npmRequire('react-sortable-mixin')
+
 
 // Property component
 Property = React.createClass({
