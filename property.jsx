@@ -1,6 +1,6 @@
 Property = React.createClass({
 	
-	mixins: [ReactMeteorData, SortableMixin],
+	mixins: [ReactMeteorData],
 
 	getMeteorData() {
 		return {
@@ -20,12 +20,7 @@ Property = React.createClass({
 	getInitialState() {
 		return {
 			isPopup: false,
-			items: ['Mixin', 'Sortable']
 		}
-	},
-
-	handleSort(evt) {
-
 	},
 
 	renderNotes() {
@@ -51,22 +46,22 @@ Property = React.createClass({
 		);
 	},
 
-	renderRoomBoxes() {
+	// renderRoomBoxes() {
 
-		var listItems = this.state.items.map(function (text, i) {
-      		return <li ref={i}>{text}</li>
-	  	});
+	// 	var listItems = this.state.items.map(function (text, i) {
+ //      		return <li ref={i}>{text}</li>
+	//   	});
             
-      	console.log(SortableMixin, this);
-        return (
-        	<ul>{listItems}</ul> 
-  		);
+ //      	console.log(SortableMixin, this);
+ //        return (
+ //        	<ul>{listItems}</ul> 
+ //  		);
 
-		// Get rooms from this.data.rooms
-		// return this.data.rooms.map((room) => {
-		// 	return <RoomBox key={room._id} room={room} />;
-		// });
-	},
+	// 	// Get rooms from this.data.rooms
+	// 	// return this.data.rooms.map((room) => {
+	// 	// 	return <RoomBox key={room._id} room={room} />;
+	// 	// });
+	// },
 
 	render() {
 
@@ -92,28 +87,7 @@ Property = React.createClass({
 			
 						{this._renderPlacque()}
 			
-						<div id="room" className="col-sm-4 noPadding">
-							<h3>Rooms</h3>
-							<header id="roomHeader">
-								<form className="new-note">
-									<input
-									type="text"
-									ref="roomInput"
-									placeholder="Filter.." />
-								</form>
-								<div id="addRoomBtn" className="">
-									<a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
-								</div>
-								
-							</header>
-							<div id="roomPics">
-								<ol className="noPadding">
-			
-									{this.renderRoomBoxes()}
-			
-								</ol>
-							</div>
-						</div>
+						{this.props.sortableList}
 					</div>
 			
 					{/* Add Room Modal */}

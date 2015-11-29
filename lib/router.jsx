@@ -27,6 +27,7 @@ FlowRouter.route('/home1', {
   action: function() {
     ReactLayout.render(Property, {
       header: <Header />,
+      sortableList: <SortableList />,
       sphere: 'http://vault.ruselaboratories.com/vr?image_url=https://www.dropbox.com/s/tzvc9t2otjhd3qt/nctech-iris360-prototype-sample02.jpg?dl=0'
     });
   }
