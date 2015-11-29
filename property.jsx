@@ -1,9 +1,7 @@
-// Property component
 Property = React.createClass({
-	// This mixin makes the getMeteorData method work
-	mixins: [ReactMeteorData],
+	
+	mixins: [ReactMeteorData, SortableMixin],
 
-	// Loads items from the Homes collection and puts them on this.data.homes
 	getMeteorData() {
 		return {
 			notes: Notes.find({}, {
@@ -21,8 +19,13 @@ Property = React.createClass({
 
 	getInitialState() {
 		return {
-		  isPopup: false
+			isPopup: false,
+			items: ['Mixin', 'Sortable']
 		}
+	},
+
+	handleSort(evt) {
+
 	},
 
 	renderNotes() {
@@ -34,7 +37,6 @@ Property = React.createClass({
 		return (
 			<div id="viewNotes">
 				<header>
-					{/* This is a comment */}
 					<form className="new-note" onSubmit={this._addNote} >
 						<input
 						type="text"
@@ -50,32 +52,24 @@ Property = React.createClass({
 	},
 
 	renderRoomBoxes() {
+
+		var listItems = this.state.items.map(function (text, i) {
+      		return <li ref={i}>{text}</li>
+	  	});
+            
+      	console.log(SortableMixin, this);
+        return (
+        	<ul>{listItems}</ul> 
+  		);
+
 		// Get rooms from this.data.rooms
-		return this.data.rooms.map((room) => {
-			return <RoomBox key={room._id} room={room} />;
-		});
+		// return this.data.rooms.map((room) => {
+		// 	return <RoomBox key={room._id} room={room} />;
+		// });
 	},
 
 	render() {
-		//         $(document).on('click', '#addRoomBtn', function(e) {
-		//             e.preventDefault();
-		//             // $("#email-signup").fadeIn(fadeTime);
-		//             // $('#fieldName').focus();
-		//             $("#addRoom").fadeIn(fadeTime);
-		//         });
 
-		//         $(document).on('click', '#addRoom .close', function(e) {
-		//             e.preventDefault();
-		//             // $("#email-signup").fadeIn(fadeTime);
-		//             // $('#fieldName').focus();
-		//             $("#addRoom").fadeOut(fadeTime);
-		//         });
-
-		//         $(document).keyup(function(e) {
-		//             if (e.keyCode == 27) {
-		//                 $("#addRoom").fadeOut(fadeTime);
-		//             }
-		//         });
 		return (
 
 			<div id="contentContainer">
