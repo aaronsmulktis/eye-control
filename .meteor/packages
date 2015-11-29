@@ -25,6 +25,6 @@ kadira:flow-router
 kadira:react-layout
 fortawesome:fontawesome
 meteorhacks:picker
-meteorhacks:npm
 
 npm-container
+meteorhacks:npm
