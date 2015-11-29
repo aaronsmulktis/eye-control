@@ -1,12 +1,12 @@
 Item = React.createClass({
 	mixins: [sortable.ItemMixin],
-	
+
 	render() {
 		return <li>item: {this.props.item}</li>;
 	}
 });
 
-Rooms = React.createClass({
+List = React.createClass({
 	mixins: [sortable.ListMixin],
 	componentDidMount() {
 		this.setState({ items: this.props.items });

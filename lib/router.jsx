@@ -23,10 +23,10 @@ FlowRouter.route('/about', {
   }
 });
 
-FlowRouter.route('/rooms', {
+FlowRouter.route('/list', {
   action: function() {
-    ReactLayout.render(Rooms, {
-      items: [<Item key="1" index="1" item="cat" />]
+    ReactLayout.render(List, {
+      items: [1,2,3]
     });
   }
 });
