@@ -30,5 +30,7 @@ node_modules
 
 .DS_Store
 
-# ignore vanilla npm packages
-packages/
+# npm for meteor
+npm-container/*
+!npm-container/index.js
+!npm-container/package.js
