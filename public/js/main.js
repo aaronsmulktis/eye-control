@@ -36,8 +36,14 @@ var styles = [
   }
 ];
 
+function isDefined(variable_name) {
+    return typeof variable_here !== 'undefined';
+};
+
 function initialize() {
-    if (!google) {
+
+
+    if (!isDefined("google") || !google) {
         return;
     }
     mainMap = new google.maps.Map(document.getElementById('mainMap'), {
