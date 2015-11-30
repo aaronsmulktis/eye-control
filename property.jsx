@@ -1,7 +1,9 @@
+
+
 // Property component
 Property = React.createClass({
   // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData],
+  mixins: [ReactMeteorData, sortable.ListMixin],
 
   // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
@@ -24,7 +26,12 @@ Property = React.createClass({
       isPopup: false
     }
   },
-  
+
+  // SET STATE
+  componentDidMount() {
+	 this.setState({ items: this.data.rooms });
+  },
+
   renderNotes() {
     // Get notes from this.data.notes
     let notes = this.data.notes.map((note) => {
@@ -51,10 +58,28 @@ Property = React.createClass({
 
   renderRoomBoxes() {
     // Get rooms from this.data.rooms
-    return this.data.rooms.map((room) => {
-      return <RoomBox key={room._id} room={room} />;
-    });
+    // return this.state.rooms.map((room, i) => {
+    //   return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
+    // });
+
+    var rooms = this.state.items.map(function(room, i) {
+      // Required props in Item (key/index/movableProps)
+      return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
+    }, this);
+
+    return <ul>{rooms}</ul>;
   },
+
+
+
+  // renderSort() {
+		// var items = this.state.items.map(function(item, i) {
+		// 	// Required props in Item (key/index/movableProps)
+		// 	return <Item key={item} item={item} index={i} {...this.movableProps}/>;
+	 //    }, this);
+
+	 //    return <ul>{items}</ul>;
+  // },
 
   render() {
 //         $(document).on('click', '#addRoomBtn', function(e) {
@@ -108,12 +133,12 @@ Property = React.createClass({
                 <div id="addRoomBtn" className="">
                   <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
                 </div>
-                  
+
               </header>
               <div id="roomPics">
-                <ol className="noPadding">
+
                   {this.renderRoomBoxes()}
-                </ol>
+
               </div>
             </div>
 
@@ -128,7 +153,7 @@ Property = React.createClass({
 
     );
   },
-    
+
   _togglePopup() {
     this.setState({ isPopup: !this.state.isPopup });
   },
@@ -146,9 +171,9 @@ Property = React.createClass({
 
     // Clear form
     React.findDOMNode(this.refs.noteInput).value = "";
-    
+
   },
-    
+
   _addRoom(e) {
       e.preventDefault();
 
@@ -168,9 +193,9 @@ Property = React.createClass({
 
       this._togglePopup;
   },
-    
+
   _renderAddRoom() {
-    
+
     if(!this.state.isPopup) return null;
     return (
       <div id="addRoom" className="container-fluid">

@@ -29,3 +29,8 @@ node_modules
 .tern-port
 
 .DS_Store
+
+# npm for meteor
+npm-container/*
+!npm-container/index.js
+!npm-container/package.js
