@@ -44,8 +44,31 @@ FlowRouter.route('/list', {
 
 FlowRouter.route('/home1', {
   action: function() {
-    ReactLayout.render(Property, {
+    ReactLayout.render(Home, {
       header: <Header />
+    });
+  }
+});
+
+FlowRouter.route('/home/:_id', {
+  action: function(params) {
+    ReactLayout.render(Home, {
+      header: <Header />
+    });
+  }
+});
+
+FlowRouter.route('/home/:_id', {
+  name: 'home',
+  subscriptions: function(params) {
+    this.register('singlePost', Meteor.subscribe('singlePost', params._id));
+  },
+  action: function(params) {
+    ReactLayout.render(BlogLayout, {
+      content: <PostPage _id={params._id} />
+    });
+    ReactLayout.setRootProps({
+      className: "ui middle aligned center aligned grid"
     });
   }
 });
