@@ -32,7 +32,8 @@ RoomBox = React.createClass({
       <li id="roomBox" className={roomClassName + ' noPadding roomBox container-fluid'}>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
-        <div className="roomPic col-sm-4 noPadding" style={{backgroundImage: 'url(img/MasterBedroomSmall-xs.jpg)'}}>
+        <div className="roomPic col-sm-4 noPadding">
+          <img src={this.props.room.picUrl} />
         </div>
         <div className="propDetails col-sm-8">
           <h4 className="roomName">{this.props.room.name}</h4>
