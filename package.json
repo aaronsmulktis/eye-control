@@ -4,6 +4,7 @@
   "description": "",
   "main": "eye-control.html",
   "scripts": {
+    "deploy": "meteor deploy eye-control.ruselaboratories.com",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
