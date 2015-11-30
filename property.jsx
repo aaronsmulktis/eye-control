@@ -17,21 +17,19 @@ Property = React.createClass({
         sort: {
           createdAt: -1
         }
-      }).fetch(),
-      items: [1,2,3]
+      }).fetch()
     }
   },
 
   getInitialState() {
     return {
-      isPopup: false,
-      rooms: []
+      isPopup: false
     }
   },
 
   // SET STATE
   componentDidMount() {
-	 this.setState({ rooms: this.data.rooms });
+	 this.setState({ items: this.data.rooms });
   },
 
   renderNotes() {
@@ -64,7 +62,7 @@ Property = React.createClass({
     //   return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
     // });
 
-    var rooms = this.state.rooms.map(function(room, i) {
+    var rooms = this.state.items.map(function(room, i) {
       // Required props in Item (key/index/movableProps)
       return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
     }, this);
@@ -138,9 +136,9 @@ Property = React.createClass({
 
               </header>
               <div id="roomPics">
-                <ol className="noPadding">
+
                   {this.renderRoomBoxes()}
-                </ol>
+
               </div>
             </div>
 
