@@ -121,7 +121,7 @@ Property = React.createClass({
 
             {this._renderPlacque()}
 
-            <div id="room" className="col-sm-4 noPadding">
+            <div id="rooms" className="col-sm-4 noPadding">
               <h3>Rooms</h3>
               <header id="roomHeader">
                 <form className="new-note">
@@ -135,7 +135,7 @@ Property = React.createClass({
                 </div>
 
               </header>
-              <div id="roomPics">
+              <div id="roomPics" className="noPadding">
 
                   {this.renderRoomBoxes()}
 
