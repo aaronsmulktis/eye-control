@@ -17,13 +17,15 @@ Property = React.createClass({
         sort: {
           createdAt: -1
         }
-      }).fetch()
+      }).fetch(),
+      sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
     }
   },
 
   getInitialState() {
     return {
-      isPopup: false
+      isPopup: false,
+      sphere: false
     }
   },
 
@@ -53,6 +55,18 @@ Property = React.createClass({
           </ul>
         </header>
       </div>
+    );
+  },
+
+  renderSphere() {
+    // Get notes from this.data.notes
+    if (!this.data.sphere) {
+    return;
+    }
+    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + this.data.sphere.sphereUrl;
+
+    return (
+            <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
     );
   },
 
@@ -110,7 +124,7 @@ Property = React.createClass({
           {this.props.header}
 
           <div id="viewVR">
-            <iframe src={this.props.sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+             {this.renderSphere()}
           </div>
 
           <div id="propDetails">
