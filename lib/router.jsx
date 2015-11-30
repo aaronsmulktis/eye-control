@@ -25,8 +25,19 @@ FlowRouter.route('/about', {
 
 FlowRouter.route('/list', {
   action: function() {
+    // getMeteorData() {
+    //   return {
+    //     notes: Notes.find({}, {
+    //       sort: {
+    //         createdAt: -1
+    //       }
+    //     }).fetch()
+    //   }
+    // };
+
     ReactLayout.render(List, {
-      items: [1,2,3]
+      header: <Header />,
+      // items: this.data.notes
     });
   }
 });

@@ -1,5 +1,8 @@
 // Room Box component - represents a single todo item
 RoomBox = React.createClass({
+
+  mixins: [sortable.ItemMixin],
+  
   propTypes: {
     // This component gets the room to display through a React prop.
     // We can use propTypes to indicate it is required
@@ -26,7 +29,7 @@ RoomBox = React.createClass({
     const roomClassName = this.props.room.name;
 
     return (
-      <li draggable="true" id="roomBox" className={roomClassName + ' noPadding roomBox container-fluid'}>
+      <li id="roomBox" className={roomClassName + ' noPadding roomBox container-fluid'}>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
         <div className="roomPic col-sm-4 noPadding" style={{backgroundImage: 'url(img/MasterBedroomSmall-xs.jpg)'}}>
