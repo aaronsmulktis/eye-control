@@ -37,7 +37,7 @@ var styles = [
 ];
 
 function isDefined(variable_name) {
-    return typeof variable_here !== 'undefined';
+    return typeof variable_name !== 'undefined';
 };
 
 function initialize() {
