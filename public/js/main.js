@@ -1,12 +1,14 @@
 /*global google*/
 
-var homes = [
-  ['Elysten', 51.523325, -0.183299, '/home1'],
-  ['Gateways', 51.501483, -0.141948, '/home1'],
-  ['Ministry of Sound', 51.497740, -0.099440, '/home1'],
-  ['22 Hugon Road', 51.467892, -0.191422, '/home1'],
-  ['Radcliff House', 51.490478, -0.061075, '/home1']
-];
+// var homes = [
+//   ['Elysten', 51.523325, -0.183299, '/home1'],
+//   ['Gateways', 51.501483, -0.141948, '/home1'],
+//   ['Ministry of Sound', 51.497740, -0.099440, '/home1'],
+//   ['22 Hugon Road', 51.467892, -0.191422, '/home1'],
+//   ['Radcliff House', 51.490478, -0.061075, '/home1']
+// ];
+
+var homes = Homes.find().fetch();
 
 var fadeTime = 300;
 var mainMap;
@@ -41,7 +43,6 @@ function isDefined(variable_name) {
 };
 
 function initialize() {
-
 
     if (!isDefined("google") || !google) {
         return;
@@ -93,8 +94,8 @@ function createMarker(lat, lon, html, link) {
     });
 
     newMarker['infowindow'] = new google.maps.InfoWindow({
-            content: html
-        });
+        content: html
+    });
 
     google.maps.event.addListener(newMarker, 'click', function() {
         window.location = link;
@@ -112,10 +113,15 @@ function createMarker(lat, lon, html, link) {
     marker.push(newMarker);
 }
 
-function processHomes(homes) {
-    for (var i = 0; i < homes.length; i++) {
-        createMarker(homes[i][1], homes[i][2], homes[i][0], homes[i][3]);
+function processHomes(markers) {
+    for (var i = 0; i < markers.length; i++) {
+    	console.log(markers[i].latitude);
+        createMarker(markers[i].latitude, markers[i].longitude, markers[i].name, markers[i].slug);
     }
+ //    homes.forEach(function(home){
+	// 	console.log(home.latitude, home.longitude);
+	// 	createMarker(home.latitude, home.longitude, home.name, home.slug);
+	// });
 }
 
 jQuery(window).on('load', function($) {

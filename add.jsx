@@ -87,10 +87,10 @@ Add = React.createClass({
                   <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
                 </div>
                 <div className="form-group col-sm-6 noPadding">
-                  <input type="text" className="form-control" ref="longitudeInput" placeholder="Latitude"></input>
+                  <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
                 </div>
                 <div className="form-group col-sm-6 noPadRight">
-                  <input type="text" className="form-control" ref="latitudeInput" placeholder="Longitude"></input>
+                  <input type="text" className="form-control" ref="longitudeInput" placeholder="Longitude"></input>
                 </div>
                 <div className="form-group">
                   <label for="picUrl">Property Picture URL:</label>
