@@ -3,7 +3,7 @@
 // Property component
 Property = React.createClass({
   // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData],
+  mixins: [ReactMeteorData, sortable.ListMixin],
 
   // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
@@ -25,6 +25,11 @@ Property = React.createClass({
     return {
       isPopup: false
     }
+  },
+
+  // SET STATE
+  componentDidMount() {
+	 this.setState({ items: this.data.rooms });
   },
 
   renderNotes() {
@@ -53,10 +58,28 @@ Property = React.createClass({
 
   renderRoomBoxes() {
     // Get rooms from this.data.rooms
-    return this.data.rooms.map((room) => {
-      return <RoomBox key={room._id} room={room} />;
-    });
+    // return this.state.rooms.map((room, i) => {
+    //   return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
+    // });
+
+    var rooms = this.state.items.map(function(room, i) {
+      // Required props in Item (key/index/movableProps)
+      return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
+    }, this);
+
+    return <ul>{rooms}</ul>;
   },
+
+
+
+  // renderSort() {
+		// var items = this.state.items.map(function(item, i) {
+		// 	// Required props in Item (key/index/movableProps)
+		// 	return <Item key={item} item={item} index={i} {...this.movableProps}/>;
+	 //    }, this);
+
+	 //    return <ul>{items}</ul>;
+  // },
 
   render() {
 //         $(document).on('click', '#addRoomBtn', function(e) {
@@ -113,9 +136,9 @@ Property = React.createClass({
 
               </header>
               <div id="roomPics">
-                <ol className="noPadding">
+
                   {this.renderRoomBoxes()}
-                </ol>
+
               </div>
             </div>
 
