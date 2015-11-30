@@ -1,10 +1,8 @@
-// MapKey = AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs;
-
-// App component - represents the whole app
+// Map component - entry component setup in router
 Map = React.createClass({
   // This mixin makes the getMeteorData method work
 
-  mixins: [ReactMeteorData],
+  mixins: [ReactMeteorData, sortable.ListMixin],
  
   // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
@@ -16,11 +14,19 @@ Map = React.createClass({
       }).fetch()
     }
   },
+
+  componentDidMount() {
+   this.setState({ items: this.data.homes });
+  },
  
-  renderHomes() {
-    return this.data.homes.map((home) => {
-      return <Home key={home._id} home={home} />;
-    });
+  renderHomeBoxes() {
+
+    var homes = this.state.items.map(function(home, i) {
+      // Required props in Item (key/index/movableProps)
+      return <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={i} {...this.movableProps}/>;
+    }, this);
+
+    return <ul>{homes}</ul>;
   },
 
   render() {
@@ -37,9 +43,7 @@ Map = React.createClass({
           <div id="mainMap" className="row-fluid"></div>
 
           <div className="propList row-fluid">
-            <ul>
-              {this.renderHomes()}
-            </ul>
+              {this.renderHomeBoxes()}
           </div>
         
         </div>

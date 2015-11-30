@@ -58,14 +58,14 @@ FlowRouter.route('/home/:_id', {
   }
 });
 
-FlowRouter.route('/home/:_id', {
+FlowRouter.route('/homes/:_id', {
   name: 'home',
   subscriptions: function(params) {
     this.register('singlePost', Meteor.subscribe('singlePost', params._id));
   },
   action: function(params) {
-    ReactLayout.render(BlogLayout, {
-      content: <PostPage _id={params._id} />
+    ReactLayout.render(Home, {
+      content: <Home _id={params._id} />
     });
     ReactLayout.setRootProps({
       className: "ui middle aligned center aligned grid"

@@ -11,13 +11,13 @@ Home = React.createClass({
 
     return {
 
-      home: Homes.find({_id: "uef7sePWvzKk3TEys"}).fetch()[0],
+      home: Homes.find({_id: thisHome._id}).fetch()[0],
       notes: Notes.find({}, {
         sort: {
           createdAt: -1
         }
       }).fetch(),
-      rooms: Rooms.find({homeId: "uef7sePWvzKk3TEys"}, {
+      rooms: Rooms.find({homeId: thisHome._id}, {
         sort: {
           createdAt: -1
         }
