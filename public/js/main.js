@@ -114,7 +114,6 @@ function createMarker(lat, lon, html, link) {
 
 function processHomes(homes) {
     for (var i = 0; i < homes.length; i++) {
-        console.log(homes[i][3]);
         createMarker(homes[i][1], homes[i][2], homes[i][0], homes[i][3]);
     }
 }
