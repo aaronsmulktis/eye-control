@@ -142,7 +142,6 @@ jQuery(window).on('load', function($) {
 });
 
 jQuery(document).ready(function($) {
-    initialize();
     var deleteLinks = document.querySelectorAll('.delete');
 
     for (var i = 0; i < deleteLinks.length; i++) {
