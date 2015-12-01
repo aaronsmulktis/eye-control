@@ -20,5 +20,5 @@ if (Coords.find().count() === 0) {
         coord: "0,0,1"
     }
 
-    Coords.insert(testSphere);
+    Coords.insert(testCoord);
 }

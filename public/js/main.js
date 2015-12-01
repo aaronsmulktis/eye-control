@@ -9,7 +9,7 @@
 // ];
 
 var handle = Meteor.subscribe("homes");
-var handle_coords = Meteor.subscribe("coords");
+window.handle_coords = Meteor.subscribe("coords");
 var homes;
 if (!handle.ready()) {
     function loadHomes() {
@@ -150,14 +150,14 @@ jQuery(document).ready(function($) {
         });
     }
 
-    if (!handle_coords.ready()) {
+    if (!window.handle_coords.ready()) {
         function loadCoords() {
-            if (!handle_coords.ready()) {
+            if (!window.handle_coords.ready()) {
                 setTimeout(loadCoords, 100);
                 return;
             }
             var query = Coords.find();
-            var handle_coords = query.observeChanges({
+            window.handle_coords = query.observeChanges({
                 added: function (id, coord) {
                     if (id !== "headset") {
                         return;
