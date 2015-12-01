@@ -3,25 +3,29 @@ Map = React.createClass({
   // This mixin makes the getMeteorData method work
 
   mixins: [ReactMeteorData, sortable.ListMixin],
- 
+
   // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
-    return {
-      homes: Homes.find({}, {
-        sort: {
-          createdAt: -1
-        }
-      }).fetch()
-    }
+      var data = {};
+      var handle = Meteor.subscribe("homes");
+
+      if (handle.ready()) {
+          data = {homes: Homes.find({}, {
+              sort: {
+                  createdAt: -1
+              }
+          }).fetch()
+                 }
+      }
+    return data;
   },
 
-  componentDidMount() {
-   this.setState({ items: this.data.homes });
-  },
- 
   renderHomeBoxes() {
 
-    var homes = this.state.items.map(function(home, i) {
+      if (!this.data.homes) {
+      return;
+      }
+    var homes = this.data.homes.map(function(home, i) {
       // Required props in Item (key/index/movableProps)
       return <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={i} {...this.movableProps}/>;
     }, this);
@@ -30,6 +34,12 @@ Map = React.createClass({
   },
 
   render() {
+  if (!this.data.homes) {
+    return (
+
+        <div>Loading...</div>
+   );
+  }
     return (
 
       <div id="contentContainer" className="container-fluid noPadding">
@@ -41,7 +51,7 @@ Map = React.createClass({
           </header>
 
           <div className="container-fluid noPadding">
-            
+
             <div className="propList col-xs-6">
                 <h4 className="text-right">Property List</h4>
                 {this.renderHomeBoxes()}
@@ -51,11 +61,11 @@ Map = React.createClass({
             </div>
 
           </div>
-        
+
         </div>
 
       </div>
- 
+
     );
   }
 });

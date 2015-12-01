@@ -8,7 +8,19 @@
 //   ['Radcliff House', 51.490478, -0.061075, '/home1']
 // ];
 
-var homes = Homes.find().fetch();
+var handle = Meteor.subscribe("homes");
+var handle_coords = Meteor.subscribe("coords");
+var homes;
+if (!handle.ready()) {
+    function loadHomes() {
+        if (!handle.ready()) {
+            setTimeout(loadHomes, 100);
+            return;
+        }
+        homes = Homes.find().fetch();
+    }
+    setTimeout(loadHomes, 100);
+}
 
 var fadeTime = 300;
 var mainMap;
@@ -38,13 +50,9 @@ var styles = [
   }
 ];
 
-function isDefined(variable_name) {
-    return typeof variable_name !== 'undefined';
-};
-
 function initialize() {
 
-    if (!isDefined("google") || !google) {
+    if (!window.google) {
         return;
     }
     mainMap = new google.maps.Map(document.getElementById('mainMap'), {
@@ -115,7 +123,6 @@ function createMarker(lat, lon, html, link) {
 
 function processHomes(markers) {
     for (var i = 0; i < markers.length; i++) {
-    	console.log(markers[i].latitude);
         createMarker(markers[i].latitude, markers[i].longitude, markers[i].name, 'home/' + markers[i]._id);
     }
  //    homes.forEach(function(home){
@@ -143,39 +150,48 @@ jQuery(document).ready(function($) {
         });
     }
 
-    var query = Coords.find();
-    var handle = query.observeChanges({
-        added: function (id, coord) {
-            if (id !== "headset") {
+    if (!handle_coords.ready()) {
+        function loadCoords() {
+            if (!handle_coords.ready()) {
+                setTimeout(loadCoords, 100);
                 return;
             }
-            var frame = $('.vr-iframe').first()[0];
-            if (!frame) {
-                return;
-            }
-            var idx = frame.src.indexOf('#'), url = frame.src;
-            if ( idx > -1 ){
-                url = url.substr(0, idx);
-            }
+            var query = Coords.find();
+            var handle_coords = query.observeChanges({
+                added: function (id, coord) {
+                    if (id !== "headset") {
+                        return;
+                    }
+                    var frame = $('.vr-iframe').first()[0];
+                    if (!frame) {
+                        return;
+                    }
+                    var idx = frame.src.indexOf('#'), url = frame.src;
+                    if ( idx > -1 ){
+                        url = url.substr(0, idx);
+                    }
 
-            frame.src = url + '#' + coord.coord;
-        },
-        changed: function (id, coord) {
-            if (id !== "headset") {
-                return;
-            }
-            var frame = $('.vr-iframe').first()[0];
-            if (!frame) {
-                return;
-            }
-            var idx = frame.src.indexOf('#'), url = frame.src;
-            if ( idx > -1 ){
-                url = url.substr(0, idx);
-            }
+                    frame.src = url + '#' + coord.coord;
+                },
+                changed: function (id, coord) {
+                    if (id !== "headset") {
+                        return;
+                    }
+                    var frame = $('.vr-iframe').first()[0];
+                    if (!frame) {
+                        return;
+                    }
+                    var idx = frame.src.indexOf('#'), url = frame.src;
+                    if ( idx > -1 ){
+                        url = url.substr(0, idx);
+                    }
 
-            frame.src = url + '#' + coord.coord;
+                    frame.src = url + '#' + coord.coord;
+                }
+            });
         }
-    });
+        setTimeout(loadCoords, 100);
+    }
 
 });
 

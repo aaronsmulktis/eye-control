@@ -2,7 +2,7 @@
 HomeBox = React.createClass({
 
   mixins: [sortable.ItemMixin],
-  
+
   propTypes: {
     // This component gets the home to display through a React prop.
     // We can use propTypes to indicate it is required
@@ -10,7 +10,7 @@ HomeBox = React.createClass({
   },
 
   deleteThisHome() {
-    Homes.remove(this.props.home._id);
+    Homes.remove({"_id": this.props.home._id});
   },
 
   getInitialState() {
@@ -28,13 +28,14 @@ HomeBox = React.createClass({
     // so that we can style them nicely in CSS
     const homeClassName = this.props.home.name;
     const homeLink = 'home/' + this.props.home._id;
+    var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';
 
     return (
       <li id="homeBox" className={homeClassName + ' noPadding homeBox container-fluid'}>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
         <div className="homePic col-sm-4 noPadding">
-          <a href={homeLink}><img src={this.props.home.propPic} /></a>
+          <a href={homeLink}><img src={vaultUrl} /></a>
         </div>
         <div className="propDetails col-sm-8">
           <h4 className="homeName"><a href={homeLink}>{this.props.home.name}</a></h4>

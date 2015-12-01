@@ -5,10 +5,29 @@ Home = React.createClass({
   // This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData, sortable.ListMixin],
 
-  // Loads items from the Homes collection and puts them on this.data.homes
-  getMeteorData() {
-    var thisHome = Homes.find({_id: this.props.id}).fetch()[0];
-    debugger;
+    // Loads items from the Homes collection and puts them on this.data.homes
+    getMeteorData() {
+        var data = {}
+        var handles = [Meteor.subscribe("home", this.props.id),
+                       Meteor.subscribe("rooms"),
+                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9"),
+                       Meteor.subscribe("notes")];
+
+        function isReady(handle) {
+            return handle.ready();
+        }
+        if (!handles.every(isReady)) {
+            data.loading = true;
+            return data;
+        }
+        var homes = Homes.find({_id: this.props.id}).fetch(),
+            thisHome = homes[0];
+
+        var rooms = Rooms.find({homeId: thisHome._id}, {
+            sort: {
+                createdAt: -1
+            }
+        }).fetch()
 
     return {
 
@@ -18,25 +37,15 @@ Home = React.createClass({
           createdAt: -1
         }
       }).fetch(),
-      rooms: Rooms.find({homeId: thisHome._id}, {
-        sort: {
-          createdAt: -1
-        }
-      }).fetch(),
+      rooms: rooms,
       sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
     }
   },
 
   getInitialState() {
     return {
-      isPopup: false,
-      sphere: false
+      isPopup: false
     }
-  },
-
-  // SET STATE
-  componentDidMount() {
-	 this.setState({ items: this.data.rooms });
   },
 
   renderNotes() {
@@ -68,7 +77,7 @@ Home = React.createClass({
     if (!this.data.sphere) {
     return;
     }
-    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + this.data.sphere.sphereUrl;
+    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=1200";
 
     return (
             <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
@@ -76,12 +85,8 @@ Home = React.createClass({
   },
 
   renderRoomBoxes() {
-    // Get rooms from this.data.rooms
-    // return this.state.rooms.map((room, i) => {
-    //   return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
-    // });
-
-    var rooms = this.state.items.map(function(room, i) {
+      var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
+    var rooms = rooms.map(function(room, i) {
       // Required props in Item (key/index/movableProps)
       return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
     }, this);
@@ -89,18 +94,12 @@ Home = React.createClass({
     return <ul>{rooms}</ul>;
   },
 
-
-
-  // renderSort() {
-		// var items = this.state.items.map(function(item, i) {
-		// 	// Required props in Item (key/index/movableProps)
-		// 	return <Item key={item} item={item} index={i} {...this.movableProps}/>;
-	 //    }, this);
-
-	 //    return <ul>{items}</ul>;
-  // },
-
   render() {
+  if (this.data.loading) {
+   return (
+   <div>Loading...</div>
+   )
+  }
 //         $(document).on('click', '#addRoomBtn', function(e) {
 //             e.preventDefault();
 //             // $("#email-signup").fadeIn(fadeTime);
@@ -120,6 +119,7 @@ Home = React.createClass({
 //                 $("#addRoom").fadeOut(fadeTime);
 //             }
 //         });
+
     return (
 
       <div id="contentContainer">
@@ -220,7 +220,9 @@ Home = React.createClass({
 
   _renderAddRoom() {
 
-    if(!this.state.isPopup) return null;
+    if(!this.state.isPopup) {
+    return null;
+    }
     return (
       <div id="addRoom" className="container-fluid">
         <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
