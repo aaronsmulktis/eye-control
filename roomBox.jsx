@@ -24,6 +24,9 @@ RoomBox = React.createClass({
   },
 
   selectSphere(evt) {
+  if (window.moving) {
+  //  return false;
+}
     evt.preventDefault();
     // Set the checked property to the opposite of its current value
     Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
