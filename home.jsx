@@ -7,11 +7,12 @@ Home = React.createClass({
 
   // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
-    var thisHome = Homes.find({_id: "uef7sePWvzKk3TEys"}).fetch()[0];
+    var thisHome = Homes.find({_id: this.props.id}).fetch()[0];
+    debugger;
 
     return {
 
-      home: Homes.find({_id: thisHome._id}).fetch()[0],
+      home: thisHome,
       notes: Notes.find({}, {
         sort: {
           createdAt: -1
@@ -162,7 +163,6 @@ Home = React.createClass({
 
           </div>
 
-          {/* Add Room Modal */}
           {this._renderAddRoom()}
 
         </div>

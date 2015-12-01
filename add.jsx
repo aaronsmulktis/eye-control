@@ -1,33 +1,6 @@
 // Property component
 Add = React.createClass({
 
-  mixins: [ReactMeteorData, sortable.ListMixin],
- 
-  // Loads items from the Notes collection and puts them on this.data.notes
-  getMeteorData() {
-    return {
-      homes: Homes.find({}, {
-        sort: {
-          createdAt: -1
-        }
-      }).fetch()
-    }
-  },
-
-  componentDidMount() {
-   this.setState({ items: this.data.homes });
-  },
- 
-  renderHomeBoxes() {
-
-    var homes = this.state.items.map(function(home, i) {
-      // Required props in Item (key/index/movableProps)
-      return <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={i} {...this.movableProps}/>;
-    }, this);
-
-    return <ul>{homes}</ul>;
-  },
-
   addHome(event) {
     event.preventDefault();
  
@@ -112,10 +85,6 @@ Add = React.createClass({
           <h3 className="text-center">All Properties</h3>
 
           <hr className="noMarBottom"></hr>
-
-          <div className="propList row-fluid">
-              {this.renderHomeBoxes()}
-          </div>
         
         </div>
 

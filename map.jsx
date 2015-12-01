@@ -40,10 +40,16 @@ Map = React.createClass({
             {this.props.header}
           </header>
 
-          <div id="mainMap" className="row-fluid"></div>
+          <div className="container-fluid noPadding">
+            
+            <div className="propList col-xs-6">
+                <h4 className="text-right">Property List</h4>
+                {this.renderHomeBoxes()}
+            </div>
 
-          <div className="propList row-fluid">
-              {this.renderHomeBoxes()}
+            <div id="mainMap" className="col-xs-6 noPadding">
+            </div>
+
           </div>
         
         </div>

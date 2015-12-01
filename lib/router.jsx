@@ -50,25 +50,26 @@ FlowRouter.route('/home1', {
   }
 });
 
-FlowRouter.route('/home/:_id', {
-  action: function(params) {
-    ReactLayout.render(Home, {
-      header: <Header />
-    });
-  }
-});
+// FlowRouter.route('/home/:_id', {
+//   action: function(params) {
+//     ReactLayout.render(Home, {
+//       header: <Header />
+//     });
+//   }
+// });
 
-FlowRouter.route('/homes/:_id', {
+FlowRouter.route('/home/:id', {
   name: 'home',
-  subscriptions: function(params) {
-    this.register('singlePost', Meteor.subscribe('singlePost', params._id));
-  },
+  // subscriptions: function(params) {
+  //   this.register('singlePost', Meteor.subscribe('singlePost', params.id));
+  // },
   action: function(params) {
     ReactLayout.render(Home, {
-      content: <Home _id={params._id} />
+      header: <Header />,
+      id: params.id
     });
-    ReactLayout.setRootProps({
-      className: "ui middle aligned center aligned grid"
-    });
+    // ReactLayout.setRootProps({
+    //   className: "ui middle aligned center aligned grid"
+    // });
   }
 });
