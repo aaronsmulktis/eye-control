@@ -77,7 +77,7 @@ Home = React.createClass({
     if (!this.data.sphere) {
     return;
     }
-    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=1200";
+    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
 
     return (
             <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
@@ -119,6 +119,15 @@ Home = React.createClass({
 //                 $("#addRoom").fadeOut(fadeTime);
 //             }
 //         });
+      $(document).on('click', 'li.roomBox', function(evt) {
+          if (window.moving) {
+          return false;
+          }
+          evt.preventDefault();
+          // Set the checked property to the opposite of its current value
+          Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
+          return false;
+      })
 
     return (
 

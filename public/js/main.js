@@ -23,7 +23,7 @@ if (!handle.ready()) {
 }
 
 var fadeTime = 300;
-var mainMap;
+var mainMap = false;
 
 var infowindow = [];
 var marker = [];
@@ -52,7 +52,13 @@ var styles = [
 
 function initialize() {
 
+    if (!document.getElementById('mainMap')) {
+        setTimeout(initialize, 300);
+    }
     if (!window.google) {
+        return;
+    }
+    if (mainMap) {
         return;
     }
     mainMap = new google.maps.Map(document.getElementById('mainMap'), {
@@ -136,6 +142,7 @@ jQuery(window).on('load', function($) {
 });
 
 jQuery(document).ready(function($) {
+    initialize();
     var deleteLinks = document.querySelectorAll('.delete');
 
     for (var i = 0; i < deleteLinks.length; i++) {
