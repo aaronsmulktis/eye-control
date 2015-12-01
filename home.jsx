@@ -62,7 +62,7 @@ Home = React.createClass({
             <input
               type="text"
               ref="noteInput"
-              placeholder="Add a note..." />
+              placeholder="Add a note about this property..." />
           </form>
           <ul>
             {notes}
