@@ -116,7 +116,7 @@ function createMarker(lat, lon, html, link) {
 function processHomes(markers) {
     for (var i = 0; i < markers.length; i++) {
     	console.log(markers[i].latitude);
-        createMarker(markers[i].latitude, markers[i].longitude, markers[i].name, markers[i].slug);
+        createMarker(markers[i].latitude, markers[i].longitude, markers[i].name, 'home/' + markers[i]._id);
     }
  //    homes.forEach(function(home){
 	// 	console.log(home.latitude, home.longitude);

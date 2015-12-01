@@ -66,7 +66,8 @@ FlowRouter.route('/home/:id', {
   action: function(params) {
     ReactLayout.render(Home, {
       header: <Header />,
-      id: params.id
+      id: params.id,
+      slug: params.slug
     });
     // ReactLayout.setRootProps({
     //   className: "ui middle aligned center aligned grid"
