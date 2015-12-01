@@ -1,29 +1,7 @@
-// MapKey = AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs;
-
 // Property component
 Add = React.createClass({
 
-  mixins: [ReactMeteorData],
- 
-  // Loads items from the Notes collection and puts them on this.data.notes
-  getMeteorData() {
-    return {
-      homes: Homes.find({}, {
-        sort: {
-          createdAt: -1
-        }
-      }).fetch()
-    }
-  },
- 
-  renderHomes() {
-    // Get homes from this.data.homes
-    return this.data.homes.map((home) => {
-      return <Home key={home.name} home={home} />;
-    });
-  },
-
-  addProperty(event) {
+  addHome(event) {
     event.preventDefault();
  
     // Find the text field via the React ref
@@ -31,7 +9,8 @@ Add = React.createClass({
     var address = React.findDOMNode(this.refs.addressInput).value.trim();
     var latitude = React.findDOMNode(this.refs.latitudeInput).value.trim();
     var longitude = React.findDOMNode(this.refs.longitudeInput).value.trim();
-    var proPic = React.findDOMNode(this.refs.propPicInput).value.trim();
+    var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
+    var slug = React.findDOMNode(this.refs.slugInput).value.trim();
     var notes = React.findDOMNode(this.refs.notesInput).value.trim();
 
  
@@ -40,7 +19,8 @@ Add = React.createClass({
       address: address,
       latitude: latitude,
       longitude: longitude,
-      proPic: proPic,
+      propPic: propPic,
+      slug: slug,
       notes: notes,
 
       createdAt: new Date() // current time
@@ -51,6 +31,8 @@ Add = React.createClass({
     React.findDOMNode(this.refs.addressInput).value = "";
     React.findDOMNode(this.refs.latitudeInput).value = "";
     React.findDOMNode(this.refs.longitudeInput).value = "";
+    React.findDOMNode(this.refs.propPicInput).value = "";
+    React.findDOMNode(this.refs.slugInput).value = "";
     React.findDOMNode(this.refs.notesInput).value = "";
   },
 
@@ -70,7 +52,7 @@ Add = React.createClass({
 
               <hr></hr>
 
-              <form role="addHome vertCenter" onSubmit={this.addProperty}>
+              <form role="addHome vertCenter" onSubmit={this.addHome}>
                 <div className="form-group">
                   <input type="text" className="form-control" ref="nameInput" placeholder="Name"></input>
                 </div>
@@ -78,23 +60,21 @@ Add = React.createClass({
                   <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
                 </div>
                 <div className="form-group col-sm-6 noPadding">
-                  <input type="text" className="form-control" ref="longitudeInput" placeholder="Latitude"></input>
+                  <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
                 </div>
                 <div className="form-group col-sm-6 noPadRight">
-                  <input type="text" className="form-control" ref="latitudeInput" placeholder="Longitude"></input>
+                  <input type="text" className="form-control" ref="longitudeInput" placeholder="Longitude"></input>
                 </div>
                 <div className="form-group">
-                  <label for="propPic">Property Picture:</label>
-                  <input type="file" ref="propPicInput" placeholder></input>
-                  <p className="picDescription">This will be visible when browsing properties.</p>
+                  <label for="picUrl">Property Picture URL:</label>
+                  <input type="text" className="form-control" ref="propPicInput" placeholder="Dropbox much?"></input>
                 </div>
                 <div className="form-group">
-                  <input type="text" className="form-control" ref="notesInput" placeholder="Notes"></input>
+                  <label for="slug">Home URL or slug:</label>
+                  <input type="text" className="form-control" ref="slugInput" placeholder="/home-1"></input>
                 </div>
-                <div className="checkbox">
-                  <label>
-                    <input type="checkbox" ref="saleInput"> Is this property for sale? </input>
-                  </label>
+                <div className="form-group">
+                  <textarea type="text" className="form-control" ref="notesInput" placeholder="Notes"></textarea>
                 </div>
                 <button type="submit" className="btn btn-default">Add</button>
               </form>
@@ -105,12 +85,6 @@ Add = React.createClass({
           <h3 className="text-center">All Properties</h3>
 
           <hr className="noMarBottom"></hr>
-
-          <div className="propList row-fluid">
-            <ul>
-              {this.renderHomes()}
-            </ul>
-          </div>
         
         </div>
 

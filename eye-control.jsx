@@ -1,7 +1,3 @@
-Notes = new Mongo.Collection("notes");
-Homes = new Mongo.Collection("homes");
-Rooms = new Mongo.Collection("rooms");
-
 if (Meteor.isClient) {
 // This code is executed on the client only
 
