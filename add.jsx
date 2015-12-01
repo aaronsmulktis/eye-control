@@ -82,8 +82,6 @@ Add = React.createClass({
             </div>
           </div>
 
-          <h3 className="text-center">All Properties</h3>
-
           <hr className="noMarBottom"></hr>
         
         </div>
