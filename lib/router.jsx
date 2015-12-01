@@ -25,16 +25,6 @@ FlowRouter.route('/about', {
 
 FlowRouter.route('/list', {
   action: function() {
-    // getMeteorData() {
-    //   return {
-    //     notes: Notes.find({}, {
-    //       sort: {
-    //         createdAt: -1
-    //       }
-    //     }).fetch()
-    //   }
-    // };
-
     ReactLayout.render(List, {
       header: <Header />,
       // items: this.data.notes
@@ -42,10 +32,13 @@ FlowRouter.route('/list', {
   }
 });
 
-FlowRouter.route('/home1', {
-  action: function() {
-    ReactLayout.render(Property, {
-      header: <Header />
+FlowRouter.route('/home/:id', {
+  name: 'home',
+  action: function(params) {
+    ReactLayout.render(Home, {
+      header: <Header />,
+      id: params.id,
+      slug: params.slug
     });
   }
 });

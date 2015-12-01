@@ -1,29 +1,45 @@
-// MapKey = AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs;
-
-// App component - represents the whole app
+// Map component - entry component setup in router
 Map = React.createClass({
   // This mixin makes the getMeteorData method work
 
-  mixins: [ReactMeteorData],
- 
+  mixins: [ReactMeteorData, sortable.ListMixin],
+
   // Loads items from the Homes collection and puts them on this.data.homes
   getMeteorData() {
-    return {
-      homes: Homes.find({}, {
-        sort: {
-          createdAt: -1
-        }
-      }).fetch()
-    }
+      var data = {};
+      var handle = Meteor.subscribe("homes");
+
+      if (handle.ready()) {
+          data = {homes: Homes.find({}, {
+              sort: {
+                  createdAt: -1
+              }
+          }).fetch()
+                 }
+      }
+    return data;
   },
- 
-  renderHomes() {
-    return this.data.homes.map((home) => {
-      return <Home key={home._id} home={home} />;
-    });
+
+  renderHomeBoxes() {
+
+      if (!this.data.homes) {
+      return;
+      }
+    var homes = this.data.homes.map(function(home, i) {
+      // Required props in Item (key/index/movableProps)
+      return <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={i} {...this.movableProps}/>;
+    }, this);
+
+    return <ul>{homes}</ul>;
   },
 
   render() {
+  if (!this.data.homes) {
+    return (
+
+        <div>Loading...</div>
+   );
+  }
     return (
 
       <div id="contentContainer" className="container-fluid noPadding">
@@ -34,18 +50,22 @@ Map = React.createClass({
             {this.props.header}
           </header>
 
-          <div id="mainMap" className="row-fluid"></div>
+          <div className="container-fluid noPadding">
 
-          <div className="propList row-fluid">
-            <ul>
-              {this.renderHomes()}
-            </ul>
+            <div className="propList col-xs-6">
+                <h4 className="text-right">Property List</h4>
+                {this.renderHomeBoxes()}
+            </div>
+
+            <div id="mainMap" className="col-xs-6 noPadding">
+            </div>
+
           </div>
-        
+
         </div>
 
       </div>
- 
+
     );
   }
 });

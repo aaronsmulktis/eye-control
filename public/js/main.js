@@ -1,12 +1,26 @@
 /*global google*/
 
-var homes = [
-  ['Elysten', 51.523325, -0.183299, '/home1'],
-  ['Gateways', 51.501483, -0.141948, '/home1'],
-  ['Ministry of Sound', 51.497740, -0.099440, '/home1'],
-  ['22 Hugon Road', 51.467892, -0.191422, '/home1'],
-  ['Radcliff House', 51.490478, -0.061075, '/home1']
-];
+// var homes = [
+//   ['Elysten', 51.523325, -0.183299, '/home1'],
+//   ['Gateways', 51.501483, -0.141948, '/home1'],
+//   ['Ministry of Sound', 51.497740, -0.099440, '/home1'],
+//   ['22 Hugon Road', 51.467892, -0.191422, '/home1'],
+//   ['Radcliff House', 51.490478, -0.061075, '/home1']
+// ];
+
+var handle = Meteor.subscribe("homes");
+var handle_coords = Meteor.subscribe("coords");
+var homes;
+if (!handle.ready()) {
+    function loadHomes() {
+        if (!handle.ready()) {
+            setTimeout(loadHomes, 100);
+            return;
+        }
+        homes = Homes.find().fetch();
+    }
+    setTimeout(loadHomes, 100);
+}
 
 var fadeTime = 300;
 var mainMap;
@@ -36,14 +50,9 @@ var styles = [
   }
 ];
 
-function isDefined(variable_name) {
-    return typeof variable_name !== 'undefined';
-};
-
 function initialize() {
 
-
-    if (!isDefined("google") || !google) {
+    if (!window.google) {
         return;
     }
     mainMap = new google.maps.Map(document.getElementById('mainMap'), {
@@ -93,8 +102,8 @@ function createMarker(lat, lon, html, link) {
     });
 
     newMarker['infowindow'] = new google.maps.InfoWindow({
-            content: html
-        });
+        content: html
+    });
 
     google.maps.event.addListener(newMarker, 'click', function() {
         window.location = link;
@@ -112,10 +121,14 @@ function createMarker(lat, lon, html, link) {
     marker.push(newMarker);
 }
 
-function processHomes(homes) {
-    for (var i = 0; i < homes.length; i++) {
-        createMarker(homes[i][1], homes[i][2], homes[i][0], homes[i][3]);
+function processHomes(markers) {
+    for (var i = 0; i < markers.length; i++) {
+        createMarker(markers[i].latitude, markers[i].longitude, markers[i].name, 'home/' + markers[i]._id);
     }
+ //    homes.forEach(function(home){
+	// 	console.log(home.latitude, home.longitude);
+	// 	createMarker(home.latitude, home.longitude, home.name, home.slug);
+	// });
 }
 
 jQuery(window).on('load', function($) {
@@ -137,39 +150,48 @@ jQuery(document).ready(function($) {
         });
     }
 
-    var query = Coords.find();
-    var handle = query.observeChanges({
-        added: function (id, coord) {
-            if (id !== "headset") {
+    if (!handle_coords.ready()) {
+        function loadCoords() {
+            if (!handle_coords.ready()) {
+                setTimeout(loadCoords, 100);
                 return;
             }
-            var frame = $('.vr-iframe').first()[0];
-            if (!frame) {
-                return;
-            }
-            var idx = frame.src.indexOf('#'), url = frame.src;
-            if ( idx > -1 ){
-                url = url.substr(0, idx);
-            }
+            var query = Coords.find();
+            var handle_coords = query.observeChanges({
+                added: function (id, coord) {
+                    if (id !== "headset") {
+                        return;
+                    }
+                    var frame = $('.vr-iframe').first()[0];
+                    if (!frame) {
+                        return;
+                    }
+                    var idx = frame.src.indexOf('#'), url = frame.src;
+                    if ( idx > -1 ){
+                        url = url.substr(0, idx);
+                    }
 
-            frame.src = url + '#' + coord.coord;
-        },
-        changed: function (id, coord) {
-            if (id !== "headset") {
-                return;
-            }
-            var frame = $('.vr-iframe').first()[0];
-            if (!frame) {
-                return;
-            }
-            var idx = frame.src.indexOf('#'), url = frame.src;
-            if ( idx > -1 ){
-                url = url.substr(0, idx);
-            }
+                    frame.src = url + '#' + coord.coord;
+                },
+                changed: function (id, coord) {
+                    if (id !== "headset") {
+                        return;
+                    }
+                    var frame = $('.vr-iframe').first()[0];
+                    if (!frame) {
+                        return;
+                    }
+                    var idx = frame.src.indexOf('#'), url = frame.src;
+                    if ( idx > -1 ){
+                        url = url.substr(0, idx);
+                    }
 
-            frame.src = url + '#' + coord.coord;
+                    frame.src = url + '#' + coord.coord;
+                }
+            });
         }
-    });
+        setTimeout(loadCoords, 100);
+    }
 
 });
 
