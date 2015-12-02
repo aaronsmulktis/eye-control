@@ -1,4 +1,4 @@
-/*global google*/
+/*global google Coords Meteor Homes */
 
 // var homes = [
 //   ['Elysten', 51.523325, -0.183299, '/home1'],
@@ -26,7 +26,7 @@ var fadeTime = 300;
 var mainMap = false;
 
 var infowindow = [];
-var marker = [];
+var markers = [];
 
 var styles = [
   {
@@ -51,14 +51,7 @@ var styles = [
 ];
 
 function initialize() {
-
-    if (!document.getElementById('mainMap')) {
-        setTimeout(initialize, 300);
-    }
-    if (!window.google) {
-        return;
-    }
-    if (mainMap) {
+    if (mainMap || !document.getElementById('mainMap')) {
         return;
     }
     mainMap = new google.maps.Map(document.getElementById('mainMap'), {
@@ -66,29 +59,14 @@ function initialize() {
         zoom: 12,
         styles: styles
     });
-
     processHomes(homes);
-    // setMarkers(mainMap);
 }
-
-// function initialize() {
-//     var myLatlng = new google.maps.LatLng(51.523325, -0.183299);
-//     var myOptions = {
-//         zoom: 9,
-//         center: myLatlng,
-//         mapTypeId: google.maps.MapTypeId.TERRAIN
-//     }
-//     mainMap = new google.maps.Map(document.getElementById("mainMap"), myOptions);
-
-// }
 
 function createMarker(lat, lon, html, link) {
     var house = {
-        // path: 'M 0.9,7.4 6,2.3 11.1,7.3 9.8,9.7 6.9,9.7 6.9,6.9 5.9,6.9 5.1,6.9 5.1,9.7 2.2,9.7 z',
         path: google.maps.SymbolPath.CIRCLE,
         fillColor: 'red',
         fillOpacity: 0.66,
-        // strokeColor: black,
         strokeWeight: 0.33,
         scale: 8
     };
@@ -117,29 +95,20 @@ function createMarker(lat, lon, html, link) {
 
     google.maps.event.addListener(newMarker, 'mouseover', function() {
         this['infowindow'].open(mainMap, this);
-        // mainMap.panTo(newMarker.getPosition());
     });
 
     google.maps.event.addListener(newMarker, 'mouseout', function(){
         this['infowindow'].close(mainMap, this);
     });
 
-    marker.push(newMarker);
+    markers.push(newMarker);
 }
 
-function processHomes(markers) {
-    for (var i = 0; i < markers.length; i++) {
-        createMarker(markers[i].latitude, markers[i].longitude, markers[i].name, 'home/' + markers[i]._id);
+function processHomes(homes) {
+    for (var i = 0; i < homes.length; i++) {
+        createMarker(homes[i].latitude, homes[i].longitude, homes[i].name, 'home/' + homes[i]._id);
     }
- //    homes.forEach(function(home){
-	// 	console.log(home.latitude, home.longitude);
-	// 	createMarker(home.latitude, home.longitude, home.name, home.slug);
-	// });
 }
-
-jQuery(window).on('load', function($) {
-
-});
 
 jQuery(document).ready(function($) {
     var deleteLinks = document.querySelectorAll('.delete');
@@ -156,6 +125,22 @@ jQuery(document).ready(function($) {
         });
     }
 
+    var updateFrame = function(id, coord) {
+        if (id !== "headset") {
+            return;
+        }
+        var frame = $('.vr-iframe').first()[0];
+        if (!frame) {
+            return;
+        }
+        var idx = frame.src.indexOf('#'), url = frame.src;
+        if ( idx > -1 ){
+            url = url.substr(0, idx);
+        }
+
+        frame.src = url + '#' + coord.coord;
+    }
+
     if (!window.handle_coords.ready()) {
         function loadCoords() {
             if (!window.handle_coords.ready()) {
@@ -164,62 +149,11 @@ jQuery(document).ready(function($) {
             }
             var query = Coords.find();
             window.handle_coords = query.observeChanges({
-                added: function (id, coord) {
-                    if (id !== "headset") {
-                        return;
-                    }
-                    var frame = $('.vr-iframe').first()[0];
-                    if (!frame) {
-                        return;
-                    }
-                    var idx = frame.src.indexOf('#'), url = frame.src;
-                    if ( idx > -1 ){
-                        url = url.substr(0, idx);
-                    }
-
-                    frame.src = url + '#' + coord.coord;
-                },
-                changed: function (id, coord) {
-                    if (id !== "headset") {
-                        return;
-                    }
-                    var frame = $('.vr-iframe').first()[0];
-                    if (!frame) {
-                        return;
-                    }
-                    var idx = frame.src.indexOf('#'), url = frame.src;
-                    if ( idx > -1 ){
-                        url = url.substr(0, idx);
-                    }
-
-                    frame.src = url + '#' + coord.coord;
-                }
+                added: updateFrame,
+                changed: updateFrame
             });
         }
         setTimeout(loadCoords, 100);
     }
 
 });
-
-// HTML5 Events
-
-// var editable = document.getElementById('circTitle');
-
-// addEvent(editable, 'blur', function () {
-//   // lame that we're hooking the blur event
-//   localStorage.setItem('contenteditable', this.innerHTML);
-//   document.designMode = 'off';
-// });
-
-// addEvent(editable, 'focus', function () {
-//   document.designMode = 'on';
-// });
-
-// addEvent(document.getElementById('clear'), 'click', function () {
-//   localStorage.clear();
-//   window.location = window.location; // refresh
-// });
-
-// if (localStorage.getItem('contenteditable')) {
-//   editable.innerHTML = localStorage.getItem('contenteditable');
-// }

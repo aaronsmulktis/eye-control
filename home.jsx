@@ -1,9 +1,9 @@
-
+/*global React ReactMeteorData sortable Meteor Homes Rooms Notes Spheres */
 
 // Property component
 Home = React.createClass({
-  // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData, sortable.ListMixin],
+    // This mixin makes the getMeteorData method work
+    mixins: [ReactMeteorData, sortable.ListMixin],
 
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
@@ -29,30 +29,30 @@ Home = React.createClass({
             }
         }).fetch()
 
-    return {
+        return {
 
-      home: thisHome,
-      notes: Notes.find({}, {
-        sort: {
-          createdAt: -1
+            home: thisHome,
+            notes: Notes.find({}, {
+                sort: {
+                    createdAt: -1
+                }
+            }).fetch(),
+            rooms: rooms,
+            sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
         }
-      }).fetch(),
-      rooms: rooms,
-      sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
-    }
-  },
+    },
 
-  getInitialState() {
-    return {
-      isPopup: false
-    }
-  },
+    getInitialState() {
+        return {
+            isPopup: false
+        }
+    },
 
-  renderNotes() {
-    // Get notes from this.data.notes
-    let notes = this.data.notes.map((note) => {
-      return <Note key={note._id} note={note} />;
-    });
+    renderNotes() {
+        // Get notes from this.data.notes
+        let notes = this.data.notes.map((note) => {
+            return <Note key={note._id} note={note} />;
+        });
 
     return (
       <div id="viewNotes">
@@ -72,53 +72,34 @@ Home = React.createClass({
     );
   },
 
-  renderSphere() {
-    // Get notes from this.data.notes
-    if (!this.data.sphere) {
-    return;
-    }
-    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
+    renderSphere() {
+        // Get notes from this.data.notes
+        if (!this.data.sphere) {
+            return;
+        }
+        var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
 
-    return (
-            <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
-    );
-  },
+        return (
+                <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+        );
+    },
 
-  renderRoomBoxes() {
-      var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
-    var rooms = rooms.map(function(room, i) {
-      // Required props in Item (key/index/movableProps)
-      return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
-    }, this);
+    renderRoomBoxes() {
+        var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
+        var rooms = rooms.map(function(room, i) {
+            // Required props in Item (key/index/movableProps)
+            return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
+        }, this);
 
-    return <ul>{rooms}</ul>;
-  },
+        return <ul>{rooms}</ul>;
+    },
 
   render() {
-  if (this.data.loading) {
-   return (
-   <div>Loading...</div>
-   )
-  }
-//         $(document).on('click', '#addRoomBtn', function(e) {
-//             e.preventDefault();
-//             // $("#email-signup").fadeIn(fadeTime);
-//             // $('#fieldName').focus();
-//             $("#addRoom").fadeIn(fadeTime);
-//         });
-
-//         $(document).on('click', '#addRoom .close', function(e) {
-//             e.preventDefault();
-//             // $("#email-signup").fadeIn(fadeTime);
-//             // $('#fieldName').focus();
-//             $("#addRoom").fadeOut(fadeTime);
-//         });
-
-//         $(document).keyup(function(e) {
-//             if (e.keyCode == 27) {
-//                 $("#addRoom").fadeOut(fadeTime);
-//             }
-//         });
+      if (this.data.loading) {
+          return (
+                  <div>Loading...</div>
+          )
+      }
       $(document).on('click', 'li.roomBox', function(evt) {
           if (window.moving) {
           return false;
