@@ -85,13 +85,15 @@ Home = React.createClass({
   },
 
   renderRoomBoxes() {
+  debugger;
       var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
-    var rooms = rooms.map(function(room, i) {
-      // Required props in Item (key/index/movableProps)
-      return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
-    }, this);
-
-    return <ul>{rooms}</ul>;
+      var processedRooms = [];
+      for (var i=rooms.length-1; i>=0;i--) {
+            var room = rooms[i];
+      var processedRoom = <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>
+      processedRooms.push(processedRoom);
+      }
+    return <ul>{processedRooms}</ul>;
   },
 
   render() {
