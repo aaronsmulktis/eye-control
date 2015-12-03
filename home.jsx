@@ -85,14 +85,17 @@ Home = React.createClass({
   },
 
   renderRoomBoxes() {
-  debugger;
+  //debugger;
       var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
+      //rooms.sort({position: -1});
       var processedRooms = [];
-      for (var i=rooms.length-1; i>=0;i--) {
+      console.log(rooms, "rooms");
+      for (var i=0; i < rooms.length; i++) {
             var room = rooms[i];
       var processedRoom = <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>
       processedRooms.push(processedRoom);
       }
+    console.log(processedRooms, "pr");
     return <ul>{processedRooms}</ul>;
   },
 
@@ -195,7 +198,8 @@ Home = React.createClass({
 
     Notes.insert({
       text: text,
-      createdAt: new Date() // current time
+      createdAt: new Date(), // current time
+      //position: number
     });
 
     // Clear form
@@ -212,12 +216,14 @@ Home = React.createClass({
       let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
       let homeId = React.findDOMNode(this.refs.homeId).value.trim();
 
+
       Rooms.insert({
         name: name,
         desc: desc,
         picUrl: picUrl,
         homeId: homeId,
-        createdAt: new Date() // current time
+        createdAt: new Date(), // current time
+        position: 0
       });
 
       // Clear form
@@ -225,6 +231,7 @@ Home = React.createClass({
       React.findDOMNode(this.refs.descInput).value = "";
       React.findDOMNode(this.refs.picUrl).value = "";
       React.findDOMNode(this.refs.homeId).value = "";
+
 
       this._togglePopup;
   },
