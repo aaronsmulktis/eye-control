@@ -91,13 +91,18 @@ Home = React.createClass({
 
   renderRoomBoxes() {
       if (this.state.items.length == 0 && this.data.rooms.length > 0) {
-          this.setState({'items': this.data.rooms});
+          var sortedRooms = [];
+          for (var i=0; i<this.data.rooms.length;i++) {
+              var room = this.data.rooms[i];
+              sortedRooms[room.position] = room;;
+          }
+          this.setState({'items': sortedRooms});
       }
       var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
       var processedRooms = [];
       for (var i=0; i<rooms.length;i++) {
           var room = rooms[i],
-              position = room.position || i;
+              position = room.position;
       processedRooms[position] = <RoomBox key={room._id} room={room} index={position} {...this.movableProps}/>
       }
     return <ul>{processedRooms}</ul>;

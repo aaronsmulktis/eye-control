@@ -20,18 +20,30 @@ Map = React.createClass({
         return data;
     },
 
+    onBeforeSetState: function(items){
+        for(var i = 0; i < items.length; i++) {
+            items[i].position = i;
+            Homes.update({_id:items[i]._id}, {$set: {position: i}});
+        }
+    },
+
     renderHomeBoxes() {
         if (!this.data.homes) {
             return;
         }
         if (this.state.items.length == 0 && this.data.homes.length > 0) {
-            this.setState({'items': this.data.homes});
+            var sortedHomes = [];
+            for (var i=0; i<this.data.homes.length;i++) {
+                var home = this.data.homes[i];
+                sortedHomes[home.position] = home;
+            }
+            this.setState({'items': sortedHomes});
         }
         var homes = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.homes;
         var processedHomes = [];
         for (var i=0; i<homes.length;i++) {
             var home = homes[i],
-                position = home.position || i;
+                position = home.position;
             processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
         return <ul>{processedHomes}</ul>;
