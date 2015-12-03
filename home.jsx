@@ -2,10 +2,8 @@
 
 // Property component
 Home = React.createClass({
-    // This mixin makes the getMeteorData method work
     mixins: [ReactMeteorData, sortable.ListMixin],
 
-    // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         var data = {}
         var handles = [Meteor.subscribe("home", this.props.id),
@@ -28,9 +26,7 @@ Home = React.createClass({
                 createdAt: -1
             }
         }).fetch()
-
         return {
-
             home: thisHome,
             notes: Notes.find({}, {
                 sort: {
@@ -47,6 +43,15 @@ Home = React.createClass({
             isPopup: false
         }
     },
+
+    onBeforeSetState: function(items){
+        for(var i = 0; i < items.length; i++) {
+            items[i].position = i;
+            Rooms.update({_id:items[i]._id}, {$set: {position: i}});
+        }
+    },
+
+
 
     renderNotes() {
         // Get notes from this.data.notes
@@ -85,6 +90,9 @@ Home = React.createClass({
     },
 
   renderRoomBoxes() {
+      if (this.state.items.length == 0 && this.data.rooms.length > 0) {
+          this.setState({'items': this.data.rooms});
+      }
       var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
       var processedRooms = [];
       for (var i=0; i<rooms.length;i++) {
