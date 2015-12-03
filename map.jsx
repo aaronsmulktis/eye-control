@@ -24,11 +24,17 @@ Map = React.createClass({
         if (!this.data.homes) {
             return;
         }
-        var homes = this.data.homes.map(function(home, i) {
-            // Required props in Item (key/index/movableProps)
-            return <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={i} {...this.movableProps}/>;
-        }, this);
-        return <ul>{homes}</ul>;
+        if (this.state.items.length == 0 && this.data.homes.length > 0) {
+            this.setState({'items': this.data.homes});
+        }
+        var homes = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.homes;
+        var processedHomes = [];
+        for (var i=0; i<homes.length;i++) {
+            var home = homes[i],
+                position = home.position || i;
+            processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
+        }
+        return <ul>{processedHomes}</ul>;
     },
 
 
