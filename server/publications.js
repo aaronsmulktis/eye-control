@@ -7,7 +7,11 @@ Meteor.publish('home', function(id) {
 });
 
 Meteor.publish('rooms', function() {
-    return Rooms.find({});
+    return Rooms.find({}, {
+      sort: {
+          position: 1
+      }
+    });
 });
 
 Meteor.publish('roomsMatching', function(homeId) {

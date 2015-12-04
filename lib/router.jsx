@@ -2,7 +2,8 @@ FlowRouter.route('/', {
   action: function() {
     ReactLayout.render(Map, {
       header: <Header />
-    });
+    }
+    );
     initialize();
   }
 });

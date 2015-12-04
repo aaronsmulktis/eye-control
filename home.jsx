@@ -1,11 +1,9 @@
-
+/*global React ReactMeteorData sortable Meteor Homes Rooms Notes Spheres */
 
 // Property component
 Home = React.createClass({
-  // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData, sortable.ListMixin],
+    mixins: [ReactMeteorData, sortable.ListMixin],
 
-    // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         var data = {}
         var handles = [Meteor.subscribe("home", this.props.id),
@@ -28,31 +26,38 @@ Home = React.createClass({
                 createdAt: -1
             }
         }).fetch()
-
-    return {
-
-      home: thisHome,
-      notes: Notes.find({}, {
-        sort: {
-          createdAt: -1
+        return {
+            home: thisHome,
+            notes: Notes.find({}, {
+                sort: {
+                    createdAt: -1
+                }
+            }).fetch(),
+            rooms: rooms,
+            sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
         }
-      }).fetch(),
-      rooms: rooms,
-      sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
-    }
-  },
+    },
 
-  getInitialState() {
-    return {
-      isPopup: false
-    }
-  },
+    getInitialState() {
+        return {
+            isPopup: false
+        }
+    },
 
-  renderNotes() {
-    // Get notes from this.data.notes
-    let notes = this.data.notes.map((note) => {
-      return <Note key={note._id} note={note} />;
-    });
+    onBeforeSetState: function(items){
+        for(var i = 0; i < items.length; i++) {
+            items[i].position = i;
+            Rooms.update({_id:items[i]._id}, {$set: {position: i}});
+        }
+    },
+
+
+
+    renderNotes() {
+        // Get notes from this.data.notes
+        let notes = this.data.notes.map((note) => {
+            return <Note key={note._id} note={note} />;
+        });
 
     return (
       <div id="viewNotes">
@@ -62,7 +67,7 @@ Home = React.createClass({
             <input
               type="text"
               ref="noteInput"
-              placeholder="Add a note..." />
+              placeholder="Add a note about this property..." />
           </form>
           <ul>
             {notes}
@@ -72,53 +77,52 @@ Home = React.createClass({
     );
   },
 
-  renderSphere() {
-    // Get notes from this.data.notes
-    if (!this.data.sphere) {
-    return;
-    }
-    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=1200";
+    renderSphere() {
+        // Get notes from this.data.notes
+        if (!this.data.sphere) {
+            return;
+        }
+        var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
 
-    return (
-            <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
-    );
-  },
+        return (
+                <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+        );
+    },
 
   renderRoomBoxes() {
+      if (this.state.items.length == 0 && this.data.rooms.length > 0) {
+          var sortedRooms = [];
+          for (var i=0; i<this.data.rooms.length;i++) {
+              var room = this.data.rooms[i];
+              sortedRooms[room.position] = room;;
+          }
+          this.setState({'items': sortedRooms});
+      }
       var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
-    var rooms = rooms.map(function(room, i) {
-      // Required props in Item (key/index/movableProps)
-      return <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>;
-    }, this);
-
-    return <ul>{rooms}</ul>;
+      var processedRooms = [];
+      for (var i=0; i<rooms.length;i++) {
+          var room = rooms[i],
+              position = room.position;
+      processedRooms[position] = <RoomBox key={room._id} room={room} index={position} {...this.movableProps}/>
+      }
+    return <ul>{processedRooms}</ul>;
   },
 
   render() {
-  if (this.data.loading) {
-   return (
-   <div>Loading...</div>
-   )
-  }
-//         $(document).on('click', '#addRoomBtn', function(e) {
-//             e.preventDefault();
-//             // $("#email-signup").fadeIn(fadeTime);
-//             // $('#fieldName').focus();
-//             $("#addRoom").fadeIn(fadeTime);
-//         });
-
-//         $(document).on('click', '#addRoom .close', function(e) {
-//             e.preventDefault();
-//             // $("#email-signup").fadeIn(fadeTime);
-//             // $('#fieldName').focus();
-//             $("#addRoom").fadeOut(fadeTime);
-//         });
-
-//         $(document).keyup(function(e) {
-//             if (e.keyCode == 27) {
-//                 $("#addRoom").fadeOut(fadeTime);
-//             }
-//         });
+      if (this.data.loading) {
+          return (
+                  <div>Loading...</div>
+          )
+      }
+      $(document).on('click', 'li.roomBox', function(evt) {
+          if (window.moving) {
+          return false;
+          }
+          evt.preventDefault();
+          // Set the checked property to the opposite of its current value
+          Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
+          return false;
+      })
 
     return (
 

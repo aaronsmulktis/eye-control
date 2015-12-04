@@ -23,16 +23,6 @@ RoomBox = React.createClass({
       this.setState( { condition : !this.state.condition } );
   },
 
-  selectSphere(evt) {
-  if (window.moving) {
-  //  return false;
-}
-    evt.preventDefault();
-    // Set the checked property to the opposite of its current value
-    Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
-    return false;
-  },
-
   render() {
     // Give rooms a different className when they are checked off,
     // so that we can style them nicely in CSS
@@ -40,7 +30,7 @@ RoomBox = React.createClass({
           vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.room.picUrl) + '&resize=1&width=200';
 
     return (
-      <li onClick={this.selectSphere} id="roomBox" className={roomClassName + ' noPadding roomBox container-fluid'}>
+      <li className={roomClassName + ' noPadding roomBox container-fluid'}>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
         <div className="roomPic col-sm-4 noPadding">
