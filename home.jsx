@@ -306,7 +306,7 @@ HomeWrapper = React.createClass({
     },
     render: function(){
         return(
-            <Home id={this.props.id} rooms={this.data.rooms} />
+            <Home rooms={this.data.rooms} {...this.props} />
         )
     }
 });

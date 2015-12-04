@@ -217,7 +217,7 @@ MapWrapper = React.createClass({
     },
     render: function(){
         return(
-            <Map homes={this.data.homes} />
+            <Map homes={this.data.homes} {...this.props} />
         )
     }
 });
