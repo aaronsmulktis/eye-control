@@ -82,8 +82,6 @@ Home = React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        console.log("new props!");
-        console.log(nextProps);
         this.setState({'items': nextProps.rooms});
     },
 

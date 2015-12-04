@@ -4,7 +4,6 @@ FlowRouter.route('/', {
       header: <Header />
     }
     );
-    initialize();
   }
 });
 
@@ -28,7 +27,6 @@ FlowRouter.route('/list', {
   action: function() {
     ReactLayout.render(List, {
       header: <Header />,
-      // items: this.data.notes
     });
   }
 });
