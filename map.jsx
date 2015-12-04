@@ -164,7 +164,7 @@ Map = React.createClass({
         var processedHomes = [];
         for (var i=0; i<homes.length;i++) {
             var home = homes[i],
-                position = home.position;
+                position = home.position == null ? i : home.position;
             processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
         return <ul>{processedHomes}</ul>;

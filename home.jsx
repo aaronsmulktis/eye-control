@@ -90,7 +90,7 @@ Home = React.createClass({
       var processedRooms = [];
       for (var i=0; i<rooms.length;i++) {
           var room = rooms[i],
-              position = room.position;
+              position = room.position == null ? i : room.position;
       processedRooms[position] = <RoomBox key={room._id} room={room} index={position} {...this.movableProps}/>
       }
     return <ul>{processedRooms}</ul>;
