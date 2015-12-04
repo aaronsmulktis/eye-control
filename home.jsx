@@ -132,39 +132,44 @@ Home = React.createClass({
 
           {this.props.header}
 
-          <div id="viewVR">
-             {this.renderSphere()}
+          <div className="col-sm-9 noPadding">
+            <div id="viewVR">
+               {this.renderSphere()}
+            </div>
+
+            <div id="propDetails">
+
+              <div id="viewDetails" className="col-sm-8 noPadding">
+                {this._renderViewOptions()}
+                {this.renderNotes()}
+              </div>
+
+              <div id="placque" className="col-sm-4">
+                {this._renderPlacque()}
+              </div>
+
+            </div>
           </div>
 
-          <div id="propDetails">
-            <div id="viewDetails" className="col-sm-4 noPadding">
-              {this._renderViewOptions()}
-              {this.renderNotes()}
-            </div>
-
-            {this._renderPlacque()}
-
-            <div id="rooms" className="col-sm-4 noPadding">
-              <h3>Rooms</h3>
-              <header id="roomHeader">
-                <form className="new-note">
-                  <input
-                    type="text"
-                    ref="roomInput"
-                    placeholder="Filter.." />
-                </form>
-                <div id="addRoomBtn" className="">
-                  <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
-                </div>
-
-              </header>
-              <div id="roomPics" className="noPadding">
-
-                  {this.renderRoomBoxes()}
-
+          <div id="rooms" className="col-sm-3">
+            <h3>Rooms</h3>
+            <header id="roomHeader">
+              <form className="new-note">
+                <input
+                  type="text"
+                  ref="roomInput"
+                  placeholder="Filter.." />
+              </form>
+              <div id="addRoomBtn" className="">
+                <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
               </div>
-            </div>
 
+            </header>
+            <div id="roomPics" className="noPadding">
+
+                {this.renderRoomBoxes()}
+
+            </div>
           </div>
 
           {this._renderAddRoom()}
@@ -283,13 +288,11 @@ Home = React.createClass({
 
   _renderPlacque() {
     return (
-      <div id="placque" className="col-sm-4">
         <div id="circ" className="center-block">
           <h4 id="circTitle">{this.data.home.name}</h4>
           <p>{this.data.home.address}</p>
           <a href="javascript:;"><i className="fa fa-pencil"></i></a>
         </div>
-      </div>
     );
   }
 });
