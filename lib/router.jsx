@@ -1,6 +1,6 @@
 FlowRouter.route('/', {
   action: function() {
-    ReactLayout.render(Map, {
+    ReactLayout.render(MapWrapper, {
       header: <Header />
     }
     );
@@ -36,10 +36,9 @@ FlowRouter.route('/list', {
 FlowRouter.route('/home/:id', {
   name: 'home',
   action: function(params) {
-    ReactLayout.render(Home, {
+    ReactLayout.render(HomeWrapper, {
       header: <Header />,
-      id: params.id,
-      slug: params.slug
+      id: params.id
     });
   }
 });

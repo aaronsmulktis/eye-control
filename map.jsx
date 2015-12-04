@@ -2,23 +2,7 @@
 Map = React.createClass({
     // This mixin makes the getMeteorData method work
 
-    mixins: [ReactMeteorData, sortable.ListMixin],
-
-    // Loads items from the Homes collection and puts them on this.data.homes
-    getMeteorData() {
-        var data = {};
-        var handle = Meteor.subscribe("homes");
-
-        if (handle.ready()) {
-            data = {homes: Homes.find({}, {
-                sort: {
-                    createdAt: -1
-                }
-            }).fetch()
-            }
-        }
-        return data;
-    },
+    mixins: [sortable.ListMixin],
 
     onBeforeSetState: function(items){
         for(var i = 0; i < items.length; i++) {
@@ -27,19 +11,14 @@ Map = React.createClass({
         }
     },
 
+    componentWillReceiveProps(nextProps) {
+        console.log("new props!");
+        console.log(nextProps);
+        this.setState({'items': nextProps.homes});
+    },
+
     renderHomeBoxes() {
-        if (!this.data.homes) {
-            return;
-        }
-        if (this.state.items.length == 0 && this.data.homes.length > 0) {
-            var sortedHomes = [];
-            for (var i=0; i<this.data.homes.length;i++) {
-                var home = this.data.homes[i];
-                sortedHomes[home.position] = home;
-            }
-            this.setState({'items': sortedHomes});
-        }
-        var homes = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.homes;
+        var homes = this.state.items;
         var processedHomes = [];
         for (var i=0; i<homes.length;i++) {
             var home = homes[i],
@@ -51,7 +30,7 @@ Map = React.createClass({
 
 
     render() {
-        if (!this.data.homes) {
+        if (!this.state.items) {
             return (
                 <div>Loading...</div>
             );
@@ -74,5 +53,29 @@ Map = React.createClass({
                 </div>
             </div>
         );
+    }
+});
+
+MapWrapper = React.createClass({
+    mixins: [ReactMeteorData],
+    // Loads items from the Homes collection and puts them on this.data.homes
+    getMeteorData() {
+        var data = {homes: []};
+        var handle = Meteor.subscribe("homes");
+
+        if (handle.ready()) {
+            data = {homes: Homes.find({}, {
+                sort: {
+                    position: 1
+                }
+            }).fetch()
+            }
+        }
+        return data;
+    },
+    render: function(){
+        return(
+            <Map homes={this.data.homes} />
+        )
     }
 });

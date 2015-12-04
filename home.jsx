@@ -7,7 +7,6 @@ Home = React.createClass({
     getMeteorData() {
         var data = {}
         var handles = [Meteor.subscribe("home", this.props.id),
-                       Meteor.subscribe("rooms"),
                        Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9"),
                        Meteor.subscribe("notes")];
 
@@ -21,11 +20,6 @@ Home = React.createClass({
         var homes = Homes.find({_id: this.props.id}).fetch(),
             thisHome = homes[0];
 
-        var rooms = Rooms.find({homeId: thisHome._id}, {
-            sort: {
-                createdAt: -1
-            }
-        }).fetch()
         return {
             home: thisHome,
             notes: Notes.find({}, {
@@ -33,14 +27,14 @@ Home = React.createClass({
                     createdAt: -1
                 }
             }).fetch(),
-            rooms: rooms,
             sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
         }
     },
 
     getInitialState() {
         return {
-            isPopup: false
+            isPopup: false,
+            rooms: []
         }
     },
 
@@ -50,8 +44,6 @@ Home = React.createClass({
             Rooms.update({_id:items[i]._id}, {$set: {position: i}});
         }
     },
-
-
 
     renderNotes() {
         // Get notes from this.data.notes
@@ -89,16 +81,14 @@ Home = React.createClass({
         );
     },
 
+    componentWillReceiveProps(nextProps) {
+        console.log("new props!");
+        console.log(nextProps);
+        this.setState({'items': nextProps.rooms});
+    },
+
   renderRoomBoxes() {
-      if (this.state.items.length == 0 && this.data.rooms.length > 0) {
-          var sortedRooms = [];
-          for (var i=0; i<this.data.rooms.length;i++) {
-              var room = this.data.rooms[i];
-              sortedRooms[room.position] = room;;
-          }
-          this.setState({'items': sortedRooms});
-      }
-      var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
+      var rooms = this.state.items;
       var processedRooms = [];
       for (var i=0; i<rooms.length;i++) {
           var room = rooms[i],
@@ -297,4 +287,28 @@ Home = React.createClass({
       </div>
     );
   }
+});
+
+HomeWrapper = React.createClass({
+    mixins: [ReactMeteorData],
+    // Loads items from the Homes collection and puts them on this.data.homes
+    getMeteorData() {
+        var data = {};
+        var handle = Meteor.subscribe("rooms");
+        if (!handle.ready()) {
+            return data;
+        }
+        var rooms = Rooms.find({homeId: this.props.id}, {
+            sort: {
+                position: 1
+            }
+        }).fetch()
+            data = {rooms: rooms}
+        return data;
+    },
+    render: function(){
+        return(
+            <Home id={this.props.id} rooms={this.data.rooms} />
+        )
+    }
 });
