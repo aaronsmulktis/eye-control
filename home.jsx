@@ -199,13 +199,12 @@ Home = React.createClass({
       let name = React.findDOMNode(this.refs.nameInput).value.trim();
       let desc = React.findDOMNode(this.refs.descInput).value.trim();
       let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
-      let homeId = React.findDOMNode(this.refs.homeId).value.trim();
 
       Rooms.insert({
         name: name,
         desc: desc,
         picUrl: picUrl,
-        homeId: homeId,
+        homeId: this.props.id,
         createdAt: new Date() // current time
       });
 
@@ -213,7 +212,6 @@ Home = React.createClass({
       React.findDOMNode(this.refs.nameInput).value = "";
       React.findDOMNode(this.refs.descInput).value = "";
       React.findDOMNode(this.refs.picUrl).value = "";
-      React.findDOMNode(this.refs.homeId).value = "";
 
       this._togglePopup;
   },
@@ -238,10 +236,7 @@ Home = React.createClass({
             <label for="picUrl">Room Picture URL:</label>
             <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
           </div>
-          <div className="form-group">
-            <label for="homeId">Home ID:</label>
-            <input type="text" className="form-control" ref="homeId" placeholder="ID of the property or home"></input>
-          </div>
+
           <button type="submit" className="btn btn-default">Add Room</button>
         </form>
       </div>
