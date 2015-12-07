@@ -24,3 +24,5 @@ kadira:flow-router
 kadira:react-layout
 fortawesome:fontawesome
 meteorhacks:picker
+meteorhacks:search-source@=1.4.1
+check

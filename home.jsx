@@ -120,7 +120,7 @@ Home = React.createClass({
 
           {this.props.header}
 
-          <div className="col-sm-9 noPadding">
+          <div id="content" className="col-sm-9 noPadding">
             <div id="viewVR">
                {this.renderSphere()}
             </div>

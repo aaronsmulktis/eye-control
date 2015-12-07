@@ -2,8 +2,7 @@ FlowRouter.route('/', {
   action: function() {
     ReactLayout.render(MapWrapper, {
       header: <Header />
-    }
-    );
+    });
   }
 });
 

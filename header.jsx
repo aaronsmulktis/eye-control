@@ -98,7 +98,7 @@ Header = React.createClass({
         
       <div>
 
-        <nav id="topBar" className="navbar navbar-fixed">
+        <nav id="topBar" className="navbar navbar-fixed-top">
           <div className="container-fluid">
 
             <div className="navbar-header">
