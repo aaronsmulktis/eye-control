@@ -17,7 +17,7 @@ Meteor.publish('rooms', function() {
 Meteor.publish('roomsMatching', function(homeId) {
         return Rooms.find({homeId: homeId}, {
             sort: {
-                createdAt: -1
+                position: 1
             }
         })
 });
