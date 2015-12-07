@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);
 
 body {
@@ -30,15 +31,16 @@ img {
 	width: 100%;
 }
 
-a {
-	color: @brand;
+a {color: @brand;}
+a:hover {color: darken(@brand, 10%);}
+
+h1, h2, h3 {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	padding: 10px auto !important;
 }
 
-h1 {
-
-}
-
-h4:focus {outline:none;}
+h1:focus, h2:focus, h3:focus, h4:focus {outline:none;}
 
 header {
 }

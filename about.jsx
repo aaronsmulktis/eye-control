@@ -8,7 +8,7 @@ About = React.createClass({
 
       <div id="contentContainer">
 
-        <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
+        <div id="mainContent" className="col-sm-12 noPadding">
 
           {this.props.header}
 
