@@ -180,7 +180,7 @@ Map = React.createClass({
         return (
 
             <div id="contentContainer" className="container-fluid noPadding">
-                <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
+                <div id="mainContent" className="col-sm-12 noPadding">
                     <header>
                         {this.props.header}
                     </header>
