@@ -95,18 +95,13 @@ i#logoEye.90degCC {
     /*height: 400px;*/
 }
 
-.addForm {
-  padding: 15px;
-}
-
 .propList ul li {
   display: table;
   width: 100%;
 }
 
 .propList ul li:hover {
-  background: lighten(@brand, 50%);
-  color: white
+  background: white;
 }
 
 .homePic {
@@ -147,6 +142,8 @@ a.homeLink {
 #rooms {
   min-height: 100vh;
   background: lighten(@sky, 20%);
+  transform: translateZ(0px);
+  position: relative;
 }
 
 .roomBox {
@@ -282,6 +279,9 @@ header .hide-completed {
 #mainMap {
 	background: white;
 	height: 90vh;
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0px);
 }
 
 #viewOptions li button.btn-default {

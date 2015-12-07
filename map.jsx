@@ -1,21 +1,21 @@
 var styles = [
     {
         stylers: [
-            { hue: "#00ffe6" },
-            { saturation: -20 }
+                { hue: "#00ffe6" },
+                { saturation: -20 }
         ]
     },{
         featureType: "road",
         elementType: "geometry",
         stylers: [
-            { lightness: 100 },
-            { visibility: "simplified" }
+                { lightness: 100 },
+                { visibility: "simplified" }
         ]
     },{
         featureType: "road",
         elementType: "labels",
         stylers: [
-            { visibility: "off" }
+                { visibility: "off" }
         ]
     }
 ];
@@ -36,19 +36,20 @@ Map = React.createClass({
 
     initialize() {
         if (this.state.mainMap) {
-            return;
+                return;
         }
         var initialize = this.initialize;
         if (!window.google || !document.getElementById('mainMap')) {
-            setTimeout(initialize, 300);
-            return;
+                setTimeout(initialize, 300);
+                return;
         }
         this.setState({"mainMap":
-                       new google.maps.Map(document.getElementById('mainMap'), {
-                           center: {lat: 51.507194, lng: -0.118085},
-                           zoom: 12,
-                           styles: styles
-                       })
+            new google.maps.Map(document.getElementById('mainMap'), {
+                scrollwheel: false,
+                center: {lat: 51.507194, lng: -0.118085},
+                zoom: 12,
+                styles: styles
+            })
         });
     },
 
@@ -66,15 +67,15 @@ Map = React.createClass({
 
         var updateFrame = function(id, coord) {
             if (id !== "headset") {
-                return;
+                    return;
             }
             var frame = $('.vr-iframe').first()[0];
             if (!frame) {
-                return;
+                    return;
             }
             var idx = frame.src.indexOf('#'), url = frame.src;
             if ( idx > -1 ){
-                url = url.substr(0, idx);
+                    url = url.substr(0, idx);
             }
 
             frame.src = url + '#' + coord.coord;
@@ -82,18 +83,19 @@ Map = React.createClass({
 
         if (!handle_coords.ready()) {
             function loadCoords() {
-                if (!handle_coords.ready()) {
-                    setTimeout(loadCoords, 100);
-                    return;
-                }
-                var query = Coords.find();
-                handle_coords = query.observeChanges({
-                    added: updateFrame,
-                    changed: updateFrame
-                });
+                    if (!handle_coords.ready()) {
+                            setTimeout(loadCoords, 100);
+                            return;
+                    }
+                    var query = Coords.find();
+                    handle_coords = query.observeChanges({
+                            added: updateFrame,
+                            changed: updateFrame
+                    });
             }
             setTimeout(loadCoords, 100);
         }
+
     },
 
     componentDidUpdate() {
@@ -108,41 +110,41 @@ Map = React.createClass({
     createMarker(lat, lon, html, link) {
         var state = this.state;
         var house = {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: 'red',
-            fillOpacity: 0.66,
-            strokeWeight: 0.33,
-            scale: 8
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: 'red',
+                fillOpacity: 0.66,
+                strokeWeight: 0.33,
+                scale: 8
         };
 
         var shape = {
-            coords: [1, 1, 1, 20, 18, 20, 18, 1],
-            type: 'poly'
+                coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                type: 'poly'
         };
 
         var newMarker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat, lon),
-            map: state.mainMap,
-            icon: house,
-            shape: shape,
-            path: google.maps.SymbolPath.CIRCLE,
-            title: html
+                position: new google.maps.LatLng(lat, lon),
+                map: state.mainMap,
+                icon: house,
+                shape: shape,
+                path: google.maps.SymbolPath.CIRCLE,
+                title: html
         });
 
         newMarker['infowindow'] = new google.maps.InfoWindow({
-            content: html
+                content: html
         });
 
         google.maps.event.addListener(newMarker, 'click', function() {
-            window.location = link;
+                window.location = link;
         });
 
         google.maps.event.addListener(newMarker, 'mouseover', function() {
-            this['infowindow'].open(state.mainMap, this);
+                this['infowindow'].open(state.mainMap, this);
         });
 
         google.maps.event.addListener(newMarker, 'mouseout', function(){
-            this['infowindow'].close(state.mainMap, this);
+                this['infowindow'].close(state.mainMap, this);
         });
 
         this.state.markers.push(newMarker);
@@ -164,30 +166,44 @@ Map = React.createClass({
         var processedHomes = [];
         for (var i=0; i<homes.length;i++) {
             var home = homes[i],
-                position = home.position == null ? i : home.position;
+                    position = home.position == null ? i : home.position;
             processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
         return <ul>{processedHomes}</ul>;
     },
 
-
     render() {
         if (!this.state.items) {
             return (
-                <div>Loading...</div>
+                    <div>Loading...</div>
             );
         }
         return (
 
             <div id="contentContainer" className="container-fluid noPadding">
-                <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
+                <div id="mainContent" className="col-sm-12 noPadding">
                     <header>
-                        {this.props.header}
+                            {this.props.header}
                     </header>
                     <div className="container-fluid noPadding">
-                        <div className="propList col-xs-6">
-                            <h4 className="text-right">Property List</h4>
-                            {this.renderHomeBoxes()}
+                        <div className="col-xs-6">
+
+                            <div className="pull-left listOptions">
+                                <div id="searchBar" className="navbar-left">
+                                    <form className="navbar-form navbar-left noPadding" role="search">
+                                      <div className="form-group">
+                                        <input id="search-homes" type="text" className="form-control" placeholder="Filter properties.."></input>
+                                      </div>
+                                      <button type="submit" className="btn btn-default">Go</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <h3 className="text-right borderBottom">All Properties</h3>
+
+                            <div className="propList">
+                                {this.renderHomeBoxes()}
+                            </div>
                         </div>
                         <div id="mainMap" className="col-xs-6 noPadding">
                         </div>
@@ -199,25 +215,37 @@ Map = React.createClass({
 });
 
 MapWrapper = React.createClass({
-    mixins: [ReactMeteorData],
-    // Loads items from the Homes collection and puts them on this.data.homes
-    getMeteorData() {
-        var data = {homes: []};
-        var handle = Meteor.subscribe("homes");
-
-        if (handle.ready()) {
-            data = {homes: Homes.find({}, {
-                sort: {
-                    position: 1
+        mixins: [ReactMeteorData],
+        getMeteorData() {
+                var data = {homes: []};
+                var status = HomeSearch.getStatus();
+                if (status.loaded) {
+                    data = {homes: HomeSearch.getData()};
                 }
-            }).fetch()
+                return data;
+        },
+
+        _handleKey(event){
+            if (document.getElementById('search-homes') === document.activeElement) {
+                var text = $(event.target).val().trim();
+                HomeSearch.search(text);
             }
+        },
+
+        componentWillMount(){
+            HomeSearch.search("");
+            document.addEventListener("keyup", this._handleKey, false);
+        },
+
+
+        componentWillUnmount() {
+            document.removeEventListener("keyup", this._handleKey, false);
+        },
+
+        render: function(){
+
+                return(
+                        <Map homes={this.data.homes} {...this.props} />
+                )
         }
-        return data;
-    },
-    render: function(){
-        return(
-            <Map homes={this.data.homes} {...this.props} />
-        )
-    }
 });

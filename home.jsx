@@ -2,54 +2,54 @@
 
 // Property component
 Home = React.createClass({
-    mixins: [ReactMeteorData, sortable.ListMixin],
+  mixins: [ReactMeteorData, sortable.ListMixin],
 
-    getMeteorData() {
-        var data = {}
-        var handles = [Meteor.subscribe("home", this.props.id),
-                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9"),
-                       Meteor.subscribe("notes")];
+  getMeteorData() {
+    var data = {}
+    var handles = [Meteor.subscribe("home", this.props.id),
+                   Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9"),
+                   Meteor.subscribe("notes")];
 
-        function isReady(handle) {
-            return handle.ready();
-        }
-        if (!handles.every(isReady)) {
-            data.loading = true;
-            return data;
-        }
-        var homes = Homes.find({_id: this.props.id}).fetch(),
-            thisHome = homes[0];
+    function isReady(handle) {
+        return handle.ready();
+    }
+    if (!handles.every(isReady)) {
+        data.loading = true;
+        return data;
+    }
+    var homes = Homes.find({_id: this.props.id}).fetch(),
+        thisHome = homes[0];
 
-        return {
-            home: thisHome,
-            notes: Notes.find({}, {
-                sort: {
-                    createdAt: -1
-                }
-            }).fetch(),
-            sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
-        }
-    },
+    return {
+        home: thisHome,
+        notes: Notes.find({}, {
+            sort: {
+                createdAt: -1
+            }
+        }).fetch(),
+        sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
+    }
+  },
 
-    getInitialState() {
-        return {
-            isPopup: false,
-            rooms: []
-        }
-    },
+  getInitialState() {
+    return {
+        isPopup: false,
+        rooms: []
+    }
+  },
 
-    onBeforeSetState: function(items){
-        for(var i = 0; i < items.length; i++) {
-            items[i].position = i;
-            Rooms.update({_id:items[i]._id}, {$set: {position: i}});
-        }
-    },
+  onBeforeSetState: function(items){
+    for(var i = 0; i < items.length; i++) {
+        items[i].position = i;
+        Rooms.update({_id:items[i]._id}, {$set: {position: i}});
+    }
+  },
 
-    renderNotes() {
-        // Get notes from this.data.notes
-        let notes = this.data.notes.map((note) => {
-            return <Note key={note._id} note={note} />;
-        });
+  renderNotes() {
+    // Get notes from this.data.notes
+    let notes = this.data.notes.map((note) => {
+        return <Note key={note._id} note={note} />;
+    });
 
     return (
       <div id="viewNotes">
@@ -69,30 +69,30 @@ Home = React.createClass({
     );
   },
 
-    renderSphere() {
-        // Get notes from this.data.notes
-        if (!this.data.sphere) {
-            return;
-        }
-        var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
+  renderSphere() {
+    // Get notes from this.data.notes
+    if (!this.data.sphere) {
+        return;
+    }
+    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
 
-        return (
-                <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
-        );
-    },
+    return (
+            <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+    );
+  },
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({'items': nextProps.rooms});
-    },
+  componentWillReceiveProps(nextProps) {
+      this.setState({'items': nextProps.rooms});
+  },
 
   renderRoomBoxes() {
-      var rooms = this.state.items;
-      var processedRooms = [];
-      for (var i=0; i<rooms.length;i++) {
-          var room = rooms[i],
-              position = room.position == null ? i : room.position;
-      processedRooms[position] = <RoomBox key={room._id} room={room} index={position} {...this.movableProps}/>
-      }
+    var rooms = this.state.items;
+    var processedRooms = [];
+    for (var i=0; i<rooms.length;i++) {
+        var room = rooms[i],
+            position = room.position == null ? i : room.position;
+    processedRooms[position] = <RoomBox key={room._id} room={room} index={position} {...this.movableProps}/>
+    }
     return <ul>{processedRooms}</ul>;
   },
 
@@ -116,11 +116,11 @@ Home = React.createClass({
 
       <div id="contentContainer">
 
-        <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
+        <div id="mainContent" className="col-sm-12 noPadding">
 
           {this.props.header}
 
-          <div className="col-sm-9 noPadding">
+          <div id="content" className="col-sm-9 noPadding">
             <div id="viewVR">
                {this.renderSphere()}
             </div>
