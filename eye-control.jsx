@@ -22,7 +22,6 @@ if (Meteor.isServer) {
 	    ]};
           return Homes.find(selector, options).fetch();
 	  } else {
-          console.log(Homes.find({}, options).fetch());
 	      return Homes.find({}, options).fetch();
 	  }
 	});

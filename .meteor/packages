@@ -25,10 +25,10 @@ kadira:react-layout
 fortawesome:fontawesome
 meteorhacks:picker
 meteorhacks:npm
-meteorhacks:search-source@=1.4.1
 check
 eluck:aws-sdk
 
 
 
 npm-container
+meteorhacks:search-source
