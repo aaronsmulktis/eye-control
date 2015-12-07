@@ -217,12 +217,23 @@ Map = React.createClass({
 MapWrapper = React.createClass({
         mixins: [ReactMeteorData],
         getMeteorData() {
-                var data = {homes: []};
-                var status = HomeSearch.getStatus();
-                if (status.loaded) {
-                    data = {homes: HomeSearch.getData()};
+
+            var data = {homes: []};
+            var handle = Meteor.subscribe("homes");
+            if (handle.ready() && !HomeSearch.getCurrentQuery()) {
+                data = {homes: Homes.find({}, {
+                    sort: {
+                        position: 1
+                    }
+                }).fetch()
                 }
                 return data;
+            }
+            var status = HomeSearch.getStatus();
+            if (status.loaded) {
+                data = {homes: HomeSearch.getData()};
+            }
+            return data;
         },
 
         _handleKey(event){
