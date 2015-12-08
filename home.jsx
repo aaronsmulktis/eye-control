@@ -103,7 +103,7 @@ Home = React.createClass({
                 {this._renderViewOptions()}
                 <div id="desc">
                   <h4>Room Details</h4>
-                  <p>{this.state.items ? this.state.items[0].desc : ""}</p>
+                  <p>{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
                 </div>
               </div>
 
