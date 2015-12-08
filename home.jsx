@@ -69,7 +69,9 @@ Home = React.createClass({
   render() {
       if (this.data.loading) {
           return (
-                  <div className="loader">Loading...</div>
+                <div className="loader-container">
+                  <div className="loader"><span>Loading...</span></div>
+                </div>
           )
       }
       $(document).on('click', 'li.roomBox', function(evt) {

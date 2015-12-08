@@ -2,12 +2,24 @@
 @import "{}/client/styles/globals.import.less";
 @import "{}/client/styles/mixins.import.less";
 
-.loader {
+.loader-container {
+  width: 100%;
+  height: 100%;
   position: absolute;
-  top: 40vh;
   text-align: center;
+  display: table;
+}
+
+.loader {
+  margin: 0 auto;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.loader span {
   background: white;
   padding: 20px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.33);
 }
 
 .navbar-header p {
