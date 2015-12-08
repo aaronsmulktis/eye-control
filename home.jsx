@@ -79,6 +79,7 @@ Home = React.createClass({
           evt.preventDefault();
           // Set the checked property to the opposite of its current value
           Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
+          $('#circTitle').text($(evt.target).closest("li").find(".roomName").text());
           $('#desc').text($(evt.target).closest("li").find(".roomDesc").text());
           return false;
       })
@@ -228,7 +229,7 @@ Home = React.createClass({
     _togglePlaque() {
         var isPlaque = !this.state.isPlaque;
         this.setState({isPlaque : isPlaque });
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'text': this.data.home.name})}})
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'text': $('#circTitle').text()})}});
     }
 });
 
