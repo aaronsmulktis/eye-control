@@ -57,9 +57,9 @@ Home = React.createClass({
           {/* This is a comment */}
           <form className="new-note" onSubmit={this._addNote} >
             <input
-              type="text"
-              ref="noteInput"
-              placeholder="Add a note about this property..." />
+                type="text"
+                ref="noteInput"
+                placeholder="Add a note about this property..." />
           </form>
           <ul>
             {notes}
@@ -77,7 +77,7 @@ Home = React.createClass({
     var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
 
     return (
-            <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+            <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
     );
   },
 
@@ -144,9 +144,10 @@ Home = React.createClass({
             <header id="roomHeader">
               <form className="new-note">
                 <input
-                  type="text"
-                  ref="roomInput"
-                  placeholder="Filter.." />
+                    id="search-rooms"
+                    type="text"
+                    ref="roomInput"
+                    placeholder="Filter.." />
               </form>
               <div id="addRoomBtn" className="">
                 <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
@@ -245,27 +246,27 @@ Home = React.createClass({
       <div id="viewOptions" className="20padding">
         <ul className="list-inline nav-justified">
           <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
               <span className="glyphicon glyphicon-comment"></span>
             </button>
           </li>
           <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
               <span className="glyphicon glyphicon-home"></span>
             </button>
           </li>
           <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
               <span className="glyphicon glyphicon-headphones"></span>
             </button>
           </li>
           <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
               <span className="glyphicon glyphicon-heart"></span>
             </button>
           </li>
           <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
               <span className="glyphicon glyphicon-map-marker"></span>
             </button>
           </li>
@@ -287,21 +288,42 @@ Home = React.createClass({
 
 HomeWrapper = React.createClass({
     mixins: [ReactMeteorData],
-    // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         var data = {};
         var handle = Meteor.subscribe("rooms");
-        if (!handle.ready()) {
+        if (handle.ready() && !RoomSearch.getCurrentQuery()) {
+            var rooms = Rooms.find({homeId: this.props.id}, {
+                sort: {
+                    position: 1
+                }
+            }).fetch()
+                data = {rooms: rooms}
             return data;
         }
-        var rooms = Rooms.find({homeId: this.props.id}, {
-            sort: {
-                position: 1
-            }
-        }).fetch()
-            data = {rooms: rooms}
+        var status = RoomSearch.getStatus();
+        if (status.loaded) {
+            data = {rooms: RoomSearch.getData()};
+        }
         return data;
     },
+
+    _handleKey(event){
+        if (document.getElementById('search-rooms') === document.activeElement) {
+            var text = $(event.target).val().trim();
+            RoomSearch.search(text, {homeId: this.props.id});
+        }
+    },
+
+    componentWillMount(){
+        RoomSearch.search("", {homeId: this.props.id});
+        document.addEventListener("keyup", this._handleKey, false);
+    },
+
+
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this._handleKey, false);
+    },
+
     render: function(){
         return(
             <Home rooms={this.data.rooms} {...this.props} />

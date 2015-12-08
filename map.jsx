@@ -217,7 +217,6 @@ Map = React.createClass({
 MapWrapper = React.createClass({
         mixins: [ReactMeteorData],
         getMeteorData() {
-
             var data = {homes: []};
             var handle = Meteor.subscribe("homes");
             if (handle.ready() && !HomeSearch.getCurrentQuery()) {

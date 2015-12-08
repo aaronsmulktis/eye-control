@@ -3,9 +3,11 @@ if (Meteor.isClient) {
 	  keepHistory: 100 * 60 * 5,
 	  localSearch: true
 	};
-	var fields = ['homeName', 'description'];
+	var homeFields = ['homeName', 'description'];
+	var roomFields = ['homeName', 'description'];
 
-	HomeSearch = new SearchSource('homes', fields, options);
+	HomeSearch = new SearchSource('homes', homeFields, options);
+	RoomSearch = new SearchSource('rooms', roomFields, options);
 
 	Meteor.startup(function () {
 	});
@@ -24,6 +26,24 @@ if (Meteor.isServer) {
 	  } else {
 	      return Homes.find({}, options).fetch();
 	  }
+	});
+
+	SearchSource.defineSource('rooms', function(searchText, opts) {
+        var homeId = opts.homeId;
+	    var options = {sort: {position: 1}};
+	    if(searchText) {
+	        var regExp = buildRegExp(searchText);
+            var selector = {$and: [{$or:
+                                    [
+	                                    {name: regExp},
+	                                    {desc: regExp}]},
+                                   {homeId: homeId}]
+            }
+            return Rooms.find(selector, options).fetch();
+	    } else {
+            var selector = {homeId: homeId};
+	        return Rooms.find(selector, options).fetch();
+	    }
 	});
 
 	function buildRegExp(searchText) {
