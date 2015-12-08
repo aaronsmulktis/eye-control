@@ -56,7 +56,7 @@ Home = React.createClass({
   },
 
   renderRoomBoxes() {
-    var rooms = this.state.items;
+    var rooms = this.state.items || [];
     var processedRooms = [];
     for (var i=0; i<rooms.length;i++) {
         var room = rooms[i],
