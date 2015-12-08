@@ -28,6 +28,7 @@ Home = React.createClass({
   getInitialState() {
     return {
         isPopup: false,
+        isPlaque: false,
         rooms: []
     }
   },
@@ -78,6 +79,7 @@ Home = React.createClass({
           evt.preventDefault();
           // Set the checked property to the opposite of its current value
           Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
+          $('#circTitle').text($(evt.target).closest("li").find(".roomName").text());
           $('#desc').text($(evt.target).closest("li").find(".roomDesc").text());
           return false;
       })
@@ -204,7 +206,7 @@ Home = React.createClass({
         <h4>Headset Options</h4>
         <ul className="list-inline">
           <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+              <button onClick={this._togglePlaque} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
               Plaque
             </button>
           </li>
@@ -218,14 +220,20 @@ Home = React.createClass({
     );
   },
 
-  _renderPlaque() {
-    return (
-        <div id="circ" className="center-block">
-          <h4 id="circTitle">{this.data.home.name}</h4>
-          <p>Built {this.data.home.year}</p>
-        </div>
-    );
-  }
+    _renderPlaque() {
+        return (
+            <div id="circ" className="center-block">
+                <h4 id="circTitle">{this.data.home.name}</h4>
+{/*                <p>Built {this.data.home.year}</p>  */}
+            </div>
+        );
+    },
+
+    _togglePlaque() {
+        var isPlaque = !this.state.isPlaque;
+        this.setState({isPlaque : isPlaque });
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'text': $('#circTitle').text()})}});
+    }
 });
 
 HomeWrapper = React.createClass({
