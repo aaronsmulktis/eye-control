@@ -103,7 +103,6 @@ Home = React.createClass({
 
               <div id="viewDetails" className="col-sm-8">
                 {this._renderViewOptions()}
-                <h4>Room Details</h4>
                 <div>
                   <h4>Room Details</h4>
                   <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
