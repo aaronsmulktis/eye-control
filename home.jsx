@@ -99,7 +99,7 @@ Home = React.createClass({
   render() {
       if (this.data.loading) {
           return (
-                  <div>Loading...</div>
+                  <div className="loader">Loading...</div>
           )
       }
       $(document).on('click', 'li.roomBox', function(evt) {
@@ -221,7 +221,7 @@ Home = React.createClass({
     return (
       <div id="addRoom" className="container-fluid">
         <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
-        <h3>Add a room to 100 Freeman St.</h3>
+        <h3>Add room to {this.data.home.name}</h3>
         <form role="addHome vertCenter" onSubmit={this._addRoom}>
           <div className="form-group">
             <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
@@ -278,8 +278,7 @@ Home = React.createClass({
     return (
         <div id="circ" className="center-block">
           <h4 id="circTitle">{this.data.home.name}</h4>
-          <p>{this.data.home.address}</p>
-          <a href="javascript:;"><i className="fa fa-pencil"></i></a>
+          <p>Built {this.data.home.year}</p>
         </div>
     );
   }

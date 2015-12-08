@@ -95,7 +95,7 @@ Map = React.createClass({
             }
             setTimeout(loadCoords, 100);
         }
-
+        
     },
 
     componentDidUpdate() {
@@ -175,7 +175,7 @@ Map = React.createClass({
     render() {
         if (!this.state.items) {
             return (
-                    <div>Loading...</div>
+                    <div className="loader">Loading...</div>
             );
         }
         return (
@@ -192,9 +192,8 @@ Map = React.createClass({
                                 <div id="searchBar" className="navbar-left">
                                     <form className="navbar-form navbar-left noPadding" role="search">
                                       <div className="form-group">
-                                        <input id="search-homes" type="text" className="form-control" placeholder="Filter properties.."></input>
+                                        <input id="search-homes" type="text" className="form-control" placeholder="Filter listings.."></input>
                                       </div>
-                                      <button type="submit" className="btn btn-default">Go</button>
                                     </form>
                                 </div>
                             </div>
@@ -216,24 +215,16 @@ Map = React.createClass({
 
 MapWrapper = React.createClass({
         mixins: [ReactMeteorData],
+        // Loads items from the Homes collection and puts them on this.data.homes
         getMeteorData() {
+                var data = {homes: []};
+                var status = HomeSearch.getStatus();
 
-            var data = {homes: []};
-            var handle = Meteor.subscribe("homes");
-            if (handle.ready() && !HomeSearch.getCurrentQuery()) {
-                data = {homes: Homes.find({}, {
-                    sort: {
-                        position: 1
-                    }
-                }).fetch()
+                if (status.loaded) {
+                    data = {homes: HomeSearch.getData()};
+                    console.log(data);
                 }
                 return data;
-            }
-            var status = HomeSearch.getStatus();
-            if (status.loaded) {
-                data = {homes: HomeSearch.getData()};
-            }
-            return data;
         },
 
         _handleKey(event){
@@ -252,6 +243,19 @@ MapWrapper = React.createClass({
         componentWillUnmount() {
             document.removeEventListener("keyup", this._handleKey, false);
         },
+/*
+        getHomes: function() {
+        return HomeSearch.getData({
+          transform: function(matchText, regExp) {
+            return matchText.replace(regExp, "<b>$&</b>")
+          },
+          sort: {createdAt: -1}
+        });
+      },
+      isLoading: function() {
+        return HomeSearch.getStatus().loading;
+      },
+      */
 
         render: function(){
 

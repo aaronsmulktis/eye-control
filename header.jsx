@@ -19,8 +19,7 @@ Header = React.createClass({
     var latitude = React.findDOMNode(this.refs.latitudeInput).value.trim();
     var longitude = React.findDOMNode(this.refs.longitudeInput).value.trim();
     var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
-    var slug = React.findDOMNode(this.refs.slugInput).value.trim();
-    var notes = React.findDOMNode(this.refs.notesInput).value.trim();
+    var year = React.findDOMNode(this.refs.yearInput).value.trim();
 
  
     Homes.insert({
@@ -29,8 +28,7 @@ Header = React.createClass({
       latitude: latitude,
       longitude: longitude,
       propPic: propPic,
-      slug: slug,
-      notes: notes,
+      year: year,
 
       createdAt: new Date() // current time
     });
@@ -41,10 +39,9 @@ Header = React.createClass({
     React.findDOMNode(this.refs.latitudeInput).value = "";
     React.findDOMNode(this.refs.longitudeInput).value = "";
     React.findDOMNode(this.refs.propPicInput).value = "";
-    React.findDOMNode(this.refs.slugInput).value = "";
-    React.findDOMNode(this.refs.notesInput).value = "";
+    React.findDOMNode(this.refs.yearInput).value = "";
 
-    this._togglePopup;
+    {this._togglePopup}
   },
 
   _renderAddHome() {
@@ -60,7 +57,7 @@ Header = React.createClass({
 
           <hr></hr>
 
-          <form role="addHome vertCenter" onSubmit={this.addHome}>
+          <form role="addHome vertCenter" onSubmit={this._addHome}>
             <div className="form-group">
               <input type="text" className="form-control" ref="nameInput" placeholder="Name"></input>
             </div>
@@ -78,11 +75,7 @@ Header = React.createClass({
               <input type="text" className="form-control" ref="propPicInput" placeholder="Dropbox much?"></input>
             </div>
             <div className="form-group">
-              <label for="slug">Home URL or slug:</label>
-              <input type="text" className="form-control" ref="slugInput" placeholder="/home-1"></input>
-            </div>
-            <div className="form-group">
-              <textarea type="text" className="form-control" ref="notesInput" placeholder="Notes"></textarea>
+              <input type="text" className="form-control" ref="yearInput" placeholder="Year Built"></input>
             </div>
             <button type="submit" className="btn btn-default">Add</button>
           </form>

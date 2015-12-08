@@ -2,6 +2,16 @@
 @import "{}/client/styles/globals.import.less";
 @import "{}/client/styles/mixins.import.less";
 
+.loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 40vh;
+  text-align: center;
+  background: white;
+  padding: 20px;
+}
+
 .navbar-header p {
   position: absolute;
   font-size: 11px;
@@ -81,7 +91,7 @@ i#logoEye.90degCC {
   z-index: 9999;
   background: white;
   padding: 100px;
-  height: 100vh;
+  height: 100%;
 }
 
 #addHome .close {
@@ -134,13 +144,14 @@ a.homeLink {
   display: flex;
   /* text-align: center; */
   padding: 40px;
+  top: -120px;
 }
 
 #placque a {color: white;}
 #placque a:hover {color: fade(white, 66%);}
 
 #rooms {
-  min-height: 100vh;
+  min-height: 100%;
   background: lighten(@sky, 20%);
   transform: translateZ(0px);
   position: relative;
@@ -199,7 +210,7 @@ a.homeLink {
   z-index: 9999;
   background: white;
   padding: 100px;
-  height: 100vh;
+  height: 100%;
 }
 
 #addRoom .close {
@@ -278,9 +289,11 @@ header .hide-completed {
 
 #mainMap {
 	background: white;
-	height: 90vh;
-  position: relative;
+  position: absolute;
   overflow: hidden;
+  right: 0;
+  top: 0;
+  bottom: 0;
   transform: translateZ(0px);
 }
 
