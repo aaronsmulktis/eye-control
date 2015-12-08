@@ -38,7 +38,7 @@ RoomBox = React.createClass({
         </div>
         <div className="propDetails col-sm-8">
           <h4 className="roomName">{this.props.room.name}</h4>
-          <p className="roomDesc">{this.props.room.desc}</p>
+          <p className="roomDesc">{this.props.room.desc.substring(0,30) + "..."}</p>
         </div>
       </li>
     );

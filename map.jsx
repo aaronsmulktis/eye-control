@@ -175,7 +175,9 @@ Map = React.createClass({
     render() {
         if (!this.state.items) {
             return (
-                    <div className="loader">Loading...</div>
+                    <div className="loader-container">
+                        <div className="loader"><span>Loading...</span></div>
+                    </div>
             );
         }
         return (
@@ -198,7 +200,7 @@ Map = React.createClass({
                                 </div>
                             </div>
 
-                            <h3 className="text-right pad10">All Properties</h3>
+                            <h3 className="text-right pad10 verMar10">All Properties</h3>
 
                             <div className="propList">
                                 {this.renderHomeBoxes()}
