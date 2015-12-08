@@ -1,4 +1,4 @@
-/*global React ReactMeteorData sortable Meteor Homes Rooms Notes Spheres */
+/*global React ReactMeteorData sortable Meteor Homes Rooms Spheres */
 
 // Property component
 Home = React.createClass({
@@ -7,8 +7,7 @@ Home = React.createClass({
   getMeteorData() {
     var data = {}
     var handles = [Meteor.subscribe("home", this.props.id),
-                   Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9"),
-                   Meteor.subscribe("notes")];
+                   Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
 
     function isReady(handle) {
         return handle.ready();
@@ -22,11 +21,6 @@ Home = React.createClass({
 
     return {
         home: thisHome,
-        notes: Notes.find({}, {
-            sort: {
-                createdAt: -1
-            }
-        }).fetch(),
         sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
     }
   },
@@ -45,32 +39,7 @@ Home = React.createClass({
     }
   },
 
-  renderNotes() {
-    // Get notes from this.data.notes
-    let notes = this.data.notes.map((note) => {
-        return <Note key={note._id} note={note} />;
-    });
-
-    return (
-      <div id="viewNotes">
-        <header>
-          {/* This is a comment */}
-          <form className="new-note" onSubmit={this._addNote} >
-            <input
-                type="text"
-                ref="noteInput"
-                placeholder="Add a note about this property..." />
-          </form>
-          <ul>
-            {notes}
-          </ul>
-        </header>
-      </div>
-    );
-  },
-
   renderSphere() {
-    // Get notes from this.data.notes
     if (!this.data.sphere) {
         return;
     }
@@ -91,7 +60,7 @@ Home = React.createClass({
     for (var i=0; i<rooms.length;i++) {
         var room = rooms[i],
             position = room.position == null ? i : room.position;
-    processedRooms[position] = <RoomBox key={room._id} room={room} index={position} {...this.movableProps}/>
+    processedRooms[position] = <RoomBox key={room._id} room={room} desc={room.desc} index={position} {...this.movableProps}/>
     }
     return <ul>{processedRooms}</ul>;
   },
@@ -109,6 +78,7 @@ Home = React.createClass({
           evt.preventDefault();
           // Set the checked property to the opposite of its current value
           Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
+          $('#desc').text($(evt.target).closest("li").find(".roomDesc").text());
           return false;
       })
 
@@ -120,7 +90,7 @@ Home = React.createClass({
 
           {this.props.header}
 
-          <div id="content" className="col-sm-9 noPadding">
+          <div id="content" className="col-sm-8 noPadding">
             <div id="viewVR">
                {this.renderSphere()}
             </div>
@@ -129,17 +99,17 @@ Home = React.createClass({
 
               <div id="viewDetails" className="col-sm-8 noPadding">
                 {this._renderViewOptions()}
-                {this.renderNotes()}
+                <div id="desc" className="pad20">{this.state.items ? this.state.items[0].desc : ""}</div>
               </div>
 
-              <div id="placque" className="col-sm-4">
-                {this._renderPlacque()}
+              <div id="plaque" className="col-sm-4">
+                {this._renderPlaque()}
               </div>
 
             </div>
           </div>
 
-          <div id="rooms" className="col-sm-3">
+          <div id="rooms" className="col-sm-4">
             <h3>Rooms</h3>
             <header id="roomHeader">
               <form className="new-note">
@@ -172,22 +142,6 @@ Home = React.createClass({
 
   _togglePopup() {
     this.setState({ isPopup: !this.state.isPopup });
-  },
-
-  _addNote(e) {
-    e.preventDefault();
-
-    // Find the text field via the React ref
-    var text = React.findDOMNode(this.refs.noteInput).value.trim();
-
-    Notes.insert({
-      text: text,
-      createdAt: new Date() // current time
-    });
-
-    // Clear form
-    React.findDOMNode(this.refs.noteInput).value = "";
-
   },
 
   _addRoom(e) {
@@ -243,31 +197,17 @@ Home = React.createClass({
 
   _renderViewOptions() {
     return (
-      <div id="viewOptions" className="20padding">
-        <ul className="list-inline nav-justified">
+      <div id="viewOptions" className="pad20">
+        <h4>Headset Options</h4>
+        <ul className="list-inline">
           <li>
             <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
-              <span className="glyphicon glyphicon-comment"></span>
+              Plaque
             </button>
           </li>
           <li>
             <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
-              <span className="glyphicon glyphicon-home"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
-              <span className="glyphicon glyphicon-headphones"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
-              <span className="glyphicon glyphicon-heart"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
-              <span className="glyphicon glyphicon-map-marker"></span>
+              Floorplan
             </button>
           </li>
         </ul>
@@ -275,7 +215,7 @@ Home = React.createClass({
     );
   },
 
-  _renderPlacque() {
+  _renderPlaque() {
     return (
         <div id="circ" className="center-block">
           <h4 id="circTitle">{this.data.home.name}</h4>
