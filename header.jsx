@@ -12,7 +12,7 @@ Header = React.createClass({
 
   _addHome(event) {
     event.preventDefault();
- 
+
     // Find the text field via the React ref
     var name = React.findDOMNode(this.refs.nameInput).value.trim();
     var address = React.findDOMNode(this.refs.addressInput).value.trim();
@@ -21,7 +21,7 @@ Header = React.createClass({
     var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
     var year = React.findDOMNode(this.refs.yearInput).value.trim();
 
- 
+
     Homes.insert({
       name: name,
       address: address,
@@ -32,7 +32,7 @@ Header = React.createClass({
 
       createdAt: new Date() // current time
     });
- 
+
     // Clear form
     React.findDOMNode(this.refs.nameInput).value = "";
     React.findDOMNode(this.refs.addressInput).value = "";
@@ -53,7 +53,7 @@ Header = React.createClass({
         <div className="col-sm-8 col-sm-offset-2">
 
           <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
-          <h3>Add A Property</h3>
+          <h3>Add a Property</h3>
 
           <hr></hr>
 
@@ -82,13 +82,13 @@ Header = React.createClass({
 
         </div>
       </div>
- 
+
     );
   },
 
   render() {
     return (
-        
+
       <div>
 
         <nav id="topBar" className="navbar navbar-fixed-top">

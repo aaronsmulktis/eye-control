@@ -95,7 +95,7 @@ Map = React.createClass({
             }
             setTimeout(loadCoords, 100);
         }
-        
+
     },
 
     componentDidUpdate() {
@@ -222,7 +222,6 @@ MapWrapper = React.createClass({
 
                 if (status.loaded) {
                     data = {homes: HomeSearch.getData()};
-                    console.log(data);
                 }
                 return data;
         },
