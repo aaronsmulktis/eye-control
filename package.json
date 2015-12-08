@@ -5,7 +5,7 @@
   "main": "eye-control.html",
   "scripts": {
     "deploy": "meteor deploy eye-control.ruselaboratories.com",
-    "deploydev": "meteor deploy --debug eye-control.meteor.com",
+    "deploydev": "meteor deploy eye-control.meteor.com",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

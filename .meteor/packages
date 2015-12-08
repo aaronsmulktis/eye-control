@@ -32,3 +32,4 @@ eluck:aws-sdk
 
 npm-container
 meteorhacks:search-source
+ejson
