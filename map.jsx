@@ -198,7 +198,7 @@ Map = React.createClass({
                                 </div>
                             </div>
 
-                            <h3 className="text-right borderBottom">All Properties</h3>
+                            <h3 className="text-right pad10">All Properties</h3>
 
                             <div className="propList">
                                 {this.renderHomeBoxes()}

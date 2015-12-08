@@ -97,9 +97,12 @@ Home = React.createClass({
 
             <div id="propDetails">
 
-              <div id="viewDetails" className="col-sm-8 noPadding">
+              <div id="viewDetails" className="col-sm-8">
                 {this._renderViewOptions()}
-                <div id="desc" className="pad20">{this.state.items ? this.state.items[0].desc : ""}</div>
+                <div id="desc">
+                  <h4>Room Details</h4>
+                  <p>{this.state.items ? this.state.items[0].desc : ""}</p>
+                </div>
               </div>
 
               <div id="plaque" className="col-sm-4">
@@ -197,7 +200,7 @@ Home = React.createClass({
 
   _renderViewOptions() {
     return (
-      <div id="viewOptions" className="pad20">
+      <div id="viewOptions">
         <h4>Headset Options</h4>
         <ul className="list-inline">
           <li>
