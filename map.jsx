@@ -186,9 +186,9 @@ Map = React.createClass({
                             {this.props.header}
                     </header>
                     <div className="container-fluid noPadding">
-                        <div className="col-xs-6">
+                        <div className="mapList col-sm-6">
 
-                            <div className="pull-left listOptions">
+                            <div className="listOptions">
                                 <div id="searchBar" className="navbar-left">
                                     <form className="navbar-form navbar-left noPadding" role="search">
                                       <div className="form-group">
@@ -198,14 +198,14 @@ Map = React.createClass({
                                 </div>
                             </div>
 
-                            <h3 className="text-right pad10">All Properties</h3>
+                            <h3 className="propListTitle text-right">All Properties</h3>
 
                             <div className="propList">
                                 {this.renderHomeBoxes()}
                             </div>
                         </div>
-                        <div id="mainMap" className="col-xs-6 noPadding">
-                        </div>
+
+                        <div id="mainMap" className="col-sm-6 noPadding"></div>
                     </div>
                 </div>
             </div>

@@ -68,9 +68,9 @@ Home = React.createClass({
 
   render() {
       if (this.data.loading) {
-          return (
-                  <div className="loader">Loading...</div>
-          )
+        return (
+          <div className="loader">Loading...</div>
+        )
       }
       $(document).on('click', 'li.roomBox', function(evt) {
           if (window.moving) {
@@ -176,7 +176,7 @@ Home = React.createClass({
   _renderAddRoom() {
 
     if(!this.state.isPopup) {
-    return null;
+      return null;
     }
     return (
       <div id="addRoom" className="container-fluid">
