@@ -69,7 +69,9 @@ Home = React.createClass({
   render() {
       if (this.data.loading) {
         return (
-          <div className="loader">Loading...</div>
+          <div className="loader-container">
+            <div className="loader"><span>Loading...</span></div>
+          </div>
         )
       }
       $(document).on('click', 'li.roomBox', function(evt) {
@@ -99,7 +101,7 @@ Home = React.createClass({
 
             <div id="propDetails">
 
-              <div id="viewDetails" className="col-sm-8">
+              <div id="viewDetails" className="col-sm-9">
                 {this._renderViewOptions()}
                 <div id="desc">
                   <h4>Room Details</h4>
@@ -107,7 +109,7 @@ Home = React.createClass({
                 </div>
               </div>
 
-              <div id="plaque" className="col-sm-4">
+              <div id="plaque" className="col-sm-3">
                 {this._renderPlaque()}
               </div>
 

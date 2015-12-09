@@ -2,12 +2,22 @@
 @import "{}/client/styles/globals.import.less";
 @import "{}/client/styles/mixins.import.less";
 
-.loader {
-  position: absolute;
-  top: 40vh;
+.loader-container {
   text-align: center;
+  display: table;
+  width: 100%;
+}
+
+.loader {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100vh;
+}
+
+.loader span {
   background: white;
   padding: 20px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.33);
 }
 
 .navbar-header p {
@@ -197,7 +207,7 @@ a.homeLink {
   border-radius: 50%;
   /*width: 180px;*/
   height: 170px;
-  /*padding: 40px;*/
+  padding: 40px 20px;
   text-align: center;
   display: table-cell;
   border: 1px solid darken(@three, 5%);
@@ -325,6 +335,20 @@ header .hide-completed {
 
 .toggle-private {
   margin-left: 5px;
+}
+
+.aboutPage {
+  height: 100%;
+  .brandGradientLight;
+  display: table;
+  width: 100%;
+  padding: 0 25%;
+}
+
+.aboutPage .aboutContent {
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 @media (max-width: 600px) {

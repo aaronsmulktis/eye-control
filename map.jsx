@@ -175,7 +175,9 @@ Map = React.createClass({
     render() {
         if (!this.state.items) {
             return (
-                    <div className="loader">Loading...</div>
+                <div className="loader-container">
+                    <div className="loader"><span>Loading...</span></div>
+                </div>
             );
         }
         return (

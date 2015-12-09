@@ -91,7 +91,7 @@ Header = React.createClass({
         
       <div>
 
-        <nav id="topBar" className="navbar navbar-fixed-top">
+        <nav id="topBar" className="navbar navbar-fixed-top borderBottom">
           <div className="container-fluid">
 
             <div className="navbar-header">
@@ -106,8 +106,8 @@ Header = React.createClass({
 
             <div className="collapse navbar-collapse">
               <ul className="navbar-nav navbar-right">
-                <li><a href="/">Map</a></li>
-                <li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Property</a></li>
+                <li><a href="/">Listings</a></li>
+                <li><a href="javascript:;" onClick={this._togglePopup}>Add Property</a></li>
                 <li><a href="/about">About</a></li>
               </ul>
             </div>
