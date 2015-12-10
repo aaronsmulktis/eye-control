@@ -3,12 +3,6 @@ HomeBox = React.createClass({
 
   mixins: [sortable.ItemMixin],
 
-  propTypes: {
-    // This component gets the home to display through a React prop.
-    // We can use propTypes to indicate it is required
-    homeBox: React.PropTypes.object.isRequired
-  },
-
   deleteThisHome() {
     Homes.remove({"_id": this.props.home._id});
   },

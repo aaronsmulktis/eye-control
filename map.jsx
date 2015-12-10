@@ -224,7 +224,6 @@ MapWrapper = React.createClass({
 
                 if (status.loaded) {
                     data = {homes: HomeSearch.getData()};
-                    console.log(data);
                 }
                 return data;
         },
