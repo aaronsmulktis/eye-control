@@ -207,7 +207,7 @@ Home = React.createClass({
         React.findDOMNode(this.refs.descInput).value = "";
         React.findDOMNode(this.refs.picUrl).value = "";
 
-        this._togglePopup;
+        this._togglePopup();
     },
 
     _renderAddRoom() {

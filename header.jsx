@@ -41,7 +41,7 @@ Header = React.createClass({
     React.findDOMNode(this.refs.propPicInput).value = "";
     React.findDOMNode(this.refs.yearInput).value = "";
 
-    {this._togglePopup}
+    {this._togglePopup()}
   },
 
   _renderAddHome() {
