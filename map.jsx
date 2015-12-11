@@ -198,6 +198,9 @@ MapWrapper = React.createClass({
             if (document.getElementById('search-homes') === document.activeElement) {
                 var text = $(event.target).val().trim();
                 HomeSearch.search(text);
+                if (event.keyCode == 27) {
+                  $(event.target).val("");
+                }
             }
         },
 

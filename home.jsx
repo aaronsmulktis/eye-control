@@ -302,9 +302,13 @@ HomeWrapper = React.createClass({
     },
 
     _handleKey(event){
-        if (document.getElementById('search-rooms') === document.activeElement) {
+        let search = document.getElementById('search-rooms');
+        if (search === document.activeElement) {
             var text = $(event.target).val().trim();
             RoomSearch.search(text, {homeId: this.props.id});
+            if (event.keyCode == 27) {
+              $(event.target).val("");
+            }
         }
     },
 
