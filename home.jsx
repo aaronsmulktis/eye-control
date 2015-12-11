@@ -29,6 +29,7 @@ Home = React.createClass({
         return {
             isPopup: false,
             isPlaque: false,
+            isFloorplan: false,
             rooms: []
         }
     },
@@ -248,7 +249,7 @@ Home = React.createClass({
                         </button>
                     </li>
                     <li>
-                        <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleFloorplan} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
                         </button>
                     </li>
@@ -270,6 +271,12 @@ Home = React.createClass({
         var isPlaque = !this.state.isPlaque;
         this.setState({isPlaque : isPlaque });
         Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'text': $('#circTitle').text()})}});
+    },
+
+    _toggleFloorplan() {
+        var isFloorplan = !this.state.isFloorplan;
+        this.setState({isFloorplan : isFloorplan});
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': isFloorplan, 'text': $('#circTitle').text()})}});
     }
 });
 
