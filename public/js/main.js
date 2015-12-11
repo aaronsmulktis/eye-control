@@ -22,4 +22,15 @@ jQuery(document).ready(function($) {
             }
         });
     }
+
+    // // Set thumbnail to height of list item
+    // var description = $("div.description");
+    // var big =0;
+    // description.each(function(index, el) {
+    //   if($(el).height() > big)
+    //     big =$(el).height(); //find the largest height
+    // });
+    // description.each(function(index, el) {
+    //   $(el).css("min-height", big+"px"); //assign largest height to all the divs
+    // });
 });

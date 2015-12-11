@@ -62,40 +62,6 @@ Map = React.createClass({
 
     componentDidMount() {
         this.initialize();
-
-        var handle_coords = Meteor.subscribe("coords");
-
-        var updateFrame = function(id, coord) {
-            if (id !== "headset") {
-                    return;
-            }
-            var frame = $('.vr-iframe').first()[0];
-            if (!frame) {
-                    return;
-            }
-            var idx = frame.src.indexOf('#'), url = frame.src;
-            if ( idx > -1 ){
-                    url = url.substr(0, idx);
-            }
-
-            frame.src = url + '#' + coord.coord;
-        }
-
-        if (!handle_coords.ready()) {
-            function loadCoords() {
-                    if (!handle_coords.ready()) {
-                            setTimeout(loadCoords, 100);
-                            return;
-                    }
-                    var query = Coords.find();
-                    handle_coords = query.observeChanges({
-                            added: updateFrame,
-                            changed: updateFrame
-                    });
-            }
-            setTimeout(loadCoords, 100);
-        }
-        
     },
 
     componentDidUpdate() {
@@ -175,9 +141,9 @@ Map = React.createClass({
     render() {
         if (!this.state.items) {
             return (
-                <div className="loader-container">
-                    <div className="loader"><span>Loading...</span></div>
-                </div>
+                    <div className="loader-container">
+                        <div className="loader"><span>Loading...</span></div>
+                    </div>
             );
         }
         return (

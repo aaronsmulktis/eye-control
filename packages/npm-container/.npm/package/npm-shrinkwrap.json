@@ -153,7 +153,7 @@
           }
         },
         "object-assign": {
-          "version": "http://registry.npmjs.org/object-assign/-/object-assign-3.0.0.tgz"
+          "version": "3.0.0"
         },
         "on-finished": {
           "version": "2.3.0",
@@ -188,10 +188,10 @@
       "version": "4.1.2",
       "dependencies": {
         "fd-slicer": {
-          "version": "http://registry.npmjs.org/fd-slicer/-/fd-slicer-1.0.1.tgz",
+          "version": "1.0.1",
           "dependencies": {
             "pend": {
-              "version": "http://registry.npmjs.org/pend/-/pend-1.2.0.tgz"
+              "version": "1.2.0"
             }
           }
         }
