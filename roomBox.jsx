@@ -10,7 +10,10 @@ RoomBox = React.createClass({
   },
 
   deleteThisRoom() {
-    Rooms.remove(this.props.room._id);
+      var result = confirm("Are you sure you want to delete " + this.props.room.name + "?");
+      if (result === true) {
+          Rooms.remove(this.props.room._id);
+      }
   },
 
   getInitialState() {
