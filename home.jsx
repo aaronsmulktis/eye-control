@@ -110,77 +110,66 @@ Home = React.createClass({
                 </div>
             )
         }
-        $(document).on('click', 'li.roomBox', function(evt) {
-            if (window.moving) {
-                return false;
-            }
-            evt.preventDefault();
-            // Set the checked property to the opposite of its current value
-            Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
-            $('#circTitle').text($(evt.target).closest("li").find(".roomName").text());
-            $('#desc').text($(evt.target).closest("li").find(".roomDesc").text());
-            return false;
-        })
 
-            return (
+        return (
 
-                <div id="contentContainer">
+            <div id="contentContainer">
 
-                    <div id="mainContent" className="col-sm-12 noPadding">
+                <div id="mainContent" className="col-sm-12 noPadding">
 
-                        {this.props.header}
+                    {this.props.header}
 
-                        <div id="content" className="col-sm-8 noPadding">
-                            <div id="viewVR">
-                                {this.renderSphere()}
-                            </div>
-
-                            <div id="propDetails">
-
-                                <div id="viewDetails" className="col-sm-8">
-                                    {this._renderViewOptions()}
-                                    <div>
-                                        <h4>Room Details</h4>
-                                        <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
-                                    </div>
-                                </div>
-
-                                <div id="plaque" className="col-sm-4">
-                                    {this._renderPlaque()}
-                                </div>
-
-                            </div>
+                    <div id="content" className="col-sm-8 noPadding">
+                        <div id="viewVR">
+                            {this.renderSphere()}
                         </div>
 
-                        <div id="rooms" className="col-sm-4">
-                            <h3>Rooms</h3>
-                            <header id="roomHeader">
-                                <form className="new-note">
-                                    <input
-                                        id="search-rooms"
-                                        type="text"
-                                        ref="roomInput"
-                                        placeholder="Filter.." />
-                                </form>
-                                <div id="addRoomBtn" className="">
-                                    <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
+                        <div id="propDetails">
+
+                            <div id="viewDetails" className="col-sm-8">
+                                {this._renderViewOptions()}
+                                <div>
+                                    <h4>Room Details</h4>
+                                    <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
                                 </div>
-
-                            </header>
-                            <div id="roomPics" className="noPadding">
-
-                                {this.renderRoomBoxes()}
-
                             </div>
+
+                            <div id="plaque" className="col-sm-4">
+                                {this._renderPlaque()}
+                            </div>
+
                         </div>
-
-                        {this._renderAddRoom()}
-
                     </div>
+
+                    <div id="rooms" className="col-sm-4">
+                        <h3>Rooms</h3>
+                        <header id="roomHeader">
+                            <form className="new-note">
+                                <input
+                                    id="search-rooms"
+                                    type="text"
+                                    ref="roomInput"
+                                    placeholder="Filter.." />
+                            </form>
+                            <div id="addRoomBtn" className="">
+                                <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
+                            </div>
+
+                        </header>
+                        <div id="roomPics" className="noPadding">
+
+                            {this.renderRoomBoxes()}
+
+                        </div>
+                    </div>
+
+                    {this._renderAddRoom()}
 
                 </div>
 
-            );
+            </div>
+
+        );
     },
 
     _togglePopup() {
