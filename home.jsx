@@ -200,7 +200,7 @@ Home = React.createClass({
             desc: desc,
             picUrl: picUrl,
             homeId: this.props.id,
-            createdAt: new Date() // current time
+            createdAt: new Date()
         });
 
         // Clear form
