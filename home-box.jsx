@@ -4,7 +4,10 @@ HomeBox = React.createClass({
   mixins: [sortable.ItemMixin],
 
   deleteThisHome() {
-    Homes.remove({"_id": this.props.home._id});
+      var result = confirm("Are you sure you want to delete " + this.props.home.name + "?");
+      if (result === true) {
+          Homes.remove({"_id": this.props.home._id});
+      }
   },
 
   getInitialState() {

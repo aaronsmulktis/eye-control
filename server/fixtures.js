@@ -6,7 +6,8 @@ if (Spheres.find().count() === 0) {
     var testSphere = {
         _id: testSphereID1,
         name: "virtuocity",
-        sphereUrl: "https://www.dropbox.com/s/tzvc9t2otjhd3qt/nctech-iris360-prototype-sample02.jpg?dl=0"
+        sphereUrl: "https://www.dropbox.com/s/tzvc9t2otjhd3qt/nctech-iris360-prototype-sample02.jpg?dl=0",
+        hud: '{"hud":false,"text":"Eye Control"}'
     }
 
     Spheres.insert(testSphere);
