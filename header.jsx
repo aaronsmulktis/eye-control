@@ -109,6 +109,7 @@ Header = React.createClass({
                 <li><a href="/">Listings</a></li>
                 <li><a href="javascript:;" onClick={this._togglePopup}>Add Property</a></li>
                 <li><a href="/about">About</a></li>
+                <li className="queen"><a href="/about"><img src="https://www.royalwarrant.org/sites/default/files/appointment-queen_0.png" /></a></li>
               </ul>
             </div>
           </div>
