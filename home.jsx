@@ -217,20 +217,22 @@ Home = React.createClass({
         return (
             <div id="addRoom" className="container-fluid">
                 <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
-                <h3>Add room to {this.data.home.name}</h3>
-                <form role="addHome vertCenter" onSubmit={this._addRoom}>
-                    <div className="form-group">
-                        <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
-                    </div>
-                    <div className="form-group">
-                        <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
-                    </div>
-                    <h4>Room Picture URL:</h4>
-                    <div className="form-group">
-                        <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
-                    </div>
 
-                    <button type="submit" className="btn btn-default">Add Room</button>
+                <form className="col-sm-8 col-sm-offset-2" role="addHome" onSubmit={this._addRoom}>
+                  <h3>Add room to {this.data.home.name}</h3>
+                  <hr></hr>
+                  <div className="form-group">
+                      <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
+                  </div>
+                  <div className="form-group">
+                      <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
+                  </div>
+                  <h4>Room Picture URL:</h4>
+                  <div className="form-group">
+                      <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
+                  </div>
+
+                  <button type="submit" className="btn btn-default">Add Room</button>
                 </form>
             </div>
         );
