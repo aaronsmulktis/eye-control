@@ -49,10 +49,12 @@ Header = React.createClass({
       return null;
     }
     return (
-      <div id="addRoom" className="container-fluid">
+      <div id="addHome" className="container-fluid">
+
+        <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
+
         <div className="col-sm-8 col-sm-offset-2">
 
-          <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
           <h3>Add a Property</h3>
 
           <hr></hr>
@@ -77,7 +79,7 @@ Header = React.createClass({
             <div className="form-group">
               <input type="text" className="form-control" ref="yearInput" placeholder="Year Built"></input>
             </div>
-            <button type="submit" className="btn btn-default">Add</button>
+            <button type="submit" className="btn btn-default">Add Property</button>
           </form>
 
         </div>
