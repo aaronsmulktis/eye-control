@@ -70,37 +70,46 @@ postRoutes.route('/api/v1/property/:id/room', function(params, req, res, next) {
             part.on('end',function(){
                 data_obj[key] = value;
             });
-            part.resume();
-            return;
-        }
-        // this is a file
-        if (!filename) {
-            filename = part.filename;
-        }
-        s3Client.putObject({
-            Bucket: bucket,
-            Key: filename,
-            ACL: 'public-read',
-            Body: part,
-            ContentLength: part.byteCount
-        }, function(err, data) {
-            if (err) {
-                res.end(JSON.stringify({ok: false}));
+        } else {
+            // this is a file
+            if (!filename) {
+                filename = part.filename;
             }
-            var picUrl = "http://gleitz.s3.amazonaws.com/" + filename;
-            data_obj.picUrl = picUrl;
-            insertRoom(data_obj, res);
-        });
+            s3Client.putObject({
+                Bucket: bucket,
+                Key: filename,
+                ACL: 'public-read',
+                Body: part,
+                ContentLength: part.byteCount
+            }, function(err, data) {
+                if (err) {
+                    res.end(JSON.stringify({ok: false}));
+                }
+                var picUrl = "http://gleitz.s3.amazonaws.com/" + filename;
+                data_obj.picUrl = picUrl;
+                insertRoom(data_obj, res);
+            });
+        }
     });
     form.parse(req);
 });
 
 var insertRoom = Meteor.bindEnvironment(function(data_obj, res) {
+    var rooms = Rooms.find({homeId: data_obj.homeId}).fetch(),
+        highest_position = 0;
+    for (var i=0; i<rooms.length; i++) {
+        var position = rooms[i];
+        if (position && position > highest_position) {
+            highest_position = position;
+        }
+    }
+
     Rooms.insert({
         name: data_obj.name,
         desc: data_obj.description,
         picUrl: data_obj.picUrl,
         homeId: data_obj.homeId,
+        position: highest_position === 0 ? 0 : highest_position + 1,
         createdAt: new Date()
     });
     res.write(JSON.stringify({ok: true}));

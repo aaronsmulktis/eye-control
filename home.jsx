@@ -184,11 +184,21 @@ Home = React.createClass({
         let desc = React.findDOMNode(this.refs.descInput).value.trim();
         let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
 
+        var rooms = Rooms.find({homeId: data_obj.homeId}).fetch(),
+            highest_position = 0;
+        for (var i=0; i<rooms.length; i++) {
+            var position = rooms[i];
+            if (position && position > highest_position) {
+                highest_position = position;
+            }
+        }
+
         Rooms.insert({
             name: name,
             desc: desc,
             picUrl: picUrl,
             homeId: this.props.id,
+            position: highest_position === 0 ? 0 : highest_position + 1,
             createdAt: new Date()
         });
 
