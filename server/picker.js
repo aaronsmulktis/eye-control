@@ -43,7 +43,8 @@ var postRoutes = Picker.filter(function(req, res) {
 
 postRoutes.route('/api/v1/property/:id/room', function(params, req, res, next) {
     res.writeHead(200, {'Content-Type': 'application/json'});
-    var home = Homes.findOne({_id: params.id});
+    var homeId = params.id;
+    var home = Homes.findOne({_id: homeId});
     if (!home) {
         var data = {ok: false,
                     error: "Property '" + params.id + "' not found"};
@@ -54,7 +55,25 @@ postRoutes.route('/api/v1/property/:id/room', function(params, req, res, next) {
     var form = new multiparty.Form({});
     var bucket = "gleitz";
     var filename;
+    var data_obj = {homeId: homeId};
     form.on('part', function(part) {
+        if (!part.filename) {
+            // this is a field
+            var key = part.name,
+                value = '';
+            part.on('readable',function() {
+                var chunk = part.read();
+                if (chunk != null) {
+                    value += chunk;
+                }
+            });
+            part.on('end',function(){
+                data_obj[key] = value;
+            });
+            part.resume();
+            return;
+        }
+        // this is a file
         if (!filename) {
             filename = part.filename;
         }
@@ -68,10 +87,22 @@ postRoutes.route('/api/v1/property/:id/room', function(params, req, res, next) {
             if (err) {
                 res.end(JSON.stringify({ok: false}));
             }
-            res.write(JSON.stringify({ok: true,
-                       path: "http://gleitz.s3.amazonaws.com/" + filename}));
-            res.end();
+            var picUrl = "http://gleitz.s3.amazonaws.com/" + filename;
+            data_obj.picUrl = picUrl;
+            insertRoom(data_obj, res);
         });
     });
     form.parse(req);
+});
+
+var insertRoom = Meteor.bindEnvironment(function(data_obj, res) {
+    Rooms.insert({
+        name: data_obj.name,
+        desc: data_obj.description,
+        picUrl: data_obj.picUrl,
+        homeId: data_obj.homeId,
+        createdAt: new Date()
+    });
+    res.write(JSON.stringify({ok: true}));
+    res.end();
 });
