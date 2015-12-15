@@ -1,8 +1,9 @@
-@one : #B22B22;
+@one : #EA1D5D;
 @two : #973797;
 @three : #0066ff;
+@four : yellow;
 
-@brand : lighten(@one, 0%);
+@brand : darken(@one, 17%);
 @brandLight : lighten(@one, 30%);
 
 @accent : lighten(@two, 20%);
@@ -10,6 +11,8 @@
 
 @sky : lighten(@three, 20%);
 @skyLight : lighten(@three, 30%);
+
+@grey : #eee;
 
 .noPadding {padding: 0 !important;}
 
@@ -65,18 +68,24 @@
 
 .brandGradient {
 	background-color: @brand;
-	/*background-image: linear-gradient(left top, @one, @two 140%);*/
-	background: -webkit-linear-gradient(left top, @one, @two); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right, @one, @two); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right, @one, @two); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right, @one, @two);
+	/*background-image: linear-gradient(left top, @brand, @two 140%);*/
+	background: -webkit-linear-gradient(left top, @brand, @two); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, @brand, @two); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, @brand, @two); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, @brand, @two);
 }
 
 .brandGradientLight {
 	background-color: @brand;
-	/*background-image: linear-gradient(left top, @one, @two 140%);*/
+	/*background-image: linear-gradient(left top, @brand, @two 140%);*/
 	background: -webkit-linear-gradient(left top, @brandLight, @accentLight); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(bottom right, @brandLight, @accentLight); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(bottom right, @brandLight, @accentLight); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to bottom right, @brandLight, @accentLight);
+}
+
+.transition {
+	-webkit-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }

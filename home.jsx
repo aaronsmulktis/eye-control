@@ -120,29 +120,29 @@ Home = React.createClass({
                     {this.props.header}
 
                     <div id="content" className="col-sm-8 noPadding">
-                        <div id="viewVR">
-                            {this.renderSphere()}
+                      <div id="viewVR">
+                          {this.renderSphere()}
+                          {this._renderViewOptions()}
+                      </div>
+
+                      <div id="propDetails">
+
+                        <div id="viewDetails" className="col-sm-8">
+                            <div>
+                                <h4>Room Details</h4>
+                                <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
+                            </div>
                         </div>
 
-                        <div id="propDetails">
-
-                            <div id="viewDetails" className="col-sm-8">
-                                {this._renderViewOptions()}
-                                <div>
-                                    <h4>Room Details</h4>
-                                    <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
-                                </div>
-                            </div>
-
-                            <div id="plaque" className="col-sm-4">
-                                {this._renderPlaque()}
-                            </div>
-
+                        <div id="plaque" className="col-sm-4">
+                            {this._renderPlaque()}
                         </div>
+
+                      </div>
                     </div>
 
                     <div id="rooms" className="col-sm-4">
-                        <h3>Rooms</h3>
+                        <h3><i className="fa fa-home"></i> Rooms</h3>
                         <header id="roomHeader">
                             <form className="new-note">
                                 <input
@@ -224,8 +224,8 @@ Home = React.createClass({
                     <div className="form-group">
                         <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
                     </div>
+                    <h4>Room Picture URL:</h4>
                     <div className="form-group">
-                        <label for="picUrl">Room Picture URL:</label>
                         <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
                     </div>
 
@@ -238,7 +238,6 @@ Home = React.createClass({
     _renderViewOptions() {
         return (
             <div id="viewOptions">
-                <h4>Headset Options</h4>
                 <ul className="list-inline">
                     <li>
                         <button onClick={this._togglePlaque} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">

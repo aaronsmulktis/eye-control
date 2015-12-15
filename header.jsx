@@ -64,14 +64,14 @@ Header = React.createClass({
             <div className="form-group">
               <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
             </div>
-            <div className="form-group col-sm-6 noPadding">
+            <div className="form-group col-sm-5 noPadding">
               <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
             </div>
-            <div className="form-group col-sm-6 noPadRight">
+            <div className="form-group col-sm-5 col-sm-offset-1 noPadding">
               <input type="text" className="form-control" ref="longitudeInput" placeholder="Longitude"></input>
             </div>
+            <h4>Property Picture URL:</h4>
             <div className="form-group">
-              <label for="picUrl">Property Picture URL:</label>
               <input type="text" className="form-control" ref="propPicInput" placeholder="Dropbox much?"></input>
             </div>
             <div className="form-group">
@@ -109,7 +109,7 @@ Header = React.createClass({
                 <li><a href="/">Listings</a></li>
                 <li><a href="javascript:;" onClick={this._togglePopup}>Add Property</a></li>
                 <li><a href="/about">About</a></li>
-                <li style="padding-left: 0;"><a href="/about"><img src="https://www.royalwarrant.org/sites/default/files/appointment-queen_0.png" style="height: 15px;width: 24px;" /></a></li>
+                <li className="queen"><a href="/about"><img src="https://www.royalwarrant.org/sites/default/files/appointment-queen_0.png" /></a></li>
               </ul>
             </div>
           </div>
