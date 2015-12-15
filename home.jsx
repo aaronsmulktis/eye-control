@@ -131,14 +131,15 @@ Home = React.createClass({
                         {this.props.header}
 
                         <div id="content" className="col-sm-8 noPadding">
+                            <h3 id="propTitle"><span>{this.data.home.name}</span></h3>
                             <div id="viewVR">
                                 {this.renderSphere()}
+                                {this._renderViewOptions()}
                             </div>
 
                             <div id="propDetails">
 
                                 <div id="viewDetails" className="col-sm-8">
-                                    {this._renderViewOptions()}
                                     <div>
                                         <h4>Room Details</h4>
                                         <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
@@ -153,7 +154,7 @@ Home = React.createClass({
                         </div>
 
                         <div id="rooms" className="col-sm-4">
-                            <h3>Rooms</h3>
+                            <h3><i className="fa fa-home"></i> Rooms</h3>
                             <header id="roomHeader">
                                 <form className="new-note">
                                     <input
@@ -171,6 +172,10 @@ Home = React.createClass({
 
                                 {this.renderRoomBoxes()}
 
+                            </div>
+
+                            <div className="roomsToggle">
+                              <span><i className="fa fa-bars"></i></span>
                             </div>
                         </div>
 
@@ -241,7 +246,6 @@ Home = React.createClass({
     _renderViewOptions() {
         return (
             <div id="viewOptions">
-                <h4>Headset Options</h4>
                 <ul className="list-inline">
                     <li>
                         <button onClick={this._togglePlaque} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">

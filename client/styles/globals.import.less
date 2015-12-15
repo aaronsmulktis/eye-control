@@ -1,14 +1,56 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);
-@import url(https://fonts.googleapis.com/css?family=Marcellus);
+/*@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:400,300,500,700,800);*/
+/*@import url(https://fonts.googleapis.com/css?family=Marcellus);*/
+@import url(https://fonts.googleapis.com/css?family=Libre+Baskerville);
+@import url(https://fonts.googleapis.com/css?family=Yantramanav:100);
+
+.font1 {
+	font-family: 'Montserrat';
+	letter-spacing: 1px;
+}
+
+.font2 {
+	font-family: 'Yantramanav', sans-serif;
+	letter-spacing: 1px;
+}
+
+.font3 {
+	font-family: 'Libre Baskerville', serif;
+	line-height: 1.23;
+	/*letter-spacing: 1px;*/
+}
+
+.font4 {
+	font-family: 'Yantramanav', sans-serif;
+	line-height: 1.23;
+	letter-spacing: 1px;
+}
+
+iframe {border: 0 !important;}
+
+img {
+	width: 100%;
+}
+
+a {color: @brand; .transition;}
+a:hover {color: darken(@brand, 10%); .transition;}
+
+h1, h2, h3, h4, h5, h6 {
+	.font1;
+	font-weight: 400;
+	padding: 10px auto !important;
+}
+
+h1:focus, h2:focus, h3:focus, h4:focus {outline:none;}
 
 body {
 	background-color: @brand;
-	/*background-image: linear-gradient(left top, @one, @two 140%);*/
-	background: -webkit-linear-gradient(left top, @one, @two); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right, @one, @two); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right, @one, @two); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right, @one, @two);
+	/*background-image: linear-gradient(left top, @brand, @two 140%);*/
+	background: -webkit-linear-gradient(left top, @brand, @two); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, @brand, @two); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, @brand, @two); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, @brand, @two);
 
 	background-attachment: fixed;
 
@@ -25,33 +67,25 @@ body {
 
 	display: block;
 
-	font-family: 'Ubuntu Mono', sans-serif;
-	font-size: 14px;
-	color: black;
+	.font4;
+	font-size: 17px;
 }
-
-iframe {border: 0 !important;}
-
-img {
-	width: 100%;
-}
-
-a {color: @brand;}
-a:hover {color: darken(@brand, 10%);}
-
-h1, h2, h3, h4, h5, h6 {
-	font-family: 'Montserrat', sans-serif;
-	font-weight: 400;
-	padding: 10px auto !important;
-}
-
-h1:focus, h2:focus, h3:focus, h4:focus {outline:none;}
 
 header {
 }
 
-button:focus, a:focus, input:focus {
+a:focus, a:active {
 	outline: none;
+}
+
+button:focus, input:focus, button:active, input:active {
+	outline: none;
+	.font2;
+}
+
+button, input, textarea, option, select {
+	.font2;
+	font-size: 12px;
 }
 
 #topBar {
@@ -62,7 +96,16 @@ button:focus, a:focus, input:focus {
 }
 
 #topBar ul li {
-  border: 0;
+	border: 0;
+	.font1;
+	font-size: 14px;
+}
+
+#topBar ul li a {padding: 8.5px 15px;}
+
+#topBar ul li a:hover {
+	text-decoration: none;
+	background: @grey;
 }
 
 #mainContent {
@@ -70,7 +113,6 @@ button:focus, a:focus, input:focus {
 	background: white;
 	height: 100%;
 	position: absolute;
-	/*box-shadow: 0px 0px 33px rgba(0,0,0,0.33);*/
 }
 
 #content {
@@ -79,8 +121,16 @@ button:focus, a:focus, input:focus {
 }
 
 #rooms {
-	background: lighten(@sky, 20%);
+	background: @brand;
   	transform: translateZ(0px);
 	height: 100%;
 	overflow: scroll;
+}
+
+#rooms h1, #rooms h2, #rooms h3, #rooms h4, #rooms h5 {
+	color: white;
+}
+
+#rooms i {
+	opacity: 0.33;
 }

@@ -3,11 +3,11 @@ RoomBox = React.createClass({
 
   mixins: [sortable.ItemMixin],
 
-  propTypes: {
-    // This component gets the room to display through a React prop.
-    // We can use propTypes to indicate it is required
-    roomBox: React.PropTypes.object.isRequired
-  },
+  // propTypes: {
+  //   // This component gets the room to display through a React prop.
+  //   // We can use propTypes to indicate it is required
+  //   roomBox: React.PropTypes.object.isRequired
+  // },
 
   deleteThisRoom() {
     Rooms.remove(this.props.room._id);
@@ -15,7 +15,8 @@ RoomBox = React.createClass({
 
   getInitialState() {
       return {
-          condition:false
+        isPopup: false,
+        condition: false
       }
   },
 
@@ -42,5 +43,9 @@ RoomBox = React.createClass({
         </div>
       </li>
     );
+  },
+
+  _togglePopup() {
+    this.setState({ isPopup: !this.state.isPopup });
   }
 });
