@@ -64,14 +64,14 @@ Header = React.createClass({
             <div className="form-group">
               <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
             </div>
-            <div className="form-group col-sm-6 noPadding">
+            <div className="form-group col-sm-5 noPadding">
               <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
             </div>
-            <div className="form-group col-sm-6 noPadRight">
+            <div className="form-group col-sm-5 col-sm-offset-1 noPadding">
               <input type="text" className="form-control" ref="longitudeInput" placeholder="Longitude"></input>
             </div>
+            <h4>Property Picture URL:</h4>
             <div className="form-group">
-              <label for="picUrl">Property Picture URL:</label>
               <input type="text" className="form-control" ref="propPicInput" placeholder="Dropbox much?"></input>
             </div>
             <div className="form-group">

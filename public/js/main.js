@@ -33,4 +33,7 @@ jQuery(document).ready(function($) {
     // description.each(function(index, el) {
     //   $(el).css("min-height", big+"px"); //assign largest height to all the divs
     // });
+
+    
+
 });

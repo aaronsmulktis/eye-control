@@ -232,8 +232,8 @@ Home = React.createClass({
                     <div className="form-group">
                         <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
                     </div>
+                    <h4>Room Picture URL:</h4>
                     <div className="form-group">
-                        <label for="picUrl">Room Picture URL:</label>
                         <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
                     </div>
 
