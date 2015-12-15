@@ -184,7 +184,7 @@ Home = React.createClass({
         let desc = React.findDOMNode(this.refs.descInput).value.trim();
         let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
 
-        var rooms = Rooms.find({homeId: data_obj.homeId}).fetch(),
+        var rooms = Rooms.find({homeId: this.props.id}).fetch(),
             highest_position = 0;
         for (var i=0; i<rooms.length; i++) {
             var position = rooms[i];
