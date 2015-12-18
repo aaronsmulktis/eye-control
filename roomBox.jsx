@@ -1,6 +1,5 @@
 // Room Box component - represents a single todo item
 RoomBox = React.createClass({
-
   mixins: [sortable.ItemMixin],
 
   propTypes: {
@@ -58,5 +57,4 @@ RoomBox = React.createClass({
           </li>
       );
   }
-
 });

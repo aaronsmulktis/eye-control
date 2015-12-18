@@ -30,6 +30,7 @@ Home = React.createClass({
             isPopup: false,
             isPlaque: false,
             isFloorplan: false,
+            isInfoWindow: false,
             rooms: []
         }
     },
@@ -185,11 +186,21 @@ Home = React.createClass({
         let desc = React.findDOMNode(this.refs.descInput).value.trim();
         let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
 
+        var rooms = Rooms.find({homeId: this.props.id}).fetch(),
+            highest_position = 0;
+        for (var i=0; i<rooms.length; i++) {
+            var position = rooms[i];
+            if (position && position > highest_position) {
+                highest_position = position;
+            }
+        }
+
         Rooms.insert({
             name: name,
             desc: desc,
             picUrl: picUrl,
             homeId: this.props.id,
+            position: highest_position === 0 ? 0 : highest_position + 1,
             createdAt: new Date()
         });
 
@@ -242,6 +253,11 @@ Home = React.createClass({
                             Floorplan
                         </button>
                     </li>
+                    <li>
+                        <button onClick={this._toggleInfoWindow} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Info
+                        </button>
+                    </li>
                 </ul>
             </div>
         );
@@ -256,16 +272,22 @@ Home = React.createClass({
         );
     },
 
+    _toggleInfoWindow() {
+        var isInfoWindow = !this.state.isInfoWindow;
+        this.setState({isInfoWindow : isInfoWindow });
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': this.state.isFloorplan, 'infoWindow': isInfoWindow, 'text': $('#circTitle').text()})}});
+    },
+
     _togglePlaque() {
         var isPlaque = !this.state.isPlaque;
         this.setState({isPlaque : isPlaque });
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'text': $('#circTitle').text()})}});
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'floorplan': this.state.isFloorplan, 'infoWindow': this.state.isInfoWindow, 'text': $('#circTitle').text()})}});
     },
 
     _toggleFloorplan() {
         var isFloorplan = !this.state.isFloorplan;
         this.setState({isFloorplan : isFloorplan});
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': isFloorplan, 'text': $('#circTitle').text()})}});
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': isFloorplan, 'infoWindow': this.state.isInfoWindow, 'text': $('#circTitle').text()})}});
     }
 });
 
