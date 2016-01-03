@@ -1,5 +1,13 @@
 /*global React ReactMeteorData sortable Meteor Homes Rooms Spheres classNames */
 
+function getCurrentSphere() {
+    return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
+}
+
+function getCurrentHud() {
+    return JSON.parse(getCurrentSphere().hud)
+}
+
 // Property component
 Home = React.createClass({
     mixins: [ReactMeteorData, sortable.ListMixin],
@@ -21,13 +29,14 @@ Home = React.createClass({
 
         return {
             home: thisHome,
-            sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
+            sphere: getCurrentSphere()
         }
     },
 
     getInitialState() {
         return {
             isPopup: false,
+            isIntroVideo: false,
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
@@ -73,9 +82,10 @@ Home = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         this.setState({items: nextProps.rooms,
-                       isPlaque: nextProps.hud.plaque,
-                       isFloorplan: nextProps.hud.floorplan,
-                       isInfoWindow: nextProps.hud.infoWindow});
+                       isIntroVideo: nextProps.hud.isIntroVideo,
+                       isPlaque: nextProps.hud.isPlaque,
+                       isFloorplan: nextProps.hud.isFloorplan,
+                       isInfoWindow: nextProps.hud.isInfoWindow});
     },
 
     renderRoomBoxes() {
@@ -243,6 +253,7 @@ Home = React.createClass({
 
     _renderViewOptions() {
         var defaultClasses = ['btn', 'btn-default'],
+            introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
             infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
@@ -250,17 +261,22 @@ Home = React.createClass({
             <div id="viewOptions">
                 <ul className="list-inline">
                     <li>
-                        <button onClick={this._togglePlaque} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Intro Video
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Plaque
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleFloorplan} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleInfoWindow} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isInfoWindow")} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Info
                         </button>
                     </li>
@@ -278,23 +294,24 @@ Home = React.createClass({
         );
     },
 
-    _toggleInfoWindow() {
-        var isInfoWindow = !this.state.isInfoWindow;
-        this.setState({isInfoWindow : isInfoWindow });
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': this.state.isFloorplan, 'infoWindow': isInfoWindow, 'text': $('#circTitle').text()})}});
+    _getHud() {
+        return {'isIntroVideo': this.state.isIntroVideo,
+                'isPlaque': this.state.isPlaque,
+                'isFloorplan': this.state.isFloorplan,
+                'isInfoWindow': this.state.isInfoWindow,
+                'text': $('#circTitle').text()}
     },
 
-    _togglePlaque() {
-        var isPlaque = !this.state.isPlaque;
-        this.setState({isPlaque : isPlaque });
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'floorplan': this.state.isFloorplan, 'infoWindow': this.state.isInfoWindow, 'text': $('#circTitle').text()})}});
-    },
-
-    _toggleFloorplan() {
-        var isFloorplan = !this.state.isFloorplan;
-        this.setState({isFloorplan : isFloorplan});
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': isFloorplan, 'infoWindow': this.state.isInfoWindow, 'text': $('#circTitle').text()})}});
+    _toggleViewOption(optionName) {
+        var changedOption = !this.state[optionName];
+        var optionState = {};
+        optionState[optionName] = changedOption;
+        this.setState(optionState);
+        var hud = this._getHud();
+        hud[optionName] = changedOption;
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
     }
+
 });
 
 HomeWrapper = React.createClass({
@@ -309,7 +326,7 @@ HomeWrapper = React.createClass({
         if (!handles.every(isReady)) {
             return data;
         }
-        data.hud = JSON.parse(Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0].hud);
+        data.hud = getCurrentHud();
         if (RoomSearch.getCurrentQuery()) {
             var status = RoomSearch.getStatus();
             if (status.loaded) {
