@@ -1,4 +1,4 @@
-/*global React ReactMeteorData sortable Meteor Homes Rooms Spheres */
+/*global React ReactMeteorData sortable Meteor Homes Rooms Spheres classNames */
 
 // Property component
 Home = React.createClass({
@@ -31,7 +31,8 @@ Home = React.createClass({
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
-            rooms: []
+            rooms: [],
+            // items: [] // Added automatically by the mixin
         }
     },
 
@@ -71,7 +72,10 @@ Home = React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        this.setState({'items': nextProps.rooms});
+        this.setState({items: nextProps.rooms,
+                       isPlaque: nextProps.hud.plaque,
+                       isFloorplan: nextProps.hud.floorplan,
+                       isInfoWindow: nextProps.hud.infoWindow});
     },
 
     renderRoomBoxes() {
@@ -132,7 +136,7 @@ Home = React.createClass({
                         <div id="viewDetails" className="col-sm-8">
                             <div>
                                 <h4>Room Details</h4>
-                                <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
+                                <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
                             </div>
                         </div>
 
@@ -238,21 +242,25 @@ Home = React.createClass({
     },
 
     _renderViewOptions() {
+        var defaultClasses = ['btn', 'btn-default'],
+            plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
+            floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
+            infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
         return (
             <div id="viewOptions">
                 <ul className="list-inline">
                     <li>
-                        <button onClick={this._togglePlaque} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._togglePlaque} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Plaque
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleFloorplan} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleFloorplan} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleInfoWindow} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleInfoWindow} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Info
                         </button>
                     </li>
@@ -292,20 +300,28 @@ Home = React.createClass({
 HomeWrapper = React.createClass({
     mixins: [ReactMeteorData],
     getMeteorData() {
-        var data = {};
-        var handle = Meteor.subscribe("rooms");
-        if (handle.ready() && !RoomSearch.getCurrentQuery()) {
+        var data = {rooms: [], hud: {}};
+        var handles = [Meteor.subscribe("rooms"),
+                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
+        function isReady(handle) {
+            return handle.ready();
+        }
+        if (!handles.every(isReady)) {
+            return data;
+        }
+        data.hud = JSON.parse(Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0].hud);
+        if (RoomSearch.getCurrentQuery()) {
+            var status = RoomSearch.getStatus();
+            if (status.loaded) {
+                data.rooms = RoomSearch.getData();
+            }
+        } else {
             var rooms = Rooms.find({homeId: this.props.id}, {
                 sort: {
                     position: 1
                 }
-            }).fetch()
-                data = {rooms: rooms}
-            return data;
-        }
-        var status = RoomSearch.getStatus();
-        if (status.loaded) {
-            data = {rooms: RoomSearch.getData()};
+            }).fetch();
+            data.rooms = rooms;
         }
         return data;
     },
@@ -333,7 +349,7 @@ HomeWrapper = React.createClass({
 
     render: function(){
         return(
-            <Home rooms={this.data.rooms} {...this.props} />
+            <Home rooms={this.data.rooms} hud={this.data.hud} {...this.props} />
         )
     }
 });
