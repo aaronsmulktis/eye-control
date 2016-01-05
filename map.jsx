@@ -46,7 +46,7 @@ Map = React.createClass({
         this.setState({"mainMap":
             new google.maps.Map(document.getElementById('mainMap'), {
                 scrollwheel: false,
-                center: {lat: 51.507194, lng: -0.118085},
+                center: {lat: 51.491194, lng: -0.200085},
                 zoom: 12,
                 styles: styles
             })
@@ -154,6 +154,9 @@ Map = React.createClass({
                             {this.props.header}
                     </header>
                     <div className="container-fluid noPadding">
+                        
+                        <div id="mainMap" className="col-sm-12 noPadding"></div>
+
                         <div className="mapList col-sm-6">
 
                             <div className="listOptions">
@@ -173,7 +176,8 @@ Map = React.createClass({
                             </div>
                         </div>
 
-                        <div id="mainMap" className="col-sm-6 noPadding"></div>
+                        <div id="mapView" className="col-sm-6"></div>
+
                     </div>
                 </div>
             </div>

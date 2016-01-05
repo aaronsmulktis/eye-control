@@ -29,6 +29,7 @@ HomeBox = React.createClass({
 
     return (
       <li id="homeBox" className={homeClassName + ' noPadding homeBox container-fluid'}>
+        <div className="boxBorder"></div>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
         <div className="homePic col-sm-4 noPadding">

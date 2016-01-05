@@ -111,23 +111,6 @@ i#logoEye.90degCC {
   top: 20px; right: 20px;
 }
 
-#propDetails {
-  /*width: 100px;*/
-  background: white;
-  /*height: 400px;*/
-}
-
-.mapList {
-  height: 100%;
-  position: fixed;
-  overflow: scroll;
-  padding-bottom: 100px;
-}
-
-.propList {
-  background: fade(#eee, 90%);
-}
-
 #mainMap {
   background: white;
   position: absolute;
@@ -149,6 +132,27 @@ i#logoEye.90degCC {
   padding: 6px 8px;
 }
 
+.mapList {
+  height: 100%;
+  position: fixed;
+  overflow: scroll;
+  padding-bottom: 100px;
+}
+
+#search-homes {
+  background: white;
+}
+
+/*.propList {
+  background: fade(#eee, 90%);
+}*/
+
+#propDetails {
+  /*width: 100px;*/
+  background: white;
+  /*height: 400px;*/
+}
+
 .propListTitle {
   margin: 15px 0 10px 0;
 }
@@ -160,11 +164,29 @@ i#logoEye.90degCC {
 .propList ul li {
   display: table;
   width: 100%;
+  background: white;
+  margin: 2px 5px;
 }
 
 .propList ul li:hover {
   background: white;
   cursor: -webkit-grab;
+}
+
+.propList ul li:hover .boxBorder {
+  content: "foo"; /* you need something or it will be invisible at least on Chrome */
+  color: transparent;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  border: 4px solid @brand;
+  z-index: 999;
+  pointer-events: none;
+  .transition;
 }
 
 .homePic {

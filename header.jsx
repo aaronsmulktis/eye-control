@@ -41,6 +41,8 @@ Header = React.createClass({
     React.findDOMNode(this.refs.propPicInput).value = "";
     React.findDOMNode(this.refs.yearInput).value = "";
 
+    Homes.update({_id:items[i]._id}, {$set: {position: i}});
+
     {this._togglePopup()}
   },
 
@@ -111,7 +113,6 @@ Header = React.createClass({
                 <li><a href="/">Listings</a></li>
                 <li><a href="javascript:;" onClick={this._togglePopup}>Add Property</a></li>
                 <li><a href="/about">About</a></li>
-                <li className="queen"><a href="/about"><img src="https://www.royalwarrant.org/sites/default/files/appointment-queen_0.png" /></a></li>
               </ul>
             </div>
           </div>
