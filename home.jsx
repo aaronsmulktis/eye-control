@@ -1,4 +1,12 @@
-/*global React ReactMeteorData sortable Meteor Homes Rooms Spheres */
+/*global React ReactMeteorData sortable Meteor Homes Rooms Spheres classNames */
+
+function getCurrentSphere() {
+    return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
+}
+
+function getCurrentHud() {
+    return JSON.parse(getCurrentSphere().hud)
+}
 
 // Property component
 Home = React.createClass({
@@ -21,17 +29,19 @@ Home = React.createClass({
 
         return {
             home: thisHome,
-            sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
+            sphere: getCurrentSphere()
         }
     },
 
     getInitialState() {
         return {
             isPopup: false,
+            isIntroVideo: false,
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
-            rooms: []
+            rooms: [],
+            // items: [] // Added automatically by the mixin
         }
     },
 
@@ -71,7 +81,11 @@ Home = React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        this.setState({'items': nextProps.rooms});
+        this.setState({items: nextProps.rooms,
+                       isIntroVideo: nextProps.hud.isIntroVideo,
+                       isPlaque: nextProps.hud.isPlaque,
+                       isFloorplan: nextProps.hud.isFloorplan,
+                       isInfoWindow: nextProps.hud.isInfoWindow});
     },
 
     renderRoomBoxes() {
@@ -132,7 +146,7 @@ Home = React.createClass({
                         <div id="viewDetails" className="col-sm-8">
                             <div>
                                 <h4>Room Details</h4>
-                                <p id="desc">{this.state.items && this.state.items.length ? this.state.items[0].desc : ""}</p>
+                                <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
                             </div>
                         </div>
 
@@ -240,21 +254,31 @@ Home = React.createClass({
     },
 
     _renderViewOptions() {
+        var defaultClasses = ['btn', 'btn-default'],
+            introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
+            plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
+            floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
+            infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
         return (
             <div id="viewOptions">
                 <ul className="list-inline">
                     <li>
-                        <button onClick={this._togglePlaque} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Intro Video
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Plaque
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleFloorplan} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleInfoWindow} type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isInfoWindow")} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Info
                         </button>
                     </li>
@@ -272,42 +296,51 @@ Home = React.createClass({
         );
     },
 
-    _toggleInfoWindow() {
-        var isInfoWindow = !this.state.isInfoWindow;
-        this.setState({isInfoWindow : isInfoWindow });
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': this.state.isFloorplan, 'infoWindow': isInfoWindow, 'text': $('#circTitle').text()})}});
+    _getHud() {
+        return {'isIntroVideo': this.state.isIntroVideo,
+                'isPlaque': this.state.isPlaque,
+                'isFloorplan': this.state.isFloorplan,
+                'isInfoWindow': this.state.isInfoWindow,
+                'text': $('#circTitle').text()}
     },
 
-    _togglePlaque() {
-        var isPlaque = !this.state.isPlaque;
-        this.setState({isPlaque : isPlaque });
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': isPlaque, 'floorplan': this.state.isFloorplan, 'infoWindow': this.state.isInfoWindow, 'text': $('#circTitle').text()})}});
-    },
-
-    _toggleFloorplan() {
-        var isFloorplan = !this.state.isFloorplan;
-        this.setState({isFloorplan : isFloorplan});
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify({'hud': this.state.isPlaque, 'floorplan': isFloorplan, 'infoWindow': this.state.isInfoWindow, 'text': $('#circTitle').text()})}});
+    _toggleViewOption(optionName) {
+        var changedOption = !this.state[optionName];
+        var optionState = {};
+        optionState[optionName] = changedOption;
+        this.setState(optionState);
+        var hud = this._getHud();
+        hud[optionName] = changedOption;
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
     }
+
 });
 
 HomeWrapper = React.createClass({
     mixins: [ReactMeteorData],
     getMeteorData() {
-        var data = {};
-        var handle = Meteor.subscribe("rooms");
-        if (handle.ready() && !RoomSearch.getCurrentQuery()) {
+        var data = {rooms: [], hud: {}};
+        var handles = [Meteor.subscribe("rooms"),
+                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
+        function isReady(handle) {
+            return handle.ready();
+        }
+        if (!handles.every(isReady)) {
+            return data;
+        }
+        data.hud = getCurrentHud();
+        if (RoomSearch.getCurrentQuery()) {
+            var status = RoomSearch.getStatus();
+            if (status.loaded) {
+                data.rooms = RoomSearch.getData();
+            }
+        } else {
             var rooms = Rooms.find({homeId: this.props.id}, {
                 sort: {
                     position: 1
                 }
-            }).fetch()
-                data = {rooms: rooms}
-            return data;
-        }
-        var status = RoomSearch.getStatus();
-        if (status.loaded) {
-            data = {rooms: RoomSearch.getData()};
+            }).fetch();
+            data.rooms = rooms;
         }
         return data;
     },
@@ -335,7 +368,7 @@ HomeWrapper = React.createClass({
 
     render: function(){
         return(
-            <Home rooms={this.data.rooms} {...this.props} />
+            <Home rooms={this.data.rooms} hud={this.data.hud} {...this.props} />
         )
     }
 });
