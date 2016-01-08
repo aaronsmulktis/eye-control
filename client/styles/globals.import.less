@@ -1,17 +1,19 @@
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);
+@import url(https://fonts.googleapis.com/css?family=Philosopher:400,700);
+/*@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);*/
 /*@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:400,300,500,700,800);*/
 /*@import url(https://fonts.googleapis.com/css?family=Marcellus);*/
 @import url(https://fonts.googleapis.com/css?family=Libre+Baskerville);
-@import url(https://fonts.googleapis.com/css?family=Yantramanav:100);
+/*@import url(https://fonts.googleapis.com/css?family=Yantramanav:100);*/
+@import url(https://fonts.googleapis.com/css?family=Allerta);
 
 .font1 {
-	font-family: 'Montserrat';
+	font-family: 'Philosopher';
+	font-weight: 400;
 	letter-spacing: 1px;
 }
 
 .font2 {
-	font-family: 'Yantramanav', sans-serif;
+	font-family: 'Alef', sans-serif;
 	letter-spacing: 1px;
 }
 
@@ -22,7 +24,7 @@
 }
 
 .font4 {
-	font-family: 'Yantramanav', sans-serif;
+	font-family: 'Allerta', sans-serif;
 	line-height: 1.23;
 	letter-spacing: 1px;
 }
@@ -31,6 +33,10 @@ iframe {border: 0 !important;}
 
 img {
 	width: 100%;
+}
+
+p {
+	letter-spacing: 0px;
 }
 
 a {color: @brand; .transition;}
@@ -68,7 +74,7 @@ body {
 	display: block;
 
 	.font4;
-	font-size: 17px;
+	font-size: 14px;
 }
 
 header {
@@ -97,7 +103,7 @@ button, input, textarea, option, select {
 
 #topBar ul li {
 	border: 0;
-	.font1;
+	.font2;
 	font-size: 14px;
 }
 
@@ -121,16 +127,16 @@ button, input, textarea, option, select {
 }
 
 #rooms {
-	background: @brand;
+	/*background: @brand;*/
   	transform: translateZ(0px);
 	height: 100%;
 	overflow: scroll;
 }
 
 #rooms h1, #rooms h2, #rooms h3, #rooms h4, #rooms h5 {
-	color: white;
+	/*color: white;*/
 }
 
 #rooms i {
-	opacity: 0.33;
+	/*opacity: 0.33;*/
 }

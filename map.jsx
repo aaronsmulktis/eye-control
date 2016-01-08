@@ -34,6 +34,13 @@ Map = React.createClass({
         }
     },
 
+    getInitialState() {
+        return {
+            isList: false,
+            isMap: false
+        }
+    },
+
     initialize() {
         if (this.state.mainMap) {
                 return;
@@ -138,6 +145,37 @@ Map = React.createClass({
         return <ul>{processedHomes}</ul>;
     },
 
+    renderSearchView() {
+        var defaultClasses = [''],
+            listClasses = classNames(defaultClasses, {active: this.state.isList}),
+            mapClasses = classNames(defaultClasses, {active: this.state.isMap});
+        return (
+            <div id="searchView" className="pull-left">
+                <ul className="list-inline">
+                    <li>
+                        <a onClick={this._toggleViewOption.bind(this, "isList")} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            <i className="fa fa-navicon"></i> List
+                        </a>
+                    </li>
+                    <li>
+                        <a onClick={this._toggleViewOption.bind(this, "isMap")} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            <i className="fa fa-map-marker"></i> Map
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        );
+    },
+
+    _toggleViewOption(optionName) {
+        var changedOption = !this.state[optionName];
+        var optionState = {};
+        optionState[optionName] = changedOption;
+        this.setState(optionState);
+        var hud = this._getHud();
+        hud[optionName] = changedOption;
+    },
+
     render() {
         if (!this.state.items) {
             return (
@@ -155,6 +193,35 @@ Map = React.createClass({
                     </header>
                     <div className="container-fluid noPadding">
                         
+                        <div id="searchOptions" className="col-sm-12">
+                            {this.renderSearchView()}
+                            <div id="searchMap">
+                                <form className="navbar-form navbar-left noPadding" role="search">
+                                  <div className="form-group">
+                                    <input id="search-homes" type="text" className="form-control" placeholder="Search Map.."><i id="searchIcon" className="fa fa-search"></i></input>
+                                  </div>
+                                </form>
+                            </div>
+                            <div id="propTypes">
+                                <ul className="list-inline">
+                                    <li>
+                                        <div className="checkbox">
+                                            <label>
+                                              <input type="checkbox"> For Sale</input>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className="checkbox">
+                                            <label>
+                                              <input type="checkbox"> For Rent</input>
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
                         <div id="mainMap" className="col-sm-12 noPadding"></div>
 
                         <div className="mapList col-sm-6">
