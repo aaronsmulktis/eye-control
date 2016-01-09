@@ -108,6 +108,10 @@ Header = React.createClass({
               <a href="/" className="navbar-brand"><span id="innerLogo">Eye <i id="logoEye" className="fa fa-eye 90degCC"></i> Control</span></a>
             </div>
 
+            <div className="navbar-left">
+              <p className="verMar15">Virtual Reality Powered by Virtuocity</p>
+            </div>
+
             <div className="collapse navbar-collapse">
               <ul className="navbar-nav navbar-right">
                 <li><a href="/"><i className="fa fa-navicon"></i> Listings</a></li>

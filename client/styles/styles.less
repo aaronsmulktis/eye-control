@@ -28,11 +28,13 @@
 
 .navbar-brand {
   font-weight: 700;
-  background: url(img/logo.jpg) no-repeat;
+  background: url(img/knightfrank.svg) no-repeat;
   background-size: cover;
   display: block;
-  min-width: 200px;
+  /*min-width: 200px;*/
   .transition;
+  background-size: 80% 80%;
+  background-position: center left;
 }
 
 .navbar-brand:hover {
@@ -141,6 +143,7 @@ i#logoEye.90degCC {
 #viewOptions {
   position: relative;
   bottom: 60px;
+  left: 5px;
 }
 
 #viewOptions li button.btn-default {
@@ -248,15 +251,16 @@ a.homeLink {
 }
 
 #propTitle {
-  position: absolute;
+  position: relative;
   z-index: 1;
-  background: @brand;
+  background: @accent;
   color: white;
   padding: 8.5px 15px;
+  margin: 0 -17px;
 }
 
 #plaque {
-  display: table;
+  display: none;
   /* text-align: center; */
   /*padding: 40px;*/
   top: -60px;
@@ -292,6 +296,10 @@ a.homeLink {
   vertical-align: middle;
 }
 
+#roomHeader h5 {
+  font-size: 20px;
+}
+
 #roomPics {
   margin-top: 10px;
   height: 100%;
@@ -300,6 +308,10 @@ a.homeLink {
 .roomBox {
   /*height: 90px;*/
   background: white;
+}
+
+#rooms {
+  border-right: 1px solid @grey;
 }
 
 #rooms .roomBox h1,
@@ -326,7 +338,6 @@ a.homeLink {
 }
 
 #addRoomBtn {
-  margin: 15px;
   position: relative;
   top: 0;
   right: 0;

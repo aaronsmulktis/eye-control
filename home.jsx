@@ -137,18 +137,20 @@ Home = React.createClass({
                     <div id="rooms" className="col-sm-4">
 
                         <div className="row-fluid">
-
-                            <h3>{this.data.home.address}</h3>
+                            <h3 id="propTitle">{this.data.home.name}</h3>
+                            <h5>{this.data.home.address}</h5>
                             <p>8 <i className="fa fa-bed"></i> | 2 <i className="fa fa-recycle"></i></p>
-                            <p>Lorem Ipsum</p>
+                            <p>
+                                Buckingham Palace is the London residence and principal workplace of the reigning monarch of the United Kingdom. Located in the City of Westminster, the palace is often at the centre of state occasions and royal hospitality.
+                            </p>
 
                         </div>
 
                         <hr></hr>
 
-                        <div className="row-fluid">
-                            <h3><i className="fa fa-home"></i> Rooms</h3>
-                            <div id="roomHeader">
+                        <div id="roomHeader" className="row-fluid">
+                            <h5><i className="fa fa-home"></i> Rooms</h5>
+                            <div id="roomFilter">
                                 <form className="new-note">
                                     <input
                                         id="search-rooms"
@@ -170,7 +172,6 @@ Home = React.createClass({
                     </div>
 
                     <div id="content" className="col-sm-8 noPadding">
-                      <h3 id="propTitle">{this.data.home.name}</h3>
                       <div id="viewVR">
                           {this.renderSphere()}
                           {this._renderViewOptions()}
