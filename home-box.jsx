@@ -30,6 +30,7 @@ HomeBox = React.createClass({
     return (
       <li id="homeBox" className={homeClassName + ' noPadding homeBox container-fluid'}>
         <div className="boxBorder"></div>
+        <p className="price">£1,230,000</p>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
         <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
         <div className="homePic col-sm-4 noPadding">
@@ -38,6 +39,7 @@ HomeBox = React.createClass({
         <div className="propDetails col-sm-8">
           <h4 className="homeName"><a href={homeLink}>{this.props.home.name}</a></h4>
           <p className="homeDesc">{this.props.home.address}</p>
+          <p>8 <i className="fa fa-bed"></i> | 2 <i className="fa fa-recycle"></i></p>
         </div>
       </li>
     );

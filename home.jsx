@@ -134,8 +134,44 @@ Home = React.createClass({
 
                     {this.props.header}
 
+                    <div id="rooms" className="col-sm-4">
+
+                        <div className="row-fluid">
+                            <h3 id="propTitle">{this.data.home.name}</h3>
+                            <h5>{this.data.home.address}</h5>
+                            <p>8 <i className="fa fa-bed"></i> | 2 <i className="fa fa-recycle"></i></p>
+                            <p>
+                                Buckingham Palace is the London residence and principal workplace of the reigning monarch of the United Kingdom. Located in the City of Westminster, the palace is often at the centre of state occasions and royal hospitality.
+                            </p>
+
+                        </div>
+
+                        <hr></hr>
+
+                        <div id="roomHeader" className="row-fluid">
+                            <h5><i className="fa fa-home"></i> Rooms</h5>
+                            <div id="roomFilter">
+                                <form className="new-note">
+                                    <input
+                                        id="search-rooms"
+                                        type="text"
+                                        ref="roomInput"
+                                        placeholder="Filter.." />
+                                </form>
+                                <div id="addRoomBtn" className="pull-right">
+                                    <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
+                                </div>
+
+                            </div>
+                            <div id="roomPics" className="noPadding">
+
+                                {this.renderRoomBoxes()}
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="content" className="col-sm-8 noPadding">
-                      <h3 id="propTitle">{this.data.home.name}</h3>
                       <div id="viewVR">
                           {this.renderSphere()}
                           {this._renderViewOptions()}
@@ -155,28 +191,6 @@ Home = React.createClass({
                         </div>
 
                       </div>
-                    </div>
-
-                    <div id="rooms" className="col-sm-4">
-                        <h3><i className="fa fa-home"></i> Rooms</h3>
-                        <header id="roomHeader">
-                            <form className="new-note">
-                                <input
-                                    id="search-rooms"
-                                    type="text"
-                                    ref="roomInput"
-                                    placeholder="Filter.." />
-                            </form>
-                            <div id="addRoomBtn" className="">
-                                <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
-                            </div>
-
-                        </header>
-                        <div id="roomPics" className="noPadding">
-
-                            {this.renderRoomBoxes()}
-
-                        </div>
                     </div>
 
                     {this._renderAddRoom()}

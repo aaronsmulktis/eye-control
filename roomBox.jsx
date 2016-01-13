@@ -45,6 +45,7 @@ RoomBox = React.createClass({
 
       return (
           <li onClick={this.selectRoom} className={roomClassName + ' noPadding roomBox container-fluid'}>
+              <div className="boxBorder"></div>
               <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
               <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
               <div className="roomPic col-sm-4 noPadding">

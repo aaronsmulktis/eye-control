@@ -28,11 +28,13 @@
 
 .navbar-brand {
   font-weight: 700;
-  background: url(img/logo.jpg) no-repeat;
+  background: url(img/knightfrank.svg) no-repeat;
   background-size: cover;
   display: block;
-  min-width: 200px;
+  /*min-width: 200px;*/
   .transition;
+  background-size: 80% 80%;
+  background-position: center left;
 }
 
 .navbar-brand:hover {
@@ -121,9 +123,27 @@ i#logoEye.90degCC {
   transform: translateZ(0px);
 }
 
+#searchOptions {
+  background: @brand;
+  color: white;
+  position: relative;
+  z-index: 999;
+  padding: 0 10px;
+}
+
+#searchView {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+#searchView a {color: white; opacity: 0.66}
+#searchView a:hover {color: white; text-decoration: none; cursor: pointer; opacity: 1}
+#searchView a.on {color: white; opacity: 1}
+
 #viewOptions {
   position: relative;
   bottom: 60px;
+  left: 5px;
 }
 
 #viewOptions li button.btn-default {
@@ -136,11 +156,16 @@ i#logoEye.90degCC {
   height: 100%;
   position: fixed;
   overflow: scroll;
-  padding-bottom: 100px;
+  padding: 50px 0 100px 10px;
 }
 
 #search-homes {
   background: white;
+}
+
+#searchMap #searchIcon {
+  color: @brand !important;
+  margin-left: -25px !important;
 }
 
 /*.propList {
@@ -161,11 +186,17 @@ i#logoEye.90degCC {
   color: black;
 }
 
+.propList a:hover {
+  color: @brand;
+  text-decoration: none;
+}
+
 .propList ul li {
   display: table;
   width: 100%;
   background: white;
-  margin: 2px 5px;
+  margin: 5px 0px;
+  color: fade(black, 50%);
 }
 
 .propList ul li:hover {
@@ -173,7 +204,7 @@ i#logoEye.90degCC {
   cursor: -webkit-grab;
 }
 
-.propList ul li:hover .boxBorder {
+.propList ul li:hover .boxBorder, #roomPics ul li:hover .boxBorder {
   content: "foo"; /* you need something or it will be invisible at least on Chrome */
   color: transparent;
   position: absolute;
@@ -188,6 +219,8 @@ i#logoEye.90degCC {
   pointer-events: none;
   .transition;
 }
+
+.homeName {}
 
 .homePic {
   padding: 10px;
@@ -218,15 +251,16 @@ a.homeLink {
 }
 
 #propTitle {
-  position: absolute;
+  position: relative;
   z-index: 1;
-  background: @brand;
+  background: @accent;
   color: white;
   padding: 8.5px 15px;
+  margin: 0 -17px;
 }
 
 #plaque {
-  display: table;
+  display: none;
   /* text-align: center; */
   /*padding: 40px;*/
   top: -60px;
@@ -262,7 +296,12 @@ a.homeLink {
   vertical-align: middle;
 }
 
+#roomHeader h5 {
+  font-size: 20px;
+}
+
 #roomPics {
+  margin-top: 10px;
   height: 100%;
 }
 
@@ -271,12 +310,20 @@ a.homeLink {
   background: white;
 }
 
+#rooms {
+  border-right: 1px solid @grey;
+}
+
 #rooms .roomBox h1,
 #rooms .roomBox h2,
 #rooms .roomBox h3,
 #rooms .roomBox h4,
 #rooms .roomBox h5 {
   color: black;
+}
+
+#roomPics ul li {
+  margin: 10px 0;
 }
 
 #roomPics ul li:hover {
@@ -291,11 +338,12 @@ a.homeLink {
 }
 
 #addRoomBtn {
-  margin: 15px;
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
-  background: lighten(@brand, 25%);
+  /*background: lighten(@brand, 25%);*/
+  background: @brand;
+  margin-top: -80px;
 }
 
 #addRoomBtn a {
@@ -306,8 +354,8 @@ a.homeLink {
 }
 
 #addRoomBtn a:hover {
-  background: lighten(@brand, 20%);
-  color: fade(white, 66%);
+  background: darken(@brand, 10%);
+  /*color: fade(white, 66%);*/
   text-decoration: none;
   .transition;
 }
@@ -363,11 +411,18 @@ img {
   z-index: 1;
 }
 
+.price {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  z-index: 1;
+}
+
 li {
   position: relative;
   list-style: none;
-  padding: 15px;
-  border-bottom: #eee solid 1px;
+  padding: 14px;
+  /*border-bottom: #eee solid 1px;*/
 }
 
 li .text {
@@ -407,7 +462,8 @@ header .hide-completed {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
-  font-size: 22px;
+  font-size: 14px;
+  line-height: 1.5em;
 }
 
 @media (max-width: 600px) {
