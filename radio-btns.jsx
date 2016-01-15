@@ -1,4 +1,4 @@
-var RadioBtns = React.createClass({
+RadioBtns = React.createClass({
   getInitialState: function () {
     return {
       site: '',
@@ -54,11 +54,11 @@ var RadioBtns = React.createClass({
   }
 });
 
-var RadioContainer = React.createClass({
+RadioContainer = React.createClass({
   render: function(){
-    return <div><SearchResult data={[
-      {SITE_NAME: 'google.com', ADDRESS: 'Mountain View, CA'},
-      {SITE_NAME: 'example.com', ADDRESS: 'Example Place, CA'}
-    ]}/></div>
+      return <div><RadioBtns data={[
+          {SITE_NAME: 'google.com', ADDRESS: 'Mountain View, CA'},
+          {SITE_NAME: 'example.com', ADDRESS: 'Example Place, CA'}
+      ]}/></div>
   }
 });
