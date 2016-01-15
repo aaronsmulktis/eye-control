@@ -32,7 +32,7 @@ FlowRouter.route('/list', {
 
 FlowRouter.route('/radio', {
   action: function() {
-    ReactLayout.render(RadioBtn, {
+    ReactLayout.render(RadioContainer, {
       header: <Header />,
     });
   }
