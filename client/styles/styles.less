@@ -106,10 +106,11 @@ i#logoEye.90degCC {
   background: white;
   padding: 100px;
   height: 100%;
+  overflow: scroll;
 }
 
 #addHome .close {
-  position: absolute;
+  position: fixed;
   top: 20px; right: 20px;
 }
 
@@ -142,7 +143,7 @@ i#logoEye.90degCC {
 
 #viewOptions {
   position: relative;
-  bottom: 60px;
+  bottom: 110px;
   left: 5px;
 }
 
@@ -201,7 +202,7 @@ i#logoEye.90degCC {
 
 .propList ul li:hover {
   background: white;
-  cursor: -webkit-grab;
+  /*cursor: -webkit-grab;*/
 }
 
 .propList ul li:hover .boxBorder, #roomPics ul li:hover .boxBorder {
@@ -220,9 +221,32 @@ i#logoEye.90degCC {
   .transition;
 }
 
+.propList ul li a#homeLink {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .homeName {}
 
+.propDetails {
+  pointer-events: none;
+}
+
+.propDetails p i.fa-recycle:before {
+  content: "";
+  color: @grey !important;
+  width: 1em;
+  height: 1.1em;
+  display: block;
+  background: url(img/bathroom.svg) no-repeat;
+  background-position: 0 2px;
+  opacity: 0.5;
+}
+
 .homePic {
+  pointer-events: none;
   padding: 10px;
   background-color: #fff;
   background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScyMCcgdmlld0JveD0nMCAwIDUgMTAnPgoJPHJlY3Qgd2lkdGg9JzExMCUnIHg9Jy01JScgeT0nLTUlJyBoZWlnaHQ9JzExMCUnIGZpbGw9JyNmZmYnLz4KCTxsaW5lIHgxPSctMicgeTE9JzEnIHgyPSc3JyB5Mj0nMTAnIHN0cm9rZT0nI2RkZCcgc3Ryb2tlLXdpZHRoPScuNScvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjZGRkJyBzdHJva2Utd2lkdGg9Jy41Jy8+Cgk8bGluZSB4MT0nLTInIHkxPSctNCcgeDI9JzcnIHkyPSc1JyBzdHJva2U9JyNkZGQnIHN0cm9rZS13aWR0aD0nLjUnLz4KPC9zdmc+);
@@ -327,7 +351,7 @@ a.homeLink {
 }
 
 #roomPics ul li:hover {
-  cursor: -webkit-grab;
+  cursor: pointer;
 }
 
 .roomPic {

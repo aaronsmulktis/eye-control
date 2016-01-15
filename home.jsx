@@ -137,11 +137,12 @@ Home = React.createClass({
                     <div id="rooms" className="col-sm-4">
 
                         <div className="row-fluid">
-                            <h3 id="propTitle">{this.data.home.name}</h3>
-                            <h5>{this.data.home.address}</h5>
-                            <p>8 <i className="fa fa-bed"></i> | 2 <i className="fa fa-recycle"></i></p>
+                            <h2 id="propTitle">{this.data.home.name}</h2>
+                            <h5>{this.data.home.price}</h5>
+                            <h6>{this.data.home.address}</h6>
+                            <p>{this.data.home.rooms} <i className="fa fa-bed"></i> | {this.data.home.baths} <i className="fa fa-recycle"></i></p>
                             <p>
-                                Buckingham Palace is the London residence and principal workplace of the reigning monarch of the United Kingdom. Located in the City of Westminster, the palace is often at the centre of state occasions and royal hospitality.
+                                {this.data.home.desc}
                             </p>
 
                         </div>
@@ -297,6 +298,15 @@ Home = React.createClass({
                         </button>
                     </li>
                 </ul>
+
+                <div className="hudOptions">
+                    <form role="form">
+                        <label className="radio-inline"><input type="radio" name="isIntroVideo">Intro Video</input></label>
+                        <label className="radio-inline"><input type="radio" name="isPlaque">Plaque</input></label>
+                        <label className="radio-inline"><input type="radio" name="isFloorplan">Floorplan</input></label>
+                        <label className="radio-inline"><input type="radio" name="isInfoWindow">Info</input></label>
+                    </form>
+                </div>
             </div>
         );
     },

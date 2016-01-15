@@ -30,6 +30,14 @@ FlowRouter.route('/list', {
   }
 });
 
+FlowRouter.route('/radio', {
+  action: function() {
+    ReactLayout.render(RadioBtn, {
+      header: <Header />,
+    });
+  }
+});
+
 FlowRouter.route('/home/:id', {
   name: 'home',
   action: function(params) {

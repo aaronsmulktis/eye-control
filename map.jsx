@@ -203,7 +203,7 @@ Map = React.createClass({
                                 </form>
                             </div>
                             <div id="propTypes">
-                                <ul className="list-inline">
+                                <ul className="list-inline pull-left">
                                     <li>
                                         <div className="checkbox">
                                             <label>
@@ -219,6 +219,26 @@ Map = React.createClass({
                                         </div>
                                     </li>
                                 </ul>
+                            </div>
+                            <div id="propOptions">
+                                <div className="form-group pull-left pad10 noMargin">
+                                  <select className="form-control" id="roomSelect">
+                                    <option>Bedrooms</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                  </select>
+                                </div>
+                                <div className="form-group pull-left pad10 noMargin">
+                                  <select className="form-control" id="bathSelect">
+                                    <option>Bathrooms</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                  </select>
+                                </div>
                             </div>
                         </div>
 

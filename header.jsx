@@ -15,31 +15,42 @@ Header = React.createClass({
 
     // Find the text field via the React ref
     var name = React.findDOMNode(this.refs.nameInput).value.trim();
+    var desc = React.findDOMNode(this.refs.propDesc).value.trim();
+    var price = React.findDOMNode(this.refs.priceInput).value.trim();
     var address = React.findDOMNode(this.refs.addressInput).value.trim();
     var latitude = React.findDOMNode(this.refs.latitudeInput).value.trim();
     var longitude = React.findDOMNode(this.refs.longitudeInput).value.trim();
-    var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
+    var rooms = React.findDOMNode(this.refs.roomsInput).value.trim();
     var year = React.findDOMNode(this.refs.yearInput).value.trim();
+    var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
 
 
     Homes.insert({
       name: name,
+      desc: desc,
+      price: price,
       address: address,
       latitude: latitude,
       longitude: longitude,
-      propPic: propPic,
+      rooms: rooms,
+      baths: baths,
       year: year,
+      propPic: propPic,
 
       createdAt: new Date() // current time
     });
 
     // Clear form
     React.findDOMNode(this.refs.nameInput).value = "";
+    React.findDOMNode(this.refs.propDesc).value = "";
+    React.findDOMNode(this.refs.priceInput).value = "";
     React.findDOMNode(this.refs.addressInput).value = "";
     React.findDOMNode(this.refs.latitudeInput).value = "";
     React.findDOMNode(this.refs.longitudeInput).value = "";
-    React.findDOMNode(this.refs.propPicInput).value = "";
     React.findDOMNode(this.refs.yearInput).value = "";
+    React.findDOMNode(this.refs.roomsInput).value = "";
+    React.findDOMNode(this.refs.bathsInput).value = "";
+    React.findDOMNode(this.refs.propPicInput).value = "";
 
     Homes.update({_id:items[i]._id}, {$set: {position: i}});
 
@@ -63,23 +74,44 @@ Header = React.createClass({
 
           <form role="addHome vertCenter" onSubmit={this._addHome}>
             <div className="form-group">
-              <input type="text" className="form-control" ref="nameInput" placeholder="Name"></input>
+              <input type="text" className="form-control" ref="nameInput" placeholder="Property Name"></input>
             </div>
+            <div className="form-group">
+              <textarea className="form-control" ref="propDesc" placeholder="Tell us about this property"></textarea>
+            </div>
+            <div className="form-group">
+              <input type="text" className="form-control" ref="priceInput" placeholder="Price"></input>
+            </div>
+
             <div className="form-group">
               <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
             </div>
+            <div className="form-group col-sm-5 noPadding">
+              <input type="text" className="form-control" ref="roomsInput" placeholder="How many rooms?"></input>
+            </div>
+            <div className="form-group col-sm-5 col-sm-offset-1 noPadding">
+              <input type="text" className="form-control" ref="bathsInput" placeholder="How many baths?"></input>
+            </div>
+            <div className="form-group">
+              <input type="text" className="form-control" ref="yearInput" placeholder="Year Built"></input>
+            </div>
+
+            <hr></hr>
+            
+            <h4>Location</h4>
             <div className="form-group col-sm-5 noPadding">
               <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
             </div>
             <div className="form-group col-sm-5 col-sm-offset-1 noPadding">
               <input type="text" className="form-control" ref="longitudeInput" placeholder="Longitude"></input>
             </div>
-            <h4>Property Picture URL:</h4>
-            <div className="form-group">
-              <input type="text" className="form-control" ref="propPicInput" placeholder="Dropbox much?"></input>
-            </div>
             <div className="form-group">
               <input type="text" className="form-control" ref="yearInput" placeholder="Year Built"></input>
+            </div>
+
+            <h4>Property Picture URL</h4>
+            <div className="form-group">
+              <input type="text" className="form-control" ref="propPicInput" placeholder="Image URL"></input>
             </div>
             <button type="submit" className="btn btn-default">Add Property</button>
           </form>

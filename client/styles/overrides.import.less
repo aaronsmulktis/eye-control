@@ -44,7 +44,7 @@ li {border: 0;}
 }
 
 .btn-default:focus, .btn-default.focus {
-	border-color: darken(#eee, 10%);
+	border-color: darken(@grey, 10%);
 	outline: none;
 }
 
@@ -59,16 +59,19 @@ li {border: 0;}
 input.form-control, textarea.form-control {
   box-sizing: border-box;
   padding: 10px;
-  background: transparent;
+  background: fade(@grey, 66%);
   border: none;
   width: 100%;
   padding-right: 80px;
   font-size: 1em;
   border-radius: 0px;
   box-shadow: none;
+  border: 1px solid fade(@grey, 66%);
 }
 
 input:focus, .form-control:focus {
   outline: 0;
+  border: 1px solid @grey;
   box-shadow: none;
+  .transition;
 }
