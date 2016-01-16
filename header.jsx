@@ -1,4 +1,19 @@
 Header = React.createClass({
+    mixins: [ReactMeteorData],
+    getMeteorData() {
+        var data = {}
+        var handles = [Meteor.subscribe("homes")];
+
+        if (!handles.every(utils.isReady)) {
+            data.loading = true;
+            return data;
+        }
+        var homes = Homes.find().fetch();
+
+        return {
+            homes: homes
+        }
+    },
 
   getInitialState() {
     return {
@@ -21,6 +36,8 @@ Header = React.createClass({
     var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
     var year = React.findDOMNode(this.refs.yearInput).value.trim();
 
+    var homes = this.data.homes,
+        highest_position = utils.getHighestPosition(homes);
 
     Homes.insert({
       name: name,
@@ -29,7 +46,7 @@ Header = React.createClass({
       longitude: longitude,
       propPic: propPic,
       year: year,
-
+      position: highest_position,
       createdAt: new Date() // current time
     });
 
@@ -40,8 +57,6 @@ Header = React.createClass({
     React.findDOMNode(this.refs.longitudeInput).value = "";
     React.findDOMNode(this.refs.propPicInput).value = "";
     React.findDOMNode(this.refs.yearInput).value = "";
-
-    Homes.update({_id:items[i]._id}, {$set: {position: i}});
 
     {this._togglePopup()}
   },

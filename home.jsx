@@ -17,10 +17,7 @@ Home = React.createClass({
         var handles = [Meteor.subscribe("home", this.props.id),
                        Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
 
-        function isReady(handle) {
-            return handle.ready();
-        }
-        if (!handles.every(isReady)) {
+        if (!handles.every(utils.isReady)) {
             data.loading = true;
             return data;
         }
@@ -215,20 +212,14 @@ Home = React.createClass({
         let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
 
         var rooms = Rooms.find({homeId: this.props.id}).fetch(),
-            highest_position = 0;
-        for (var i=0; i<rooms.length; i++) {
-            var position = rooms[i].position;
-            if (position && position > highest_position) {
-                highest_position = position;
-            }
-        }
+            highest_position = utils.getHighestPosition(rooms);
 
         Rooms.insert({
             name: name,
             desc: desc,
             picUrl: picUrl,
             homeId: this.props.id,
-            position: highest_position === 0 ? 0 : highest_position + 1,
+            position: highest_position,
             createdAt: new Date()
         });
 
@@ -336,10 +327,7 @@ HomeWrapper = React.createClass({
         var data = {rooms: [], hud: {}};
         var handles = [Meteor.subscribe("rooms"),
                        Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
-        function isReady(handle) {
-            return handle.ready();
-        }
-        if (!handles.every(isReady)) {
+        if (!handles.every(utils.isReady)) {
             return data;
         }
         data.hud = getCurrentHud();

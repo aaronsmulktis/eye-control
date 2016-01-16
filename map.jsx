@@ -192,7 +192,7 @@ Map = React.createClass({
                             {this.props.header}
                     </header>
                     <div className="container-fluid noPadding">
-                        
+
                         <div id="searchOptions" className="col-sm-12">
                             {this.renderSearchView()}
                             <div id="searchMap">
@@ -253,55 +253,69 @@ Map = React.createClass({
 });
 
 MapWrapper = React.createClass({
-        mixins: [ReactMeteorData],
-        // Loads items from the Homes collection and puts them on this.data.homes
-        getMeteorData() {
-                let data = {homes: []};
-                let status = HomeSearch.getStatus();
-
-                if (status.loaded) {
-                    data = {homes: HomeSearch.getData()};
-                }
-                return data;
-        },
-
-        _handleKey(event){
-            if (document.getElementById('search-homes') === document.activeElement) {
-                var text = $(event.target).val().trim();
-                HomeSearch.search(text);
-                if (event.keyCode == 27) {
-                  $(event.target).val("");
-                }
-            }
-        },
-
-        componentWillMount(){
-            HomeSearch.search("");
-            document.addEventListener("keyup", this._handleKey, false);
-        },
-
-
-        componentWillUnmount() {
-            document.removeEventListener("keyup", this._handleKey, false);
-        },
-/*
-        getHomes: function() {
-        return HomeSearch.getData({
-          transform: function(matchText, regExp) {
-            return matchText.replace(regExp, "<b>$&</b>")
-          },
-          sort: {createdAt: -1}
-        });
-      },
-      isLoading: function() {
-        return HomeSearch.getStatus().loading;
-      },
-      */
-
-        render: function(){
-
-                return(
-                        <Map homes={this.data.homes} {...this.props} />
-                )
+    mixins: [ReactMeteorData],
+    // Loads items from the Homes collection and puts them on this.data.homes
+    getMeteorData() {
+        let data = {homes: []};
+        var handles = [Meteor.subscribe("homes")];
+        if (!handles.every(utils.isReady)) {
+            return data;
         }
+
+        if (HomeSearch.getCurrentQuery()) {
+            var status = HomeSearch.getStatus();
+            if (status.loaded) {
+                data.homes = HomeSearch.getData();
+            }
+        } else {
+            var homes = Homes.find({}, {
+                sort: {
+                    position: 1
+                }
+            }).fetch();
+            data.homes = homes;
+        }
+
+        return data;
+    },
+
+    _handleKey(event){
+        if (document.getElementById('search-homes') === document.activeElement) {
+            var text = $(event.target).val().trim();
+            HomeSearch.search(text);
+            if (event.keyCode == 27) {
+                $(event.target).val("");
+            }
+        }
+    },
+
+    componentWillMount(){
+        HomeSearch.search("");
+        document.addEventListener("keyup", this._handleKey, false);
+    },
+
+
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this._handleKey, false);
+    },
+    /*
+       getHomes: function() {
+       return HomeSearch.getData({
+       transform: function(matchText, regExp) {
+       return matchText.replace(regExp, "<b>$&</b>")
+       },
+       sort: {createdAt: -1}
+       });
+       },
+       isLoading: function() {
+       return HomeSearch.getStatus().loading;
+       },
+     */
+
+    render: function(){
+
+        return(
+            <Map homes={this.data.homes} {...this.props} />
+        )
+    }
 });
