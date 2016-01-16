@@ -8,11 +8,13 @@ RoomBox = React.createClass({
       roomBox: React.PropTypes.object.isRequired
   },
 
-  deleteThisRoom() {
+  deleteThisRoom(evt) {
+      evt.preventDefault();
       var result = confirm("Are you sure you want to delete " + this.props.room.name + "?");
       if (result === true) {
           Rooms.remove(this.props.room._id);
       }
+      return false;
   },
 
   selectRoom(evt) {
@@ -44,7 +46,7 @@ RoomBox = React.createClass({
             vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.room.picUrl) + '&resize=1&width=200';
 
       return (
-          <li onClick={this.selectRoom} className={roomClassName + ' noPadding roomBox container-fluid'}>
+          <li onClick={this.selectRoom} className={roomClassName + ' roomBox container-fluid'}>
               <div className="boxBorder"></div>
               <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
               <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>

@@ -217,7 +217,7 @@ Home = React.createClass({
         var rooms = Rooms.find({homeId: this.props.id}).fetch(),
             highest_position = 0;
         for (var i=0; i<rooms.length; i++) {
-            var position = rooms[i];
+            var position = rooms[i].position;
             if (position && position > highest_position) {
                 highest_position = position;
             }

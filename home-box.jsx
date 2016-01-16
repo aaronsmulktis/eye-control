@@ -28,7 +28,7 @@ HomeBox = React.createClass({
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';
 
     return (
-      <li id="homeBox" className={homeClassName + ' noPadding homeBox container-fluid'}>
+      <li id="homeBox" className={homeClassName + ' homeBox container-fluid'}>
         <div className="boxBorder"></div>
         <p className="price">£1,230,000</p>
         <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
