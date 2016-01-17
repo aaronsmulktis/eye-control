@@ -34,3 +34,5 @@ npm-container
 meteorhacks:search-source
 ejson
 maxharris9:classnames
+cosmos:browserify
+praneybehl:react-select

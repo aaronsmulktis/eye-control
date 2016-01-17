@@ -139,7 +139,11 @@ Home = React.createClass({
                         <div className="row-fluid">
                             <h2 id="propTitle">{this.data.home.name}</h2>
                             <h5>{this.data.home.price}</h5>
-                            <h6>{this.data.home.address}</h6>
+                            <p>
+                                {this.data.home.street}, {this.data.home.apt} <br />
+                                {this.data.home.city}, {this.data.home.postal} <br />
+                                {this.data.home.country}
+                            </p>
                             <p>{this.data.home.rooms} <i className="fa fa-bed"></i> | {this.data.home.baths} <i className="fa fa-recycle"></i></p>
                             <p>
                                 {this.data.home.desc}

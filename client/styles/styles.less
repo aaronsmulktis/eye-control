@@ -157,10 +157,11 @@ i#logoEye.90degCC {
   height: 100%;
   position: fixed;
   overflow: scroll;
-  padding: 50px 0 100px 10px;
+  padding: 55px 0 100px 10px;
+  .transition;
 }
 
-#search-homes {
+#search-homes, #searchMapInput {
   background: white;
 }
 
@@ -197,7 +198,7 @@ i#logoEye.90degCC {
   width: 100%;
   background: white;
   margin: 5px 0px;
-  color: fade(black, 50%);
+  /*color: fade(black, 50%);*/
 }
 
 .propList ul li:hover {
@@ -234,7 +235,7 @@ i#logoEye.90degCC {
   pointer-events: none;
 }
 
-.propDetails p i.fa-recycle:before {
+.propDetails p i.fa-recycle:before, #rooms p i.fa-recycle:before {
   content: "";
   color: @grey !important;
   width: 1em;
@@ -242,7 +243,6 @@ i#logoEye.90degCC {
   display: block;
   background: url(img/bathroom.svg) no-repeat;
   background-position: 0 2px;
-  opacity: 0.5;
 }
 
 .homePic {
@@ -266,7 +266,7 @@ a.homeLink {
   background: transparent;
   border: none;
   width: 100%;
-  padding-right: 80px;
+  /*padding-right: 80px;*/
   font-size: 1em;
 }
 

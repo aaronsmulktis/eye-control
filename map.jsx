@@ -1,4 +1,4 @@
-var styles = [
+let styles = [
     {
         stylers: [
                 { hue: "#00ffe6" },
@@ -18,6 +18,42 @@ var styles = [
                 { visibility: "off" }
         ]
     }
+];
+
+let bedOptions = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+    { value: '6', label: '6' },
+    { value: '7', label: '7' },
+    { value: '8', label: '8' },
+    { value: '9', label: '9' },
+    { value: '10', label: '10' },
+    { value: '11', label: '11' },
+    { value: '12', label: '12' },
+    { value: '13', label: '13' },
+    { value: '14', label: '14' },
+    { value: '15', label: '15' }
+];
+
+let bathOptions = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' }
+];
+
+let sortOptions = [
+    { value: 'price:hi-lo', label: 'Price: Hi - Lo' },
+    { value: 'price:lo-hi', label: 'Price: Lo - Hi ' },
+    { value: 'city:a-z', label: 'City: A - Z' },
+    { value: 'city:z-a', label: 'City: Z - A' },
+    { value: 'beds:hi-lo', label: 'Beds: Hi - Lo' },
+    { value: 'beds:lo-hi', label: 'Beds: Lo - Hi' },
+    { value: 'baths:hi-lo', label: 'Baths: Hi - Lo' },
+    { value: 'baths:lo-hi', label: 'Baths: Lo - Hi' }
 ];
 
 
@@ -176,7 +212,12 @@ Map = React.createClass({
         hud[optionName] = changedOption;
     },
 
+    // logChange(val) {
+    //     console.log("Selected: " + val);
+    // },
+
     render() {
+
         if (!this.state.items) {
             return (
                     <div className="loader-container">
@@ -198,7 +239,7 @@ Map = React.createClass({
                             <div id="searchMap">
                                 <form className="navbar-form navbar-left noPadding" role="search">
                                   <div className="form-group">
-                                    <input id="search-homes" type="text" className="form-control" placeholder="Search Map.."><i id="searchIcon" className="fa fa-search"></i></input>
+                                    <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search Map.."><i id="searchIcon" className="fa fa-search"></i></input>
                                   </div>
                                 </form>
                             </div>
@@ -222,22 +263,18 @@ Map = React.createClass({
                             </div>
                             <div id="propOptions">
                                 <div className="form-group pull-left pad10 noMargin">
-                                  <select className="form-control" id="roomSelect">
-                                    <option>Bedrooms</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                  </select>
+                                    <Select
+                                        name="bedrooms"
+                                        placeholder="Bedrooms"
+                                        options={bedOptions}
+                                    />
                                 </div>
                                 <div className="form-group pull-left pad10 noMargin">
-                                  <select className="form-control" id="bathSelect">
-                                    <option>Bathrooms</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                  </select>
+                                    <Select
+                                        name="baths"
+                                        placeholder="Baths"
+                                        options={bathOptions}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -247,13 +284,23 @@ Map = React.createClass({
                         <div className="mapList col-sm-6">
 
                             <div className="listOptions">
-                                <div id="searchBar" className="navbar-left">
+                                <div id="searchBar" className="navbar-left pull-left">
                                     <form className="navbar-form navbar-left noPadding" role="search">
                                       <div className="form-group">
-                                        <input id="search-homes" type="text" className="form-control" placeholder="Filter listings.."></input>
+                                        <input id="search-homes" type="text" className="font4 pad10" placeholder="Filter listings.."></input>
                                       </div>
                                     </form>
                                 </div>
+
+                                <div className="form-group pull-left pad10 noMargin">
+                                    <Select
+                                        name="bedrooms"
+                                        value="price:hi-lo"
+                                        placeholder="Sort"
+                                        options={sortOptions}
+                                    />
+                                </div>
+
                             </div>
 
                             <h3 className="propListTitle text-right">All Properties</h3>
