@@ -64,7 +64,7 @@ Map = React.createClass({
     mixins: [sortable.ListMixin],
 
     onBeforeSetState: function(items){
-        for(var i = 0; i < items.length; i++) {
+        for(let i = 0; i < items.length; i++) {
             items[i].position = i;
             Homes.update({_id:items[i]._id}, {$set: {position: i}});
         }
@@ -81,7 +81,7 @@ Map = React.createClass({
         if (this.state.mainMap) {
                 return;
         }
-        var initialize = this.initialize;
+        let initialize = this.initialize;
         if (!window.google || !document.getElementById('mainMap')) {
                 setTimeout(initialize, 300);
                 return;
@@ -117,8 +117,8 @@ Map = React.createClass({
     },
 
     createMarker(lat, lon, html, link) {
-        var state = this.state;
-        var house = {
+        let state = this.state;
+        let house = {
                 path: google.maps.SymbolPath.CIRCLE,
                 fillColor: 'red',
                 fillOpacity: 0.66,
@@ -126,12 +126,12 @@ Map = React.createClass({
                 scale: 8
         };
 
-        var shape = {
+        let shape = {
                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                 type: 'poly'
         };
 
-        var newMarker = new google.maps.Marker({
+        let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
                 icon: house,
@@ -160,21 +160,21 @@ Map = React.createClass({
     },
 
     processHomes(homes) {
-        var processHomes = this.processHomes;
+        let processHomes = this.processHomes;
         if (!window.google || !this.state.mainMap) {
             setTimeout(function() { processHomes(homes) }, 300);
             return;
         }
-        for (var i = 0; i < homes.length; i++) {
+        for (let i = 0; i < homes.length; i++) {
             this.createMarker(homes[i].latitude, homes[i].longitude, homes[i].name, 'home/' + homes[i]._id);
         }
     },
 
     renderHomeBoxes() {
-        var homes = this.state.items;
-        var processedHomes = [];
-        for (var i=0; i<homes.length;i++) {
-            var home = homes[i],
+        let homes = this.state.items;
+        let processedHomes = [];
+        for (let i=0; i<homes.length;i++) {
+            let home = homes[i],
                     position = home.position == null ? i : home.position;
             processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
@@ -182,7 +182,7 @@ Map = React.createClass({
     },
 
     renderSearchView() {
-        var defaultClasses = [''],
+        let defaultClasses = [''],
             listClasses = classNames(defaultClasses, {active: this.state.isList}),
             mapClasses = classNames(defaultClasses, {active: this.state.isMap});
         return (
@@ -204,11 +204,11 @@ Map = React.createClass({
     },
 
     _toggleViewOption(optionName) {
-        var changedOption = !this.state[optionName];
-        var optionState = {};
+        let changedOption = !this.state[optionName];
+        let optionState = {};
         optionState[optionName] = changedOption;
         this.setState(optionState);
-        var hud = this._getHud();
+        let hud = this._getHud();
         hud[optionName] = changedOption;
     },
 
@@ -334,7 +334,7 @@ MapWrapper = React.createClass({
 
         _handleKey(event){
             if (document.getElementById('search-homes') === document.activeElement) {
-                var text = $(event.target).val().trim();
+                let text = $(event.target).val().trim();
                 HomeSearch.search(text);
                 if (event.keyCode == 27) {
                   $(event.target).val("");
