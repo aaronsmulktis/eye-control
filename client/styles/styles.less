@@ -207,7 +207,7 @@ i#logoEye.90degCC {
 }
 
 .propList ul li:hover .boxBorder, #roomPics ul li:hover .boxBorder {
-  content: "foo"; /* you need something or it will be invisible at least on Chrome */
+  content: " "; // you need something or it will be invisible at least on Chrome
   color: transparent;
   position: absolute;
   left: 0px;
@@ -330,8 +330,12 @@ a.homeLink {
 }
 
 .roomBox {
-  /*height: 90px;*/
-  background: white;
+    padding: 10px 0;
+    background: white;
+}
+
+.homeBox {
+    padding: 5px 0;
 }
 
 #rooms {
@@ -344,10 +348,6 @@ a.homeLink {
 #rooms .roomBox h4,
 #rooms .roomBox h5 {
   color: black;
-}
-
-#roomPics ul li {
-  margin: 10px 0;
 }
 
 #roomPics ul li:hover {
@@ -365,8 +365,7 @@ a.homeLink {
   position: relative;
   top: 0;
   right: 0;
-  /*background: lighten(@brand, 25%);*/
-  background: @brand;
+  background: lighten(@brand, 10%);
   margin-top: -80px;
 }
 

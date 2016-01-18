@@ -1,4 +1,4 @@
-/*global Picker Coords Homes Rooms Meteor */
+/*global Picker Coords Homes Rooms Meteor AWS */
 
 var bodyParser = Meteor.npmRequire('body-parser');
 var multiparty = Meteor.npmRequire('multiparty');
@@ -7,6 +7,58 @@ var s3Client = new AWS.S3({
     accessKeyId: "AKIAIJGHG2GEWKQ3QBKA",
     secretAccessKey: "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"
 });
+
+var _getPartHandler = function(res, data_obj, callback) {
+    var isImageIncluded = false,
+        bucket = "gleitz",
+        filename;
+    setTimeout(function() {
+        if (!isImageIncluded) {
+            callback(data_obj, res);
+        }
+    }, 1000);
+    return function(part) {
+        if (!part.filename) {
+            // this is a field
+            var key = part.name,
+                value = '';
+            if (key == "description") {
+                key = "desc";
+            }
+            part.on('readable',function() {
+                var chunk = part.read();
+                if (chunk != null) {
+                    value += chunk;
+                }
+            });
+            part.on('end',function() {
+                data_obj[key] = value;
+            });
+        } else {
+            // this is a file
+            if (!filename) {
+                filename = part.filename;
+            }
+            isImageIncluded = true;
+            s3Client.putObject({
+                Bucket: bucket,
+                Key: filename,
+                ACL: 'public-read',
+                Body: part,
+                ContentLength: part.byteCount
+            }, function(err, data) {
+                if (err) {
+                    res.end(JSON.stringify({ok: false}));
+                }
+                var picUrl = "http://gleitz.s3.amazonaws.com/" + filename;
+                data_obj.picUrl = picUrl;
+                callback(data_obj, res);
+            });
+        }
+    }
+}
+var _handlePart = function(res, data_obj, callback, part) {
+}
 
 Picker.route('/api/v1/coord/update', function(params, req, res, next) {
     var coord = params['query']["coord"];
@@ -112,45 +164,9 @@ putRoutes.route('/api/v1/property/:home_id/room/:room_id', function(params, req,
     }
 
     var form = new multiparty.Form({});
-    var bucket = "gleitz";
-    var filename;
     var data_obj = {homeId: homeId,
                     roomId: roomId};
-    form.on('part', function(part) { // TODO(gleitz): DRY
-        if (!part.filename) {
-            // this is a field
-            var key = part.name,
-                value = '';
-            part.on('readable',function() {
-                var chunk = part.read();
-                if (chunk != null) {
-                    value += chunk;
-                }
-            });
-            part.on('end',function(){
-                data_obj[key] = value;
-            });
-        } else {
-            // this is a file
-            if (!filename) {
-                filename = part.filename;
-            }
-            s3Client.putObject({
-                Bucket: bucket,
-                Key: filename,
-                ACL: 'public-read',
-                Body: part,
-                ContentLength: part.byteCount
-            }, function(err, data) {
-                if (err) {
-                    res.end(JSON.stringify({ok: false}));
-                }
-                var picUrl = "http://gleitz.s3.amazonaws.com/" + filename;
-                data_obj.picUrl = picUrl;
-                updateRoom(data_obj, res);
-            });
-        }
-    });
+    form.on('part', _getPartHandler(res, data_obj, updateRoom));
     form.parse(req);
 });
 
@@ -169,41 +185,7 @@ postRoutes.route('/api/v1/property/:id/room', function(params, req, res, next) {
     var bucket = "gleitz";
     var filename;
     var data_obj = {homeId: homeId};
-    form.on('part', function(part) {
-        if (!part.filename) {
-            // this is a field
-            var key = part.name,
-                value = '';
-            part.on('readable',function() {
-                var chunk = part.read();
-                if (chunk != null) {
-                    value += chunk;
-                }
-            });
-            part.on('end',function(){
-                data_obj[key] = value;
-            });
-        } else {
-            // this is a file
-            if (!filename) {
-                filename = part.filename;
-            }
-            s3Client.putObject({
-                Bucket: bucket,
-                Key: filename,
-                ACL: 'public-read',
-                Body: part,
-                ContentLength: part.byteCount
-            }, function(err, data) {
-                if (err) {
-                    res.end(JSON.stringify({ok: false}));
-                }
-                var picUrl = "http://gleitz.s3.amazonaws.com/" + filename;
-                data_obj.picUrl = picUrl;
-                insertRoom(data_obj, res);
-            });
-        }
-    });
+    form.on('part', _getPartHandler(res, data_obj, insertRoom));
     form.parse(req);
 });
 
@@ -218,13 +200,12 @@ var insertRoom = Meteor.bindEnvironment(function(data_obj, res) {
     }
 
     var objectToInsert = {
-        name: data_obj.name,
-        desc: data_obj.description,
-        picUrl: data_obj.picUrl,
-        homeId: data_obj.homeId,
         position: highest_position === 0 ? 0 : highest_position + 1,
         createdAt: new Date()
     };
+    for (var attrname in data_obj) {
+        objectToInsert[attrname] = data_obj[attrname];
+    }
     Rooms.insert(objectToInsert, function(err, record) {
         res.write(JSON.stringify({
             ok: true,
@@ -234,13 +215,14 @@ var insertRoom = Meteor.bindEnvironment(function(data_obj, res) {
 });
 
 var updateRoom = Meteor.bindEnvironment(function(data_obj, res) {
+    var objectToUpdate = {createdAt: new Date()};
+    for (var attrname in data_obj) {
+        if (attrname != "roomId") {
+            objectToUpdate[attrname] = data_obj[attrname];
+        }
+    }
     Rooms.update({_id: data_obj.roomId},
-                 {$set: {
-                     name: data_obj.name,
-                     desc: data_obj.description,
-                     picUrl: data_obj.picUrl,
-                     createdAt: new Date()
-                 }}, function(err) {
+                 {$set: objectToUpdate}, function(err) {
                      res.write(JSON.stringify({
                          ok: true}));
                      res.end();
