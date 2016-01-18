@@ -142,9 +142,47 @@ i#logoEye.90degCC {
 #searchView a.on {color: white; opacity: 1}
 
 #viewOptions {
-  position: relative;
+  /*position: relative;
   bottom: 110px;
-  left: 5px;
+  left: 5px;*/
+}
+
+/* == Radio Buttons == */
+
+/*#viewOptions [type="radio"]:not(:checked),
+#viewOptions [type="radio"]:checked {
+  display: none;
+}*/
+
+#viewOptions [type="radio"] + label {
+  position: relative;
+  cursor: pointer;
+  padding: 3px 0 0 35px;
+  line-height: 25px;
+  top: -7px;
+  left: -18px;
+  pointer-events: none;
+}
+
+#viewOptions [type="radio"] + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+#viewOptions [type="radio"]:not(:checked) + label:before {
+  border-radius: 50%;
+  border: 2px solid #888;
+}
+
+#viewOptions [type="radio"]:checked + label:before {
+  border-radius: 50%;
+  border: 2px solid @brand;
+  background-color: @brand;
 }
 
 #viewOptions li button.btn-default {
@@ -152,6 +190,13 @@ i#logoEye.90degCC {
   width: 35px;*/
   padding: 6px 8px;
 }
+
+#viewOptions ul#viewOptionsBtns li {
+  padding: 5px;
+  float: left;
+}
+
+#viewOptions ul#viewOptionsBtns li:last-child {}
 
 .mapList {
   height: 100%;

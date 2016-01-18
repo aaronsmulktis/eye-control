@@ -43,6 +43,7 @@ FlowRouter.route('/home/:id', {
   action: function(params) {
     ReactLayout.render(HomeWrapper, {
       header: <Header />,
+      radioBtns: <RadioContainer />,
       id: params.id
     });
   }

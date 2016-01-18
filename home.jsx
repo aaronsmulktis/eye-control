@@ -176,12 +176,16 @@ Home = React.createClass({
                     <div id="content" className="col-sm-8 noPadding">
                       <div id="viewVR">
                           {this.renderSphere()}
-                          {this._renderViewOptions()}
                       </div>
 
                       <div id="propDetails">
 
                         <div id="viewDetails" className="col-sm-8">
+                            <h4>Viewer Options:</h4>
+                            {this._renderViewOptions()}
+
+                            <hr></hr>
+
                             <div>
                                 <h4>Room Details</h4>
                                 <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
@@ -295,12 +299,7 @@ Home = React.createClass({
                 </ul>
 
                 <div className="hudOptions">
-                    <form role="form">
-                        <label className="radio-inline"><input type="radio" name="isIntroVideo">Intro Video</input></label>
-                        <label className="radio-inline"><input type="radio" name="isPlaque">Plaque</input></label>
-                        <label className="radio-inline"><input type="radio" name="isFloorplan">Floorplan</input></label>
-                        <label className="radio-inline"><input type="radio" name="isInfoWindow">Info</input></label>
-                    </form>
+                    {this.props.radioBtns}
                 </div>
             </div>
         );
@@ -327,7 +326,9 @@ Home = React.createClass({
         let changedOption = !this.state[optionName];
         let optionState = {};
         optionState[optionName] = changedOption;
+
         this.setState(optionState);
+        
         let hud = this._getHud();
         hud[optionName] = changedOption;
         Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
