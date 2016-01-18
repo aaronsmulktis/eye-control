@@ -13,15 +13,15 @@ Home = React.createClass({
     mixins: [ReactMeteorData, sortable.ListMixin],
 
     getMeteorData() {
-        var data = {}
-        var handles = [Meteor.subscribe("home", this.props.id),
+        let data = {}
+        let handles = [Meteor.subscribe("home", this.props.id),
                        Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
 
         if (!handles.every(utils.isReady)) {
             data.loading = true;
             return data;
         }
-        var homes = Homes.find({_id: this.props.id}).fetch(),
+        let homes = Homes.find({_id: this.props.id}).fetch(),
             thisHome = homes[0];
 
         return {
@@ -43,17 +43,17 @@ Home = React.createClass({
     },
 
     componentDidMount() {
-        var handle_coords = Meteor.subscribe("coords");
+        let handle_coords = Meteor.subscribe("coords");
 
-        var updateFrame = function(id, coord) {
+        let updateFrame = function(id, coord) {
             if (id !== "headset") {
                 return;
             }
-            var frame = $('.vr-iframe').first()[0];
+            let frame = $('.vr-iframe').first()[0];
             if (!frame) {
                 return;
             }
-            var idx = frame.src.indexOf('#'), url = frame.src;
+            let idx = frame.src.indexOf('#'), url = frame.src;
             if ( idx > -1 ){
                 url = url.substr(0, idx);
             }
@@ -67,7 +67,7 @@ Home = React.createClass({
                     setTimeout(loadCoords, 100);
                     return;
                 }
-                var query = Coords.find();
+                let query = Coords.find();
                 handle_coords = query.observeChanges({
                     added: updateFrame,
                     changed: updateFrame
@@ -86,10 +86,10 @@ Home = React.createClass({
     },
 
     renderRoomBoxes() {
-        var rooms = this.state.items;
-        var processedRooms = [];
-        for (var i=0; i<rooms.length;i++) {
-            var room = rooms[i],
+        let rooms = this.state.items;
+        let processedRooms = [];
+        for (let i=0; i<rooms.length;i++) {
+            let room = rooms[i],
                 position = room.position == null ? i : room.position;
             processedRooms[position] = <RoomBox key={room._id} room={room} desc={room.desc} index={position} {...this.movableProps}/>
                                           }
@@ -97,7 +97,7 @@ Home = React.createClass({
     },
 
     onBeforeSetState: function(items){
-        for(var i = 0; i < items.length; i++) {
+        for(let i = 0; i < items.length; i++) {
             items[i].position = i;
             Rooms.update({_id:items[i]._id}, {$set: {position: i}});
         }
@@ -107,7 +107,7 @@ Home = React.createClass({
         if (!this.data.sphere) {
             return;
         }
-        var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
+        let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
 
         return (
             <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
@@ -216,7 +216,7 @@ Home = React.createClass({
         let desc = React.findDOMNode(this.refs.descInput).value.trim();
         let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
 
-        var rooms = Rooms.find({homeId: this.props.id}).fetch(),
+        let rooms = Rooms.find({homeId: this.props.id}).fetch(),
             highest_position = utils.getHighestPosition(rooms);
 
         Rooms.insert({
@@ -264,7 +264,7 @@ Home = React.createClass({
     },
 
     _renderViewOptions() {
-        var defaultClasses = ['btn', 'btn-default'],
+        let defaultClasses = ['btn', 'btn-default'],
             introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
@@ -324,11 +324,11 @@ Home = React.createClass({
     },
 
     _toggleViewOption(optionName) {
-        var changedOption = !this.state[optionName];
-        var optionState = {};
+        let changedOption = !this.state[optionName];
+        let optionState = {};
         optionState[optionName] = changedOption;
         this.setState(optionState);
-        var hud = this._getHud();
+        let hud = this._getHud();
         hud[optionName] = changedOption;
         Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
     }
@@ -338,20 +338,20 @@ Home = React.createClass({
 HomeWrapper = React.createClass({
     mixins: [ReactMeteorData],
     getMeteorData() {
-        var data = {rooms: [], hud: {}};
-        var handles = [Meteor.subscribe("rooms"),
+        let data = {rooms: [], hud: {}};
+        let handles = [Meteor.subscribe("rooms"),
                        Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
         if (!handles.every(utils.isReady)) {
             return data;
         }
         data.hud = getCurrentHud();
         if (RoomSearch.getCurrentQuery()) {
-            var status = RoomSearch.getStatus();
+            let status = RoomSearch.getStatus();
             if (status.loaded) {
                 data.rooms = RoomSearch.getData();
             }
         } else {
-            var rooms = Rooms.find({homeId: this.props.id}, {
+            let rooms = Rooms.find({homeId: this.props.id}, {
                 sort: {
                     position: 1
                 }
@@ -364,7 +364,7 @@ HomeWrapper = React.createClass({
     _handleKey(event){
         let search = document.getElementById('search-rooms');
         if (search === document.activeElement) {
-            var text = $(event.target).val().trim();
+            let text = $(event.target).val().trim();
             RoomSearch.search(text, {homeId: this.props.id});
             if (event.keyCode == 27) {
               $(event.target).val("");
