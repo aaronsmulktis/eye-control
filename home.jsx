@@ -123,6 +123,9 @@ Home = React.createClass({
             )
         }
 
+        var price = this.data.home.price;
+        price = price && accounting.formatMoney(price, "£", 0, ".", ",");
+
         return (
 
             <div id="contentContainer">
@@ -135,7 +138,7 @@ Home = React.createClass({
 
                         <div className="row-fluid">
                             <h2 id="propTitle">{this.data.home.name}</h2>
-                            <h5>{this.data.home.price}</h5>
+                            <h5>{price}</h5>
                             <p>
                                 {this.data.home.address}
                             </p>

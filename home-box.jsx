@@ -36,7 +36,7 @@ HomeBox = React.createClass({
     const homeClassName = this.props.home.name;
     const homeLink = 'home/' + this.props.home._id;
     var price = this.props.home.price;
-    price = price && accounting.formatMoney(price, "€", 0, ".", ",");
+    price = price && accounting.formatMoney(price, "£", 0, ".", ",");
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';
 
       return (
