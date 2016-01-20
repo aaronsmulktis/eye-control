@@ -303,8 +303,6 @@ Map = React.createClass({
 
                             </div>
 
-                            <h3 className="propListTitle text-right">All Properties</h3>
-
                             <div className="propList">
                                 {this.renderHomeBoxes()}
                             </div>
