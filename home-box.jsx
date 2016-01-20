@@ -35,12 +35,14 @@ HomeBox = React.createClass({
     // so that we can style them nicely in CSS
     const homeClassName = this.props.home.name;
     const homeLink = 'home/' + this.props.home._id;
+    var price = this.props.home.price;
+    price = price && accounting.formatMoney(price, "€", 0, ".", ",");
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';
 
       return (
           <li id="homeBox" className={homeClassName + ' homeBox container-fluid'} onClick={this.selectHome}>
               <div className="boxBorder"></div>
-              <p className="price">{this.props.home.price}</p>
+              <p className="price">{price}</p>
               {/*          <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>*/}
               <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
               <div className="homePic col-sm-4 noPadding">
