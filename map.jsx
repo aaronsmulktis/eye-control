@@ -350,7 +350,7 @@ MapWrapper = React.createClass({
             event.preventDefault();
             var text = $(event.target).val().trim();
             searchTimeout = setTimeout(function() {
-                HomeSearch.search(text);
+                HomeSearch.search(text, {sort: {position: 1}}); // can change the sorting here
             }, 500);
             if (event.keyCode == 27) {
                 clearTimeout(searchTimeout);
