@@ -3,7 +3,7 @@ if (Meteor.isClient) {
 	  keepHistory: 100 * 60 * 5,
 	  localSearch: true
 	};
-	var homeFields = ['homeName', 'description'];
+	var homeFields = ['name', 'address', 'notes'];
 	var roomFields = ['homeName', 'description'];
 
 	HomeSearch = new SearchSource('homes', homeFields, options);
@@ -20,7 +20,8 @@ if (Meteor.isServer) {
 	    var regExp = buildRegExp(searchText);
 	    var selector = {$or: [
 	      {name: regExp},
-	      {notes: regExp}
+	      {notes: regExp},
+	      {address: regExp}
 	    ]};
           return Homes.find(selector, options).fetch();
 	  } else {

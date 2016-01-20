@@ -8,6 +8,8 @@ function getCurrentHud() {
     return JSON.parse(getCurrentSphere().hud)
 }
 
+let searchTimeout;
+
 // Property component
 Home = React.createClass({
     mixins: [ReactMeteorData, sortable.ListMixin],
@@ -368,11 +370,18 @@ HomeWrapper = React.createClass({
     _handleKey(event){
         let search = document.getElementById('search-rooms');
         if (search === document.activeElement) {
-            let text = $(event.target).val().trim();
-            RoomSearch.search(text, {homeId: this.props.id});
+            let homeId = this.props.id;
+            event.preventDefault();
             if (event.keyCode == 27) {
-              $(event.target).val("");
+                $(event.target).val("");
+                RoomSearch.search("", {homeId: homeId});
+                return false;
             }
+            let text = $(event.target).val().trim();
+            searchTimeout = setTimeout(function() {
+                RoomSearch.search(text, {homeId: homeId});
+            }, 500);
+            return false;
         }
     },
 

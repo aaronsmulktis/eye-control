@@ -56,6 +56,7 @@ let sortOptions = [
     { value: 'baths:lo-hi', label: 'Baths: Lo - Hi' }
 ];
 
+let searchTimeout;
 
 // Map component - entry component setup in router
 Map = React.createClass({
@@ -170,6 +171,10 @@ Map = React.createClass({
         }
     },
 
+    renderSearchIcon() {
+        return {__html:('<i id="searchIcon" class="fa fa-search"></i>')};
+    },
+
     renderHomeBoxes() {
         let homes = this.state.items;
         let processedHomes = [];
@@ -193,11 +198,13 @@ Map = React.createClass({
                             <i className="fa fa-navicon"></i> List
                         </a>
                     </li>
+                    {/*
                     <li>
                         <a onClick={this._toggleViewOption.bind(this, "isMap")} data-toggle="button" aria-pressed="false" autoComplete="off">
                             <i className="fa fa-map-marker"></i> Map
                         </a>
                     </li>
+                    */}
                 </ul>
             </div>
         );
@@ -237,9 +244,9 @@ Map = React.createClass({
                         <div id="searchOptions" className="col-sm-12">
                             {this.renderSearchView()}
                             <div id="searchMap">
-                                <form className="navbar-form navbar-left noPadding" role="search">
+                                <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
                                   <div className="form-group">
-                                    <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search Map.."><i id="searchIcon" className="fa fa-search"></i></input>
+                                      <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search..." dangerouslySetInnerHTML={this.renderSearchIcon()}></input>
                                   </div>
                                 </form>
                             </div>
@@ -248,28 +255,30 @@ Map = React.createClass({
                                     <li>
                                         <div className="checkbox">
                                             <label>
-                                              <input type="checkbox"> For Sale</input>
+                                              <input type="checkbox"></input>
+                                              <span>For Sale</span>
                                             </label>
                                         </div>
                                     </li>
                                     <li>
                                         <div className="checkbox">
                                             <label>
-                                              <input type="checkbox"> For Rent</input>
+                                              <input type="checkbox"></input>
+                                              <span>For Rent</span>
                                             </label>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                             <div id="propOptions">
-                                <div className="form-group pull-left pad10 noMargin">
+                                <div className="navbar-form form-group pull-left">
                                     <Select
                                         name="bedrooms"
                                         placeholder="Bedrooms"
                                         options={bedOptions}
                                     />
                                 </div>
-                                <div className="form-group pull-left pad10 noMargin">
+                                <div className="navbar-form form-group pull-left">
                                     <Select
                                         name="baths"
                                         placeholder="Baths"
@@ -284,18 +293,10 @@ Map = React.createClass({
                         <div className="mapList col-sm-6">
 
                             <div className="listOptions">
-                                <div id="searchBar" className="navbar-left pull-left">
-                                    <form className="navbar-form navbar-left noPadding" role="search">
-                                      <div className="form-group">
-                                        <input id="search-homes" type="text" className="font4 pad10" placeholder="Filter listings.."></input>
-                                      </div>
-                                    </form>
-                                </div>
 
-                                <div className="form-group pull-left pad10 noMargin">
+                                <div className="filter-results form-group pull-left noMargin">
                                     <Select
                                         name="bedrooms"
-                                        value="price:hi-lo"
                                         placeholder="Sort"
                                         options={sortOptions}
                                     />
@@ -345,12 +346,18 @@ MapWrapper = React.createClass({
     },
 
     _handleKey(event){
-        if (document.getElementById('search-homes') === document.activeElement) {
+        if (document.getElementById('searchMapInput') === document.activeElement) {
+            event.preventDefault();
             var text = $(event.target).val().trim();
-            HomeSearch.search(text);
+            searchTimeout = setTimeout(function() {
+                HomeSearch.search(text);
+            }, 500);
             if (event.keyCode == 27) {
+                clearTimeout(searchTimeout);
                 $(event.target).val("");
+                HomeSearch.search("")
             }
+            return false;
         }
     },
 
