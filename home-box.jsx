@@ -40,11 +40,9 @@ HomeBox = React.createClass({
           <div className="propDetails col-sm-8">
             <h4 className="homeName">{this.props.home.name}</h4>
             <p className="homeDesc">
-              {this.props.home.street}, {this.props.home.apt} <br />
-              {this.props.home.city}, {this.props.home.postal} <br />
-              {this.props.home.country}
+              {this.props.home.address}
             </p>
-            <p>{this.props.home.rooms} <i className="fa fa-bed"></i> | {this.props.home.baths} <i className="fa fa-recycle"></i></p>
+            <p>{this.props.home.numBedrooms} <i className="fa fa-bed"></i> | {this.props.home.numBathrooms} <i className="fa fa-recycle"></i></p>
           </div>
         </a>
       </li>

@@ -298,9 +298,11 @@ Home = React.createClass({
                     </li>
                 </ul>
 
+                {/*
                 <div className="hudOptions">
                     {this.props.radioBtns}
                 </div>
+                */}
             </div>
         );
     },
@@ -328,7 +330,7 @@ Home = React.createClass({
         optionState[optionName] = changedOption;
 
         this.setState(optionState);
-        
+
         let hud = this._getHud();
         hud[optionName] = changedOption;
         Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
