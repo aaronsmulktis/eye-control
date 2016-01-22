@@ -146,15 +146,15 @@ Map = React.createClass({
         });
 
         google.maps.event.addListener(newMarker, 'click', function() {
-                window.location = link;
-        });
-
-        google.maps.event.addListener(newMarker, 'mouseover', function() {
                 this['infowindow'].open(state.mainMap, this);
         });
 
+        google.maps.event.addListener(newMarker, 'mouseover', function() {
+                // this['infowindow'].open(state.mainMap, this);
+        });
+
         google.maps.event.addListener(newMarker, 'mouseout', function(){
-                this['infowindow'].close(state.mainMap, this);
+                // this['infowindow'].close(state.mainMap, this);
         });
 
         this.state.markers.push(newMarker);
@@ -162,12 +162,20 @@ Map = React.createClass({
 
     processHomes(homes) {
         let processHomes = this.processHomes;
+
         if (!window.google || !this.state.mainMap) {
             setTimeout(function() { processHomes(homes) }, 300);
             return;
         }
         for (let i = 0; i < homes.length; i++) {
-            this.createMarker(homes[i].latitude, homes[i].longitude, homes[i].name, 'home/' + homes[i]._id);
+            let homeName = homes[i].name,
+                homeDesc = homes[i].desc,
+                homePrice = homes[i].price,
+                homeRooms = homes[i].rooms,
+                homeBaths = homes[i].baths,
+                content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
+
+            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id);
         }
     },
 
