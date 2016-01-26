@@ -169,11 +169,12 @@ Map = React.createClass({
         }
         for (let i = 0; i < homes.length; i++) {
             let homeName = homes[i].name,
-                homeDesc = homes[i].desc,
+                homeDesc = homes[i].notes,
                 homePrice = homes[i].price,
-                homeRooms = homes[i].rooms,
-                homeBaths = homes[i].baths,
-                content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
+                homeRooms = homes[i].numBedrooms,
+                homeBaths = homes[i].numBathrooms;
+            homePrice = homePrice && accounting.formatMoney(homePrice, "£", 0, ".", ",");
+            let content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
 
             this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id);
         }
