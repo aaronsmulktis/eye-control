@@ -19,5 +19,6 @@
   },
   "homepage": "https://github.com/aaronsmulktis/eye-control#readme",
   "dependencies": {
+    "react-slider": "^0.6.1"
   }
 }

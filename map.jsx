@@ -293,6 +293,9 @@ Map = React.createClass({
                                         options={bathOptions}
                                     />
                                 </div>
+                                <div id="priceSlider" className="navbar-form form-group pull-left">
+                                    <ReactSlider defaultValue={[0, 100]} withBars />
+                                </div>
                             </div>
                         </div>
 

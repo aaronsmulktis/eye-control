@@ -190,7 +190,7 @@ Home = React.createClass({
                             <hr></hr>
 
                             <div>
-                                <h4>Room Details</h4>
+                                <h4>Details about the {this.state.items.length ? this.state.items[0].name : ""}</h4>
                                 <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
                             </div>
                         </div>
