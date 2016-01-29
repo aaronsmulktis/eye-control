@@ -36,6 +36,7 @@ Home = React.createClass({
         return {
             isPopup: false,
             isIntroVideo: false,
+            isMap: false,
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
@@ -81,6 +82,7 @@ Home = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         this.setState({items: nextProps.rooms,
+                       isMap: nextProps.hud.isMap,
                        isIntroVideo: nextProps.hud.isIntroVideo,
                        isPlaque: nextProps.hud.isPlaque,
                        isFloorplan: nextProps.hud.isFloorplan,
@@ -273,15 +275,22 @@ Home = React.createClass({
     _renderViewOptions() {
         let defaultClasses = ['btn', 'btn-default'],
             introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
+            mapClasses = classNames(defaultClasses, {active: this.state.isMap}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
             infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
+
         return (
             <div id="viewOptions">
                 <ul className="list-inline">
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Intro Video
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isMap")} type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Map
                         </button>
                     </li>
                     <li>
@@ -321,6 +330,7 @@ Home = React.createClass({
 
     _getHud() {
         return {'isIntroVideo': this.state.isIntroVideo,
+                'isMap': this.state.isMap,
                 'isPlaque': this.state.isPlaque,
                 'isFloorplan': this.state.isFloorplan,
                 'isInfoWindow': this.state.isInfoWindow,
