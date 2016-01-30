@@ -71,13 +71,6 @@ Map = React.createClass({
         }
     },
 
-    getInitialState() {
-        return {
-            isList: false,
-            isMap: false
-        }
-    },
-
     initialize() {
         if (this.state.mainMap) {
                 return;
@@ -99,6 +92,13 @@ Map = React.createClass({
 
     getInitialState() {
         return {
+            // will be used to detect map or list view
+            isList: false,
+            isMap: false,
+
+            forSale: false,
+            forRent: false,
+
             mainMap: false,
             markers: []
         }
@@ -227,6 +227,45 @@ Map = React.createClass({
         hud[optionName] = changedOption;
     },
 
+    _handleFilter() {
+        if (!this.state.forSale && !this.state.forRent) { // if some for Rent, not Sale
+            console.log('nothing for sale or rent');
+        } else if (!this.state.forRent && this.state.forSale) {
+            console.log('some for Sale')
+        } else if (!this.state.forSale && this.state.forRent) { // if some for Sale, not Rent
+            console.log('some for Rent')
+        } else { // if some for Sale AND Rent
+            console.log('some for sale and rent');
+            // event.preventDefault();
+            // var text = $(event.target).val().trim();
+            // searchTimeout = setTimeout(function() {
+            //     HomeSearch.search(text, {sort: {position: 1}}); // can change the sorting here
+            // }, 500);
+            // if (event.keyCode == 27) {
+            //     clearTimeout(searchTimeout);
+            //     $(event.target).val("");
+            //     HomeSearch.search("")
+            // }
+            // return false;
+        }
+    },
+
+    _handleCheckForSale(){
+        this.setState({
+          forSale: !this.state.forSale
+        });
+
+        this._handleFilter();
+    },
+
+    _handleCheckForRent(){
+        this.setState({
+          forRent: !this.state.forRent
+        });
+
+        this._handleFilter();
+    },
+
     // logChange(val) {
     //     console.log("Selected: " + val);
     // },
@@ -263,7 +302,7 @@ Map = React.createClass({
                                     <li>
                                         <div className="checkbox">
                                             <label>
-                                              <input type="checkbox"></input>
+                                              <input id="forSaleInput" type="checkbox" defaultChecked={this.state.forSale} ref="forSale" onChange={this._handleCheckForSale}></input>
                                               <span>For Sale</span>
                                             </label>
                                         </div>
@@ -271,7 +310,7 @@ Map = React.createClass({
                                     <li>
                                         <div className="checkbox">
                                             <label>
-                                              <input type="checkbox"></input>
+                                              <input  id="forRentInput" type="checkbox" defaultChecked={this.state.forRent} ref="forRent" onChange={this._handleCheckForRent}></input>
                                               <span>For Rent</span>
                                             </label>
                                         </div>
@@ -281,6 +320,7 @@ Map = React.createClass({
                             <div id="propOptions">
                                 <div className="navbar-form form-group pull-left">
                                     <Select
+                                        id="bedsInput"
                                         name="bedrooms"
                                         placeholder="Bedrooms"
                                         options={bedOptions}
@@ -288,6 +328,7 @@ Map = React.createClass({
                                 </div>
                                 <div className="navbar-form form-group pull-left">
                                     <Select
+                                        id="bathsInput"
                                         name="baths"
                                         placeholder="Baths"
                                         options={bathOptions}
