@@ -96,11 +96,6 @@ Map = React.createClass({
             isList: false,
             isMap: false,
 
-            forSale: false,
-            forRent: false,
-            beds: null,
-            baths: null,
-
             mainMap: false,
             markers: []
         }
@@ -229,26 +224,10 @@ Map = React.createClass({
         hud[optionName] = changedOption;
     },
 
-    //ForSale & ForRent update the state, but the function below doesn't run the first time the event fires... very strange
-    componentDidUpdate() {
-        if (!this.state.forSale && !this.state.forRent) { // if some for Rent, not Sale
-            console.log('nothing for sale or rent');
-            return;
-        } else if (!this.state.forRent && this.state.forSale) {
-            console.log('some for Sale')
-            return;
-        } else if (!this.state.forSale && this.state.forRent) { // if some for Sale, not Rent
-            console.log('some for Rent')
-            return;
-        } else { // if some for Sale AND Rent
-            console.log('some for sale and rent');
-        }
-    },
-
     _handleForSale(){
         this.setState({
           forSale: !this.state.forSale
-        });   
+        });
     },
 
     _handleForRent(){
@@ -258,20 +237,10 @@ Map = React.createClass({
     },
 
     _handleBeds(val) {
-        // setTimeout(function() {
-        //     HomeSearch.search(val, {sort: {position: 1}}); // can change the sorting here
-        // }, 500);
-        
-        this.setState({
-            beds: val
-        });
+        this.props.handleBeds(val);
     },
 
     _handleBaths(val) {
-        // setTimeout(function() {
-        //     HomeSearch.search(val, {sort: {position: 1}}); // can change the sorting here
-        // }, 500);
-
         this.setState({
             baths: val
         });
@@ -290,6 +259,8 @@ Map = React.createClass({
                     </div>
             );
         }
+
+        var bedroomVal = this.props.numBedrooms || "";
         return (
 
             <div id="contentContainer" className="container-fluid noPadding">
@@ -304,7 +275,7 @@ Map = React.createClass({
                             <div id="searchMap">
                                 <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
                                   <div className="form-group">
-                                      <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search..." dangerouslySetInnerHTML={this.renderSearchIcon()}></input>
+                                      <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search..."></input>
                                   </div>
                                 </form>
                             </div>
@@ -314,7 +285,7 @@ Map = React.createClass({
                                         <div className="checkbox">
                                             <label>
                                                 <input id="forSaleInput"
-                                                       type="checkbox" 
+                                                       type="checkbox"
                                                        defaultChecked={this.state.forSale}
                                                        onChange={this._handleForSale}>
                                                 </input>
@@ -326,7 +297,7 @@ Map = React.createClass({
                                         <div className="checkbox">
                                             <label>
                                                 <input id="forRentInput"
-                                                       type="checkbox" 
+                                                       type="checkbox"
                                                        defaultChecked={this.state.forRent}
                                                        onChange={this._handleForRent}>
                                                 </input>
@@ -341,7 +312,7 @@ Map = React.createClass({
                                     <Select
                                         id="bedsInput"
                                         name="beds"
-                                        value=""
+                                        value={bedroomVal}
                                         placeholder="Bedrooms"
                                         options={bedOptions}
                                         onChange={this._handleBeds}
@@ -400,41 +371,65 @@ MapWrapper = React.createClass({
             return data;
         }
 
-        if (HomeSearch.getCurrentQuery()) {
-            var status = HomeSearch.getStatus();
-            if (status.loaded) {
-                data.homes = HomeSearch.getData();
-            }
-        } else {
-            var homes = Homes.find({}, {
-                sort: {
-                    position: 1
-                }
-            }).fetch();
-            data.homes = homes;
+        var status = HomeSearch.getStatus();
+        if (status.loaded) {
+            data.homes = HomeSearch.getData();
         }
 
         return data;
     },
 
+    getInitialState() {
+        return {
+            forSale: false,
+            forRent: false,
+            numBedrooms: 0,
+            numBathrooms: 0,
+            searchText: ""
+        }
+    },
+
     _handleKey(event){
         if (document.getElementById('searchMapInput') === document.activeElement) {
+            var _this = this;
             event.preventDefault();
             var text = $(event.target).val().trim();
             searchTimeout = setTimeout(function() {
-                HomeSearch.search(text, {sort: {position: 1}}); // can change the sorting here
+                _this._setStateAndSearch({
+                    searchText: text
+                });
             }, 500);
             if (event.keyCode == 27) {
                 clearTimeout(searchTimeout);
                 $(event.target).val("");
-                HomeSearch.search("")
+                _this._setStateAndSearch({
+                    searchText: text
+                });
             }
             return false;
         }
     },
 
+    _setStateAndSearch(obj) {
+        this.setState(obj, this._doSearch);
+    },
+
+    _handleBeds(val) {
+        this._setStateAndSearch({numBedrooms: val})
+    },
+
+    _doSearch() {
+      HomeSearch.search(this.state.searchText,
+                        {sort: {position: 1},
+                         requirements: {
+                             numBedrooms: {$gt: parseInt(this.state.numBedrooms)},
+                             numBathrooms: {$gt: parseInt(this.state.numBathrooms)},
+                         }
+                        });
+    },
+
     componentWillMount(){
-        HomeSearch.search("");
+        this._doSearch();
         document.addEventListener("keyup", this._handleKey, false);
     },
 
@@ -459,7 +454,7 @@ MapWrapper = React.createClass({
     render: function(){
 
         return(
-            <Map homes={this.data.homes} {...this.props} />
+            <Map homes={this.data.homes} handleBeds={this._handleBeds} numBedrooms={this.state.numBedrooms} {...this.props} />
         )
     }
 });

@@ -53,7 +53,7 @@ HomeBox = React.createClass({
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>
-                  <p>{this.props.home.rooms} <i className="fa fa-bed"></i> | {this.props.home.baths} <i className="fa fa-recycle"></i></p>
+                  <p>{this.props.home.numBedrooms} <i className="fa fa-bed"></i> | {this.props.home.numBathrooms} <i className="fa fa-recycle"></i></p>
               </div>
           </li>
       );
