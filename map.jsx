@@ -98,6 +98,8 @@ Map = React.createClass({
 
             forSale: false,
             forRent: false,
+            beds: null,
+            baths: null,
 
             mainMap: false,
             markers: []
@@ -227,43 +229,52 @@ Map = React.createClass({
         hud[optionName] = changedOption;
     },
 
-    _handleFilter() {
+    //ForSale & ForRent update the state, but the function below doesn't run the first time the event fires... very strange
+    componentDidUpdate() {
         if (!this.state.forSale && !this.state.forRent) { // if some for Rent, not Sale
             console.log('nothing for sale or rent');
+            return;
         } else if (!this.state.forRent && this.state.forSale) {
             console.log('some for Sale')
+            return;
         } else if (!this.state.forSale && this.state.forRent) { // if some for Sale, not Rent
             console.log('some for Rent')
+            return;
         } else { // if some for Sale AND Rent
             console.log('some for sale and rent');
-            // event.preventDefault();
-            // var text = $(event.target).val().trim();
-            // searchTimeout = setTimeout(function() {
-            //     HomeSearch.search(text, {sort: {position: 1}}); // can change the sorting here
-            // }, 500);
-            // if (event.keyCode == 27) {
-            //     clearTimeout(searchTimeout);
-            //     $(event.target).val("");
-            //     HomeSearch.search("")
-            // }
-            // return false;
         }
     },
 
-    _handleCheckForSale(){
+    _handleForSale(){
         this.setState({
           forSale: !this.state.forSale
-        });
-
-        this._handleFilter();
+        });   
     },
 
-    _handleCheckForRent(){
+    _handleForRent(){
         this.setState({
           forRent: !this.state.forRent
         });
+    },
 
-        this._handleFilter();
+    _handleBeds(val) {
+        // setTimeout(function() {
+        //     HomeSearch.search(val, {sort: {position: 1}}); // can change the sorting here
+        // }, 500);
+        
+        this.setState({
+            beds: val
+        });
+    },
+
+    _handleBaths(val) {
+        // setTimeout(function() {
+        //     HomeSearch.search(val, {sort: {position: 1}}); // can change the sorting here
+        // }, 500);
+
+        this.setState({
+            baths: val
+        });
     },
 
     // logChange(val) {
@@ -302,7 +313,11 @@ Map = React.createClass({
                                     <li>
                                         <div className="checkbox">
                                             <label>
-                                              <input id="forSaleInput" type="checkbox" defaultChecked={this.state.forSale} ref="forSale" onChange={this._handleCheckForSale}></input>
+                                                <input id="forSaleInput"
+                                                       type="checkbox" 
+                                                       defaultChecked={this.state.forSale}
+                                                       onChange={this._handleForSale}>
+                                                </input>
                                               <span>For Sale</span>
                                             </label>
                                         </div>
@@ -310,7 +325,11 @@ Map = React.createClass({
                                     <li>
                                         <div className="checkbox">
                                             <label>
-                                              <input  id="forRentInput" type="checkbox" defaultChecked={this.state.forRent} ref="forRent" onChange={this._handleCheckForRent}></input>
+                                                <input id="forRentInput"
+                                                       type="checkbox" 
+                                                       defaultChecked={this.state.forRent}
+                                                       onChange={this._handleForRent}>
+                                                </input>
                                               <span>For Rent</span>
                                             </label>
                                         </div>
@@ -321,17 +340,21 @@ Map = React.createClass({
                                 <div className="navbar-form form-group pull-left">
                                     <Select
                                         id="bedsInput"
-                                        name="bedrooms"
+                                        name="beds"
+                                        value=""
                                         placeholder="Bedrooms"
                                         options={bedOptions}
+                                        onChange={this._handleBeds}
                                     />
                                 </div>
                                 <div className="navbar-form form-group pull-left">
                                     <Select
                                         id="bathsInput"
                                         name="baths"
+                                        value=""
                                         placeholder="Baths"
                                         options={bathOptions}
+                                        onChange={this._handleBaths}
                                     />
                                 </div>
                             </div>
