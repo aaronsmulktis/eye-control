@@ -293,11 +293,13 @@ Home = React.createClass({
                             Map
                         </button>
                     </li>
+                    {/*
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Plaque
                         </button>
                     </li>
+                    */}
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
