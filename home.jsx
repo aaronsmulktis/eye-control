@@ -37,6 +37,7 @@ Home = React.createClass({
             isPopup: false,
             isIntroVideo: false,
             isMap: false,
+            isFloorLogo: false,
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
@@ -83,6 +84,7 @@ Home = React.createClass({
     componentWillReceiveProps(nextProps) {
         this.setState({items: nextProps.rooms,
                        isMap: nextProps.hud.isMap,
+                       isFloorLogo: nextProps.hud.isFloorLogo,
                        isIntroVideo: nextProps.hud.isIntroVideo,
                        isPlaque: nextProps.hud.isPlaque,
                        isFloorplan: nextProps.hud.isFloorplan,
@@ -276,6 +278,7 @@ Home = React.createClass({
         let defaultClasses = ['btn', 'btn-default'],
             introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
             mapClasses = classNames(defaultClasses, {active: this.state.isMap}),
+            floorLogoClasses = classNames(defaultClasses, {active: this.state.isFloorLogo}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
             infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
@@ -286,6 +289,11 @@ Home = React.createClass({
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Intro Video
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorLogo")} type="button" className={floorLogoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Logo
                         </button>
                     </li>
                     <li>
@@ -333,6 +341,7 @@ Home = React.createClass({
     _getHud() {
         return {'isIntroVideo': this.state.isIntroVideo,
                 'isMap': this.state.isMap,
+                'isFloorLogo': this.state.isFloorLogo,
                 'isPlaque': this.state.isPlaque,
                 'isFloorplan': this.state.isFloorplan,
                 'isInfoWindow': this.state.isInfoWindow,
