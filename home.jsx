@@ -113,7 +113,7 @@ Home = React.createClass({
         if (!this.data.sphere) {
             return;
         }
-        let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
+        let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1";
 
         return (
             <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
