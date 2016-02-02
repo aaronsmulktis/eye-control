@@ -427,7 +427,7 @@ MapWrapper = React.createClass({
         } else {
             var homes = Homes.find({}, {
                 sort: {
-                    position: 1
+                    price: 1
                 }
             }).fetch();
             data.homes = homes;
