@@ -1,10 +1,5 @@
 let styles = [
     {
-        stylers: [
-                { hue: "#00ffe6" },
-                { saturation: -20 }
-        ]
-    },{
         featureType: "road",
         elementType: "geometry",
         stylers: [
