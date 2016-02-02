@@ -36,6 +36,8 @@ Home = React.createClass({
         return {
             isPopup: false,
             isIntroVideo: false,
+            isMap: false,
+            isFloorLogo: false,
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
@@ -81,6 +83,8 @@ Home = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         this.setState({items: nextProps.rooms,
+                       isMap: nextProps.hud.isMap,
+                       isFloorLogo: nextProps.hud.isFloorLogo,
                        isIntroVideo: nextProps.hud.isIntroVideo,
                        isPlaque: nextProps.hud.isPlaque,
                        isFloorplan: nextProps.hud.isFloorplan,
@@ -109,7 +113,7 @@ Home = React.createClass({
         if (!this.data.sphere) {
             return;
         }
-        let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
+        let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1";
 
         return (
             <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
@@ -273,9 +277,12 @@ Home = React.createClass({
     _renderViewOptions() {
         let defaultClasses = ['btn', 'btn-default'],
             introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
+            mapClasses = classNames(defaultClasses, {active: this.state.isMap}),
+            floorLogoClasses = classNames(defaultClasses, {active: this.state.isFloorLogo}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
             infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
+
         return (
             <div id="viewOptions">
                 <ul className="list-inline">
@@ -285,10 +292,22 @@ Home = React.createClass({
                         </button>
                     </li>
                     <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorLogo")} type="button" className={floorLogoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Logo
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isMap")} type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Map
+                        </button>
+                    </li>
+                    {/*
+                    <li>
                         <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Plaque
                         </button>
                     </li>
+                    */}
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
@@ -321,6 +340,8 @@ Home = React.createClass({
 
     _getHud() {
         return {'isIntroVideo': this.state.isIntroVideo,
+                'isMap': this.state.isMap,
+                'isFloorLogo': this.state.isFloorLogo,
                 'isPlaque': this.state.isPlaque,
                 'isFloorplan': this.state.isFloorplan,
                 'isInfoWindow': this.state.isInfoWindow,
