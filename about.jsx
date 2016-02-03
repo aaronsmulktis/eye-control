@@ -8,16 +8,18 @@ About = React.createClass({
 
       <div id="contentContainer">
 
-        <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
+        <div id="mainContent" className="col-sm-12 noPadding">
 
           {this.props.header}
 
-          <div className="aboutPage">
-            <div className="col-sm-8 col-sm-offset-2">
+          <div className="aboutPage text-center">
 
-              <p className="vertCenter">Eye Control allows Real Estate Agents to curate and play high-quality photosphere tours for a user wearing the GearVR headset. Using the Eye, Realtors can easily guide individual or multiple viewers through properties in real-time, with the ability to see what is being shown in the headset.</p>
-
+            <div className="aboutContent">
+              <h1><span className="glyphicon glyphicon-sunglasses"></span> + <span className="glyphicon glyphicon-home"></span></h1>
+              <h1>Virtual Reality. Real Estate.</h1>
+              <p>Eye Control allows Real Estate Agents to curate and play high-quality photosphere tours for a user wearing the GearVR headset. Using the Eye, Realtors can easily guide individual or multiple viewers through properties in real-time, with the ability to see what is being shown in the headset.</p>
             </div>
+
           </div>
         
         </div>

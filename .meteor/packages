@@ -24,3 +24,15 @@ kadira:flow-router
 kadira:react-layout
 fortawesome:fontawesome
 meteorhacks:picker
+meteorhacks:npm
+check
+eluck:aws-sdk
+
+
+
+npm-container
+meteorhacks:search-source
+ejson
+maxharris9:classnames
+cosmos:browserify
+praneybehl:react-select

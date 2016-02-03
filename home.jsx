@@ -1,314 +1,424 @@
+/*global React ReactMeteorData sortable Meteor Homes Rooms Spheres classNames */
 
+function getCurrentSphere() {
+    return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
+}
+
+function getCurrentHud() {
+    return JSON.parse(getCurrentSphere().hud)
+}
+
+let searchTimeout;
 
 // Property component
 Home = React.createClass({
-  // This mixin makes the getMeteorData method work
-  mixins: [ReactMeteorData, sortable.ListMixin],
+    mixins: [ReactMeteorData, sortable.ListMixin],
 
-    // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
-        var data = {}
-        var handles = [Meteor.subscribe("home", this.props.id),
-                       Meteor.subscribe("rooms"),
-                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9"),
-                       Meteor.subscribe("notes")];
+        let data = {}
+        let handles = [Meteor.subscribe("home", this.props.id),
+                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
 
-        function isReady(handle) {
-            return handle.ready();
-        }
-        if (!handles.every(isReady)) {
+        if (!handles.every(utils.isReady)) {
             data.loading = true;
             return data;
         }
-        var homes = Homes.find({_id: this.props.id}).fetch(),
+        let homes = Homes.find({_id: this.props.id}).fetch(),
             thisHome = homes[0];
 
-        var rooms = Rooms.find({homeId: thisHome._id}, {
-            sort: {
-                createdAt: -1
-            }
-        }).fetch()
-
-    return {
-
-      home: thisHome,
-      notes: Notes.find({}, {
-        sort: {
-          createdAt: -1
+        return {
+            home: thisHome,
+            sphere: getCurrentSphere()
         }
-      }).fetch(),
-      rooms: rooms,
-      sphere: Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0]
-    }
-  },
+    },
 
-  getInitialState() {
-    return {
-      isPopup: false
-    }
-  },
+    getInitialState() {
+        return {
+            isPopup: false,
+            isIntroVideo: false,
+            isMap: false,
+            isFloorLogo: false,
+            isPlaque: false,
+            isFloorplan: false,
+            isInfoWindow: false,
+            rooms: [],
+            // items: [] // Added automatically by the mixin
+        }
+    },
 
-  renderNotes() {
-    // Get notes from this.data.notes
-    let notes = this.data.notes.map((note) => {
-      return <Note key={note._id} note={note} />;
-    });
+    componentDidMount() {
+        let handle_coords = Meteor.subscribe("coords");
 
-    return (
-      <div id="viewNotes">
-        <header>
-          {/* This is a comment */}
-          <form className="new-note" onSubmit={this._addNote} >
-            <input
-              type="text"
-              ref="noteInput"
-              placeholder="Add a note about this property..." />
-          </form>
-          <ul>
-            {notes}
-          </ul>
-        </header>
-      </div>
-    );
-  },
+        let updateFrame = function(id, coord) {
+            if (id !== "headset") {
+                return;
+            }
+            let frame = $('.vr-iframe').first()[0];
+            if (!frame) {
+                return;
+            }
+            let idx = frame.src.indexOf('#'), url = frame.src;
+            if ( idx > -1 ){
+                url = url.substr(0, idx);
+            }
 
-  renderSphere() {
-    // Get notes from this.data.notes
-    if (!this.data.sphere) {
-    return;
-    }
-    var sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000";
+            frame.src = url + '#' + coord.coord;
+        }
 
-    return (
-            <iframe src={sphere} frameborder="0" className="vr-iframe" height="100%" width="100%"></iframe>
-    );
-  },
+        if (!handle_coords.ready()) {
+            function loadCoords() {
+                if (!handle_coords.ready()) {
+                    setTimeout(loadCoords, 100);
+                    return;
+                }
+                let query = Coords.find();
+                handle_coords = query.observeChanges({
+                    added: updateFrame,
+                    changed: updateFrame
+                });
+            }
+            setTimeout(loadCoords, 100);
+        }
+    },
 
-  renderRoomBoxes() {
-  //debugger;
-      var rooms = this.state.items && this.state.items.length > 0 ? this.state.items : this.data.rooms;
-      //rooms.sort({position: -1});
-      var processedRooms = [];
-      console.log(rooms, "rooms");
-      for (var i=0; i < rooms.length; i++) {
-            var room = rooms[i];
-      var processedRoom = <RoomBox key={room._id} room={room} index={i} {...this.movableProps}/>
-      processedRooms.push(processedRoom);
-      }
-    console.log(processedRooms, "pr");
-    return <ul>{processedRooms}</ul>;
-  },
+    componentWillReceiveProps(nextProps) {
+        this.setState({items: nextProps.rooms,
+                       isMap: nextProps.hud.isMap,
+                       isFloorLogo: nextProps.hud.isFloorLogo,
+                       isIntroVideo: nextProps.hud.isIntroVideo,
+                       isPlaque: nextProps.hud.isPlaque,
+                       isFloorplan: nextProps.hud.isFloorplan,
+                       isInfoWindow: nextProps.hud.isInfoWindow});
+    },
 
-  render() {
-  if (this.data.loading) {
-   return (
-   <div>Loading...</div>
-   )
-  }
-//         $(document).on('click', '#addRoomBtn', function(e) {
-//             e.preventDefault();
-//             // $("#email-signup").fadeIn(fadeTime);
-//             // $('#fieldName').focus();
-//             $("#addRoom").fadeIn(fadeTime);
-//         });
+    renderRoomBoxes() {
+        let rooms = this.state.items;
+        let processedRooms = [];
+        for (let i=0; i<rooms.length;i++) {
+            let room = rooms[i],
+                position = room.position == null ? i : room.position;
+            processedRooms[position] = <RoomBox key={room._id} room={room} desc={room.desc} index={position} {...this.movableProps}/>
+                                          }
+            return <ul>{processedRooms}</ul>;
+    },
 
-//         $(document).on('click', '#addRoom .close', function(e) {
-//             e.preventDefault();
-//             // $("#email-signup").fadeIn(fadeTime);
-//             // $('#fieldName').focus();
-//             $("#addRoom").fadeOut(fadeTime);
-//         });
+    onBeforeSetState: function(items){
+        for(let i = 0; i < items.length; i++) {
+            items[i].position = i;
+            Rooms.update({_id:items[i]._id}, {$set: {position: i}});
+        }
+    },
 
-//         $(document).keyup(function(e) {
-//             if (e.keyCode == 27) {
-//                 $("#addRoom").fadeOut(fadeTime);
-//             }
-//         });
-      $(document).on('click', 'li.roomBox', function(evt) {
-          if (window.moving) {
-          return false;
-          }
-          evt.preventDefault();
-          // Set the checked property to the opposite of its current value
-          Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$(evt.target).data('url')}});
-          return false;
-      })
+    renderSphere() {
+        if (!this.data.sphere) {
+            return;
+        }
+        let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1";
 
-    return (
+        return (
+            <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+        );
+    },
 
-      <div id="contentContainer">
+    render() {
+        if (this.data.loading) {
+            return (
+                <div className="loader-container">
+                    <div className="loader"><span>Loading...</span></div>
+                </div>
+            )
+        }
 
-        <div id="mainContent" className="col-sm-12 col-lg-10 col-lg-offset-1 noPadding">
+        var price = this.data.home.price;
+        price = price && accounting.formatMoney(price, "£", 0, ".", ",");
 
-          {this.props.header}
+        return (
 
-          <div id="viewVR">
-             {this.renderSphere()}
-          </div>
+            <div id="contentContainer">
 
-          <div id="propDetails">
-            <div id="viewDetails" className="col-sm-4 noPadding">
-              {this._renderViewOptions()}
-              {this.renderNotes()}
-            </div>
+                <div id="mainContent" className="col-sm-12 noPadding">
 
-            {this._renderPlacque()}
+                    {this.props.header}
 
-            <div id="rooms" className="col-sm-4 noPadding">
-              <h3>Rooms</h3>
-              <header id="roomHeader">
-                <form className="new-note">
-                  <input
-                    type="text"
-                    ref="roomInput"
-                    placeholder="Filter.." />
-                </form>
-                <div id="addRoomBtn" className="">
-                  <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
+                    <div id="rooms" className="col-sm-4">
+
+                        <div className="row-fluid">
+                            <h2 id="propTitle">{this.data.home.name}</h2>
+                            <h5>{price}</h5>
+                            <p>
+                                {this.data.home.address}
+                            </p>
+                            <p>{this.data.home.numBedrooms} <i className="fa fa-bed"></i> | {this.data.home.numBathrooms} <i className="fa fa-recycle"></i></p>
+                            <p>
+                                {this.data.home.desc}
+                            </p>
+
+                        </div>
+
+                        <hr></hr>
+
+                        <div id="roomHeader" className="row-fluid">
+                            <h5><i className="fa fa-home"></i> Rooms</h5>
+                            <div id="roomFilter">
+                                <form className="new-note">
+                                    <input
+                                        id="search-rooms"
+                                        type="text"
+                                        ref="roomInput"
+                                        placeholder="Filter.." />
+                                </form>
+                                <div id="addRoomBtn" className="pull-right">
+                                    <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
+                                </div>
+
+                            </div>
+                            <div id="roomPics" className="noPadding">
+
+                                {this.renderRoomBoxes()}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="content" className="col-sm-8 noPadding">
+                      <div id="viewVR">
+                          {this.renderSphere()}
+                      </div>
+
+                      <div id="propDetails">
+
+                        <div id="viewDetails" className="col-sm-8">
+                            <h4>Viewer Options:</h4>
+                            {this._renderViewOptions()}
+
+                            <hr></hr>
+
+                            <div>
+                                <h4>Room Details</h4>
+                                <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
+                            </div>
+                        </div>
+
+                        <div id="plaque" className="col-sm-4">
+                            {this._renderPlaque()}
+                        </div>
+
+                      </div>
+                    </div>
+
+                    {this._renderAddRoom()}
+
                 </div>
 
-              </header>
-              <div id="roomPics" className="noPadding">
-
-                  {this.renderRoomBoxes()}
-
-              </div>
             </div>
 
-          </div>
+        );
+    },
 
-          {this._renderAddRoom()}
+    _togglePopup() {
+        this.setState({ isPopup: !this.state.isPopup });
+    },
 
-        </div>
+    _addRoom(e) {
+        e.preventDefault();
 
-      </div>
+        // Find the text field via the React ref
+        let name = React.findDOMNode(this.refs.nameInput).value.trim();
+        let desc = React.findDOMNode(this.refs.descInput).value.trim();
+        let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
 
-    );
-  },
+        let rooms = Rooms.find({homeId: this.props.id}).fetch(),
+            highest_position = utils.getHighestPosition(rooms);
 
-  _togglePopup() {
-    this.setState({ isPopup: !this.state.isPopup });
-  },
+        Rooms.insert({
+            name: name,
+            desc: desc,
+            picUrl: picUrl,
+            homeId: this.props.id,
+            position: highest_position,
+            createdAt: new Date()
+        });
 
-  _addNote(e) {
-    e.preventDefault();
+        // Clear form
+        React.findDOMNode(this.refs.nameInput).value = "";
+        React.findDOMNode(this.refs.descInput).value = "";
+        React.findDOMNode(this.refs.picUrl).value = "";
+    },
 
-    // Find the text field via the React ref
-    var text = React.findDOMNode(this.refs.noteInput).value.trim();
+    _renderAddRoom() {
 
-    Notes.insert({
-      text: text,
-      createdAt: new Date(), // current time
-      //position: number
-    });
+        if(!this.state.isPopup) {
+            return null;
+        }
+        return (
+            <div id="addRoom" className="container-fluid">
+                <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
 
-    // Clear form
-    React.findDOMNode(this.refs.noteInput).value = "";
+                <form className="col-sm-8 col-sm-offset-2" role="addHome" onSubmit={this._addRoom}>
+                  <h3>Add room to {this.data.home.name}</h3>
+                  <hr></hr>
+                  <div className="form-group">
+                      <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
+                  </div>
+                  <div className="form-group">
+                      <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
+                  </div>
+                  <h4>Room Picture URL:</h4>
+                  <div className="form-group">
+                      <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
+                  </div>
 
-  },
+                  <button type="submit" className="btn btn-default">Add Room</button>
+                </form>
+            </div>
+        );
+    },
 
-  _addRoom(e) {
-      e.preventDefault();
+    _renderViewOptions() {
+        let defaultClasses = ['btn', 'btn-default'],
+            introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
+            mapClasses = classNames(defaultClasses, {active: this.state.isMap}),
+            floorLogoClasses = classNames(defaultClasses, {active: this.state.isFloorLogo}),
+            plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
+            floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
+            infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
 
-      // Find the text field via the React ref
-      let name = React.findDOMNode(this.refs.nameInput).value.trim();
-      let desc = React.findDOMNode(this.refs.descInput).value.trim();
-      let picUrl = React.findDOMNode(this.refs.picUrl).value.trim();
-      let homeId = React.findDOMNode(this.refs.homeId).value.trim();
+        return (
+            <div id="viewOptions">
+                <ul className="list-inline">
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Intro Video
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorLogo")} type="button" className={floorLogoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Logo
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isMap")} type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Map
+                        </button>
+                    </li>
+                    {/*
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Plaque
+                        </button>
+                    </li>
+                    */}
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Floorplan
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isInfoWindow")} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Info
+                        </button>
+                    </li>
+                </ul>
 
+                {/*
+                <div className="hudOptions">
+                    {this.props.radioBtns}
+                </div>
+                */}
+            </div>
+        );
+    },
 
-      Rooms.insert({
-        name: name,
-        desc: desc,
-        picUrl: picUrl,
-        homeId: homeId,
-        createdAt: new Date(), // current time
-        position: 0
-      });
+    _renderPlaque() {
+        return (
+            <div id="circ" className="center-block">
+                <h4 id="circTitle">{this.data.home.name}</h4>
+                {/*                <p>Built {this.data.home.year}</p>  */}
+            </div>
+        );
+    },
 
-      // Clear form
-      React.findDOMNode(this.refs.nameInput).value = "";
-      React.findDOMNode(this.refs.descInput).value = "";
-      React.findDOMNode(this.refs.picUrl).value = "";
-      React.findDOMNode(this.refs.homeId).value = "";
+    _getHud() {
+        return {'isIntroVideo': this.state.isIntroVideo,
+                'isMap': this.state.isMap,
+                'isFloorLogo': this.state.isFloorLogo,
+                'isPlaque': this.state.isPlaque,
+                'isFloorplan': this.state.isFloorplan,
+                'isInfoWindow': this.state.isInfoWindow,
+                'text': $('#circTitle').text()}
+    },
 
+    _toggleViewOption(optionName) {
+        let changedOption = !this.state[optionName];
+        let optionState = {};
+        optionState[optionName] = changedOption;
 
-      this._togglePopup;
-  },
+        this.setState(optionState);
 
-  _renderAddRoom() {
-
-    if(!this.state.isPopup) {
-    return null;
+        let hud = this._getHud();
+        hud[optionName] = changedOption;
+        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
     }
-    return (
-      <div id="addRoom" className="container-fluid">
-        <a href="javascript:;" className="close" onClick={this._togglePopup}><i className="fa fa-close fa-lg"></i></a>
-        <h3>Add a room to 100 Freeman St.</h3>
-        <form role="addHome vertCenter" onSubmit={this._addRoom}>
-          <div className="form-group">
-            <input type="text" className="form-control" ref="nameInput" placeholder="Kitchen, Living Room,"></input>
-          </div>
-          <div className="form-group">
-            <textarea type="text" className="form-control" ref="descInput" placeholder="Tell us about this room.."></textarea>
-          </div>
-          <div className="form-group">
-            <label for="picUrl">Room Picture URL:</label>
-            <input type="text" className="form-control" ref="picUrl" placeholder="Dropbox much?"></input>
-          </div>
-          <div className="form-group">
-            <label for="homeId">Home ID:</label>
-            <input type="text" className="form-control" ref="homeId" placeholder="ID of the property or home"></input>
-          </div>
-          <button type="submit" className="btn btn-default">Add Room</button>
-        </form>
-      </div>
-    );
-  },
 
-  _renderViewOptions() {
-    return (
-      <div id="viewOptions" className="20padding">
-        <ul className="list-inline nav-justified">
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-              <span className="glyphicon glyphicon-comment"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-              <span className="glyphicon glyphicon-home"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-              <span className="glyphicon glyphicon-headphones"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-              <span className="glyphicon glyphicon-heart"></span>
-            </button>
-          </li>
-          <li>
-            <button type="button" className="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
-              <span className="glyphicon glyphicon-map-marker"></span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    );
-  },
+});
 
-  _renderPlacque() {
-    return (
-      <div id="placque" className="col-sm-4">
-        <div id="circ" className="center-block">
-          <h4 id="circTitle">{this.data.home.name}</h4>
-          <p>{this.data.home.address}</p>
-          <a href="javascript:;"><i className="fa fa-pencil"></i></a>
-        </div>
-      </div>
-    );
-  }
+HomeWrapper = React.createClass({
+    mixins: [ReactMeteorData],
+    getMeteorData() {
+        let data = {rooms: [], hud: {}};
+        let handles = [Meteor.subscribe("rooms"),
+                       Meteor.subscribe("sphere", "5ff7bef11efaf8b657d709b9")];
+        if (!handles.every(utils.isReady)) {
+            return data;
+        }
+        data.hud = getCurrentHud();
+        if (RoomSearch.getCurrentQuery()) {
+            let status = RoomSearch.getStatus();
+            if (status.loaded) {
+                data.rooms = RoomSearch.getData();
+            }
+        } else {
+            let rooms = Rooms.find({homeId: this.props.id}, {
+                sort: {
+                    position: 1
+                }
+            }).fetch();
+            data.rooms = rooms;
+        }
+        return data;
+    },
+
+    _handleKey(event){
+        let search = document.getElementById('search-rooms');
+        if (search === document.activeElement) {
+            let homeId = this.props.id;
+            event.preventDefault();
+            if (event.keyCode == 27) {
+                $(event.target).val("");
+                RoomSearch.search("", {homeId: homeId});
+                return false;
+            }
+            let text = $(event.target).val().trim();
+            searchTimeout = setTimeout(function() {
+                RoomSearch.search(text, {homeId: homeId});
+            }, 500);
+            return false;
+        }
+    },
+
+    componentWillMount(){
+        RoomSearch.search("", {homeId: this.props.id});
+        document.addEventListener("keyup", this._handleKey, false);
+    },
+
+
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this._handleKey, false);
+    },
+
+    render: function(){
+        return(
+            <Home rooms={this.data.rooms} hud={this.data.hud} {...this.props} />
+        )
+    }
 });

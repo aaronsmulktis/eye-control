@@ -1,34 +1,92 @@
+li {border: 0;}
+
+select {
+	height: 30px !important;
+	border: none !important;
+}
+
+.radio, .checkbox {
+	margin: 0 10px;
+}
+
 .list-inline {
 	margin: 0;
+	border-bottom: 0;
+
+    #viewOptions & {
+        li {
+            padding-top: 0;
+            padding-bottom: 0;
+            &:first-child {
+                padding-left: 0;
+            }
+        }
+    }
 }
 
 .nav-justified > li {
 	text-align: center;
 }
 
-.btn-default {
-	background-color: #eee;
-	border-color: darken(#eee, 10%);
+.btn-default, .btn-default:focus {
+	background: lighten(@brand, 10%);
+	border-radius: 0px;
+	padding: 8.5px 15px;
+	border: 0px;
+	color: white;
+	.font2;
+	.transition;
+}
+
+.btn-default:hover {
+	background: lighten(@brand, 5%);
+	color: darken(white, 10%);
+	.transition;
 }
 
 .btn-default:active, .btn-default:active.active, .btn-default.active {
-	background-color: @three;
+	background-color: darken(@brand, 20%);
 	border-color: darken(@three, 10%);
 	color: white;
 }
 
 .btn-default:active:hover, .btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, .btn-default:active:focus, .btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, .btn-default:active.focus, .btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
-	background-color: @three;
-	border-color: darken(@three, 10%);
+	background-color: darken(@brand, 20%);
+	border: 0px;
 	color: white;
 	outline: none;
+	.transition;
 }
 
 .btn-default:focus, .btn-default.focus {
-	border-color: darken(#eee, 10%);
+	border-color: darken(@grey, 10%);
 	outline: none;
 }
 
 .btn:active, .btn.active {
 	box-shadow: inherit;
+}
+
+/*.form-group {
+  background: #eee;
+}*/
+
+input.form-control, textarea.form-control {
+  box-sizing: border-box;
+  padding: 10px;
+  background: fade(@grey, 66%);
+  border: none;
+  width: 100%;
+  /*padding-right: 80px;*/
+  font-size: 1em;
+  border-radius: 0px;
+  box-shadow: none;
+  border: 1px solid fade(@grey, 66%);
+}
+
+input:focus, .form-control:focus {
+  outline: 0;
+  /*border: 1px solid @grey;*/
+  box-shadow: none;
+  .transition;
 }

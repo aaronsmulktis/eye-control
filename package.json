@@ -5,6 +5,7 @@
   "main": "eye-control.html",
   "scripts": {
     "deploy": "meteor deploy eye-control.ruselaboratories.com",
+    "deploydev": "meteor deploy eye-control.meteor.com",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +18,6 @@
     "url": "https://github.com/aaronsmulktis/eye-control/issues"
   },
   "homepage": "https://github.com/aaronsmulktis/eye-control#readme",
-  "dependencies": {}
+  "dependencies": {
+  }
 }

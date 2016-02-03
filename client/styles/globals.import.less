@@ -1,12 +1,70 @@
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);
+@import url(https://fonts.googleapis.com/css?family=Philosopher:400,700);
+/*@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic);*/
+/*@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:400,300,500,700,800);*/
+/*@import url(https://fonts.googleapis.com/css?family=Marcellus);*/
+@import url(https://fonts.googleapis.com/css?family=Libre+Baskerville);
+/*@import url(https://fonts.googleapis.com/css?family=Yantramanav:100);*/
+@import url(https://fonts.googleapis.com/css?family=Allerta);
+
+.font1 {
+	font-family: 'Philosopher';
+	font-weight: 400;
+	letter-spacing: 1px;
+}
+
+.font2 {
+	font-family: 'Alef', sans-serif;
+	letter-spacing: 1px;
+}
+
+.font3 {
+	font-family: 'Libre Baskerville', serif;
+	line-height: 1.23;
+	/*letter-spacing: 1px;*/
+}
+
+.font4 {
+	font-family: 'Allerta', sans-serif;
+	line-height: 1.23;
+	letter-spacing: 1px;
+}
+
+iframe {border: 0 !important;}
+
+img {
+	width: 100%;
+}
+
+p {
+	letter-spacing: 0px;
+}
+
+a {color: @brand; .transition;}
+a:hover {color: darken(@brand, 10%); .transition;}
+
+h1, h2, h3, h4 {
+	.font1;
+	font-weight: 400;
+	padding: 10px auto !important;
+}
+
+h5, h6 {
+	.font2;
+	font-weight: 700;
+	padding: 10px auto;
+}
+
+h1{}h2{}h3{}h4{}h5{font-size: 1.5em;}h6{font-size: 1.17em}
+
+h1:focus, h2:focus, h3:focus, h4:focus {outline:none;}
 
 body {
 	background-color: @brand;
-	/*background-image: linear-gradient(left top, @one, @two 140%);*/
-	background: -webkit-linear-gradient(left top, @one, @two); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right, @one, @two); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right, @one, @two); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right, @one, @two);
+	/*background-image: linear-gradient(left top, @brand, @two 140%);*/
+	background: -webkit-linear-gradient(left top, @brand, @two); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, @brand, @two); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, @brand, @two); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, @brand, @two);
 
 	background-attachment: fixed;
 
@@ -19,32 +77,51 @@ body {
 	padding: 0;
 	margin: 0;
 
-	font-family: 'Ubuntu Mono', sans-serif;
+	height: 100%;
+
+	display: block;
+
+	.font4;
 	font-size: 14px;
-	color: black;
 }
-
-iframe {border: 0 !important;}
-
-img {
-	width: 100%;
-}
-
-a {
-	color: @brand;
-}
-
-h1 {
-
-}
-
-h4:focus {outline:none;}
 
 header {
 }
 
-button:focus, a:focus, input:focus {
+a:focus, a:active {
 	outline: none;
+}
+
+input {height: 36px; border: 0;}
+
+.checkbox input {
+	height: auto;
+}
+
+button:focus, input:focus, button:active, input:active {
+	outline: none;
+	border: 0;
+}
+
+button, input, textarea, option, select {
+	.font2;
+	font-size: 12px;
+}
+
+label {
+  white-space: nowrap;
+}
+
+.Select {width: 160px;}
+.Select-clear {font-family: 'Font Awesome';}
+.Select-control {
+	border-radius: 0px;
+	border: 0;
+    height: 34px;
+}
+
+.Select-menu-outer {
+	border: 0;
 }
 
 #topBar {
@@ -55,10 +132,41 @@ button:focus, a:focus, input:focus {
 }
 
 #topBar ul li {
-  border: 0;
+	border: 0;
+	.font2;
+	font-size: 14px;
+}
+
+#topBar ul li a {padding: 8.5px 15px;}
+
+#topBar ul li a:hover {
+	text-decoration: none;
+	background: @grey;
 }
 
 #mainContent {
+	padding-top: 51px !important;
 	background: white;
-	/*box-shadow: 0px 0px 33px rgba(0,0,0,0.33);*/
+	height: 100%;
+	position: absolute;
+}
+
+#content {
+	height: 100%;
+	overflow: scroll;
+}
+
+#rooms {
+	/*background: @brand;*/
+  	transform: translateZ(0px);
+	height: 100%;
+	overflow: scroll;
+}
+
+#rooms h1, #rooms h2, #rooms h3, #rooms h4, #rooms h5 {
+	/*color: white;*/
+}
+
+#rooms i {
+	/*opacity: 0.33;*/
 }

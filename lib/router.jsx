@@ -1,10 +1,8 @@
 FlowRouter.route('/', {
   action: function() {
-    ReactLayout.render(Map, {
+    ReactLayout.render(MapWrapper, {
       header: <Header />
-    }
-    );
-    initialize();
+    });
   }
 });
 
@@ -28,7 +26,14 @@ FlowRouter.route('/list', {
   action: function() {
     ReactLayout.render(List, {
       header: <Header />,
-      // items: this.data.notes
+    });
+  }
+});
+
+FlowRouter.route('/radio', {
+  action: function() {
+    ReactLayout.render(RadioContainer, {
+      header: <Header />,
     });
   }
 });
@@ -36,10 +41,10 @@ FlowRouter.route('/list', {
 FlowRouter.route('/home/:id', {
   name: 'home',
   action: function(params) {
-    ReactLayout.render(Home, {
+    ReactLayout.render(HomeWrapper, {
       header: <Header />,
-      id: params.id,
-      slug: params.slug
+      radioBtns: <RadioContainer />,
+      id: params.id
     });
   }
 });

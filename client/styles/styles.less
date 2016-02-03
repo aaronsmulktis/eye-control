@@ -2,6 +2,24 @@
 @import "{}/client/styles/globals.import.less";
 @import "{}/client/styles/mixins.import.less";
 
+.loader-container {
+  text-align: center;
+  display: table;
+  width: 100%;
+}
+
+.loader {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100vh;
+}
+
+.loader span {
+  background: white;
+  padding: 20px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.33);
+}
+
 .navbar-header p {
   position: absolute;
   font-size: 11px;
@@ -10,13 +28,19 @@
 
 .navbar-brand {
   font-weight: 700;
-  background: url(img/logo.jpg) no-repeat;
+  background: url(img/knightfrank.svg) no-repeat;
   background-size: cover;
   display: block;
-  min-width: 200px;
+  /*min-width: 200px;*/
+  .transition;
+  background-size: 80% 80%;
+  background-position: center left;
 }
 
-.navbar-brand:hover {opacity: 0.7;}
+.navbar-brand:hover {
+  opacity: 0.7;
+  .transition;
+}
 
 .navbar-brand #innerLogo {
   visibility: hidden;
@@ -32,8 +56,8 @@ i#logoEye.90degCC {
   background-image: linear-gradient(left bottom, darkgrey, grey 100%);
   background-position: center center;
   background-size: cover;
-  -webkit-filter: contrast(150%);
-          filter: contrast(150%);
+/*  -webkit-filter: contrast(150%);
+          filter: contrast(150%);*/
 }
 
 .vr-iframe {
@@ -81,36 +105,201 @@ i#logoEye.90degCC {
   z-index: 9999;
   background: white;
   padding: 100px;
-  height: 100vh;
+  height: 100%;
+  overflow: scroll;
 }
 
 #addHome .close {
-  position: absolute;
+  position: fixed;
   top: 20px; right: 20px;
 }
 
-#propDetails {
-    /*width: 100px;*/
-    background: white;
-    /*height: 400px;*/
+#mainMap {
+  background: white;
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: translateZ(0px);
 }
 
-.addForm {
-  padding: 15px;
+#searchOptions {
+  background: @brand;
+  color: white;
+  position: relative;
+  z-index: 999;
+  padding: 0 10px;
+}
+
+#searchView {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+#searchView a {color: white; opacity: 0.66}
+#searchView a:hover {color: white; text-decoration: none; cursor: pointer; opacity: 1}
+#searchView a.on {color: white; opacity: 1}
+
+#viewOptions {
+  /*position: relative;
+  bottom: 110px;
+  left: 5px;*/
+}
+
+/* == Radio Buttons == */
+
+/*#viewOptions [type="radio"]:not(:checked),
+#viewOptions [type="radio"]:checked {
+  display: none;
+}*/
+
+#viewOptions [type="radio"] + label {
+  position: relative;
+  cursor: pointer;
+  padding: 3px 0 0 35px;
+  line-height: 25px;
+  top: -7px;
+  left: -18px;
+  pointer-events: none;
+}
+
+#viewOptions [type="radio"] + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+#viewOptions [type="radio"]:not(:checked) + label:before {
+  border-radius: 50%;
+  border: 2px solid #888;
+}
+
+#viewOptions [type="radio"]:checked + label:before {
+  border-radius: 50%;
+  border: 2px solid @brand;
+  background-color: @brand;
+}
+
+#viewOptions li button.btn-default {
+  /*border-radius: 50%;
+  width: 35px;*/
+  padding: 6px 8px;
+}
+
+#viewOptions ul#viewOptionsBtns li {
+  padding: 5px;
+  float: left;
+}
+
+#viewOptions ul#viewOptionsBtns li:last-child {}
+
+.mapList {
+  height: 100%;
+  position: fixed;
+  overflow: scroll;
+  padding: 55px 0 100px 10px;
+  .transition;
+
+  .filter-results {
+      padding: 10px 0;
+  }
+}
+
+#search-homes, #searchMapInput {
+  background: white;
+  border: none;
+}
+
+#searchMap #searchIcon {
+  color: @brand !important;
+  margin-left: -25px !important;
+}
+
+/*.propList {
+  background: fade(#eee, 90%);
+}*/
+
+#propDetails {
+  /*width: 100px;*/
+  background: white;
+  /*height: 400px;*/
+}
+
+.propListTitle {
+  margin: 15px 0 10px 0;
+}
+
+.propList a {
+  color: black;
+}
+
+.propList a:hover .propDetails {
+  color: @brand;
+  text-decoration: none;
 }
 
 .propList ul li {
   display: table;
   width: 100%;
+  background: white;
+  margin: 5px auto;
+  /*color: fade(black, 50%);*/
 }
 
 .propList ul li:hover {
-  background: lighten(@brand, 50%);
-  color: white
+  background: white;
+  /*cursor: -webkit-grab;*/
+}
+
+.propList ul li:hover .boxBorder, #roomPics ul li:hover .boxBorder {
+  content: " "; // you need something or it will be invisible at least on Chrome
+  color: transparent;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  border: 4px solid @brand;
+  z-index: 999;
+  pointer-events: none;
+  .transition;
+}
+
+.propList ul li a#homeLink {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.homeName {}
+
+.propDetails {
+  pointer-events: none;
+}
+
+i.fa-recycle:before {
+  content: "";
+  color: @grey !important;
+  width: 1em;
+  height: 1.1em;
+  display: block;
+  background: url(img/bathroom.svg) no-repeat;
+  background-position: 0 2px;
 }
 
 .homePic {
+  pointer-events: none;
   padding: 10px;
+  background-color: #fff;
+  background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScyMCcgdmlld0JveD0nMCAwIDUgMTAnPgoJPHJlY3Qgd2lkdGg9JzExMCUnIHg9Jy01JScgeT0nLTUlJyBoZWlnaHQ9JzExMCUnIGZpbGw9JyNmZmYnLz4KCTxsaW5lIHgxPSctMicgeTE9JzEnIHgyPSc3JyB5Mj0nMTAnIHN0cm9rZT0nI2RkZCcgc3Ryb2tlLXdpZHRoPScuNScvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjZGRkJyBzdHJva2Utd2lkdGg9Jy41Jy8+Cgk8bGluZSB4MT0nLTInIHkxPSctNCcgeDI9JzcnIHkyPSc1JyBzdHJva2U9JyNkZGQnIHN0cm9rZS13aWR0aD0nLjUnLz4KPC9zdmc+);
 }
 
 a.homeLink {
@@ -127,7 +316,7 @@ a.homeLink {
   background: transparent;
   border: none;
   width: 100%;
-  padding-right: 80px;
+  /*padding-right: 80px;*/
   font-size: 1em;
 }
 
@@ -135,56 +324,113 @@ a.homeLink {
   outline: 0;
 }
 
-#placque {
-  display: flex;
+#propTitle {
+  position: relative;
+  z-index: 1;
+  background: @accent;
+  color: white;
+  padding: 8.5px 15px;
+  margin: 0 -17px;
+}
+
+#plaque {
+  display: none;
   /* text-align: center; */
-  padding: 40px;
+  /*padding: 40px;*/
+  top: -60px;
+  width: 200px
 }
 
-#placque a {color: white;}
-#placque a:hover {color: fade(white, 66%);}
-
-.roomBox {
-  /*height: 90px;*/
-  background: white;
+#plaque h4 {
+  .font3;
+  font-weight: 400;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.28);
 }
 
-.roomPic {
-  background-size: cover;
-  height: 90px;
-}
+#plaque a {color: @four;.transition;}
+#plaque a:hover {color: fade(white, 66%);.transition;}
 
-#placque #circ {
-  background: @sky;
+#plaque #circ {
+  background-color: @sky;
+  /*background-image: linear-gradient(left top, @brand, @two 140%);*/
+  background: -webkit-linear-gradient(-50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66%));
+  background: -o-linear-gradient(-50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66%));
+  background: -moz-linear-gradient(-50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66%));
+  background: linear-gradient(to -50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66));
+
   color: white;
   border-radius: 50%;
-  width: 180px;
-  height: 180px;
-  padding: 40px;
+  /*width: 180px;*/
+  height: 170px;
+  padding: 40px 20px;
   text-align: center;
   display: table-cell;
   border: 1px solid darken(@three, 5%);
   box-shadow: 1px 1px 2px rgba(0,0,0,0.33);
+  vertical-align: middle;
+}
+
+#roomHeader h5 {
+  font-size: 20px;
+}
+
+#roomPics {
+  margin-top: 10px;
+  height: 100%;
+}
+
+.roomBox {
+    padding: 10px 0;
+    background: white;
+}
+
+.homeBox {
+    padding: 0;
+}
+
+#rooms {
+  border-right: 1px solid @grey;
+}
+
+#rooms .roomBox h1,
+#rooms .roomBox h2,
+#rooms .roomBox h3,
+#rooms .roomBox h4,
+#rooms .roomBox h5 {
+  color: black;
+}
+
+#roomPics ul li:hover {
+  cursor: pointer;
+}
+
+.roomPic {
+  background-size: cover;
+  background-color: #fff;
+  background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScyMCcgdmlld0JveD0nMCAwIDUgMTAnPgoJPHJlY3Qgd2lkdGg9JzExMCUnIHg9Jy01JScgeT0nLTUlJyBoZWlnaHQ9JzExMCUnIGZpbGw9JyNmZmYnLz4KCTxsaW5lIHgxPSctMicgeTE9JzEnIHgyPSc3JyB5Mj0nMTAnIHN0cm9rZT0nI2RkZCcgc3Ryb2tlLXdpZHRoPScuNScvPgoJPGxpbmUgeDE9Jy0yJyB5MT0nNicgeDI9JzcnIHkyPScxNScgc3Ryb2tlPScjZGRkJyBzdHJva2Utd2lkdGg9Jy41Jy8+Cgk8bGluZSB4MT0nLTInIHkxPSctNCcgeDI9JzcnIHkyPSc1JyBzdHJva2U9JyNkZGQnIHN0cm9rZS13aWR0aD0nLjUnLz4KPC9zdmc+);
+  /*height: 90px;*/
 }
 
 #addRoomBtn {
-  margin: 8px;
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
-  background: lighten(@three, 25%);
+  background: lighten(@brand, 10%);
+  margin-top: -80px;
 }
 
 #addRoomBtn a {
-  padding: 10px 25px;
+  padding: 8.5px 15px;
   display: block;
   color: white;
+  .transition;
 }
 
 #addRoomBtn a:hover {
-  background: @three;
-  color: fade(white, 66%);
+  background: darken(@brand, 10%);
+  /*color: fade(white, 66%);*/
   text-decoration: none;
+  .transition;
 }
 
 #addRoom {
@@ -197,7 +443,7 @@ a.homeLink {
   z-index: 9999;
   background: white;
   padding: 100px;
-  height: 100vh;
+  height: 100%;
 }
 
 #addRoom .close {
@@ -208,6 +454,21 @@ a.homeLink {
 ul {
   margin: 0;
   padding: 0;
+}
+
+img {
+    .homeBox:hover &,
+    .roomBox:hover & {
+        -webkit-user-drag: none;
+    }
+}
+
+.edit, .delete {
+    display: none;
+
+    .homeBox:hover &, .roomBox:hover & {
+        display: inline;
+    }
 }
 
 .delete {
@@ -223,11 +484,18 @@ ul {
   z-index: 1;
 }
 
+.price {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  z-index: 1;
+}
+
 li {
   position: relative;
   list-style: none;
-  padding: 15px;
-  border-bottom: #eee solid 1px;
+  padding: 14px;
+  /*border-bottom: #eee solid 1px;*/
 }
 
 li .text {
@@ -255,19 +523,20 @@ header .hide-completed {
   margin-left: 5px;
 }
 
-.propList {
-  background: fade(#eee, 90%);
+.aboutPage {
+  height: 100%;
+  .brandGradientLight;
+  display: table;
+  width: 100%;
+  padding: 0 25%;
 }
 
-#mainMap {
-	background: white;
-	height: 90vh;
-}
-
-#viewOptions li button.btn-default {
-  border-radius: 50%;
-  width: 35px;
-  padding: 6px 8px;
+.aboutPage .aboutContent {
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 1.5em;
 }
 
 @media (max-width: 600px) {
