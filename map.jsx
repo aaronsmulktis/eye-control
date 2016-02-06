@@ -1,10 +1,5 @@
 let styles = [
     {
-        stylers: [
-                { hue: "#00ffe6" },
-                { saturation: -20 }
-        ]
-    },{
         featureType: "road",
         elementType: "geometry",
         stylers: [
@@ -117,15 +112,9 @@ Map = React.createClass({
         this.processHomes(nextProps.homes);
     },
 
-    createMarker(lat, lon, html, link) {
+    createMarker(lat, lon, html, link, position) {
         let state = this.state;
-        let house = {
-                path: google.maps.SymbolPath.CIRCLE,
-                fillColor: 'red',
-                fillOpacity: 0.66,
-                strokeWeight: 0.33,
-                scale: 8
-        };
+        let house = [{url: 'img/letter_a.png'}, {url: 'img/letter_b.png'}, {url: 'img/letter_c.png'}, {url: 'img/letter_d.png'}, , {url: 'img/letter_e.png'}, , {url: 'img/letter_f.png'}, {url: 'img/letter_g.png'}];
 
         let shape = {
                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
@@ -135,7 +124,7 @@ Map = React.createClass({
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: house,
+                icon: house[position],
                 shape: shape,
                 path: google.maps.SymbolPath.CIRCLE,
                 title: html
@@ -169,13 +158,14 @@ Map = React.createClass({
         }
         for (let i = 0; i < homes.length; i++) {
             let homeName = homes[i].name,
-                homeDesc = homes[i].desc,
+                homeDesc = homes[i].notes,
                 homePrice = homes[i].price,
-                homeRooms = homes[i].rooms,
-                homeBaths = homes[i].baths,
-                content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
+                homeRooms = homes[i].numBedrooms,
+                homeBaths = homes[i].numBathrooms;
+            homePrice = homePrice && accounting.formatMoney(homePrice, "£", 0, ".", ",");
+            let content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
 
-            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id);
+            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position);
         }
     },
 
