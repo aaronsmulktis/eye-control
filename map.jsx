@@ -71,13 +71,6 @@ Map = React.createClass({
         }
     },
 
-    getInitialState() {
-        return {
-            isList: false,
-            isMap: false
-        }
-    },
-
     initialize() {
         if (this.state.mainMap) {
                 return;
@@ -99,6 +92,10 @@ Map = React.createClass({
 
     getInitialState() {
         return {
+            // will be used to detect map or list view
+            isList: false,
+            isMap: false,
+
             mainMap: false,
             markers: []
         }
@@ -238,11 +235,34 @@ Map = React.createClass({
         hud[optionName] = changedOption;
     },
 
+    _handleForSale(){
+        this.setState({
+          forSale: !this.state.forSale
+        });
+    },
+
+    _handleForRent(){
+        this.setState({
+          forRent: !this.state.forRent
+        });
+    },
+
+    _handleBeds(val) {
+        this.props.handleBeds(val);
+    },
+
+    _handleBaths(val) {
+        this.props.handleBaths(val);
+    },
+
     // logChange(val) {
     //     console.log("Selected: " + val);
     // },
 
     render() {
+
+        let bedroomVal = this.props.numBedrooms || "";
+        let bathroomVal = this.props.numBathrooms || "";
 
         if (!this.state.items) {
             return (
@@ -251,6 +271,7 @@ Map = React.createClass({
                     </div>
             );
         }
+
         return (
 
             <div id="contentContainer" className="container-fluid noPadding">
@@ -265,23 +286,30 @@ Map = React.createClass({
                             <div id="searchMap">
                                 <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
                                   <div className="form-group">
-                                      <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search..." dangerouslySetInnerHTML={this.renderSearchIcon()}></input>
+                                      <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search..."></input>
                                   </div>
                                 </form>
                             </div>
+
                             <div id="propOptions">
                                 <div className="navbar-form form-group pull-left">
                                     <Select
-                                        name="bedrooms"
+                                        id="bedsInput"
+                                        name="beds"
+                                        value={bedroomVal}
                                         placeholder="Bedrooms"
                                         options={bedOptions}
+                                        onChange={this._handleBeds}
                                     />
                                 </div>
                                 <div className="navbar-form form-group pull-left">
                                     <Select
+                                        id="bathsInput"
                                         name="baths"
+                                        value={bathroomVal}
                                         placeholder="Baths"
                                         options={bathOptions}
+                                        onChange={this._handleBaths}
                                     />
                                 </div>
                             </div>
@@ -322,46 +350,74 @@ MapWrapper = React.createClass({
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         let data = {homes: []};
-        var handles = [Meteor.subscribe("homes")];
+        let handles = [Meteor.subscribe("homes")];
         if (!handles.every(utils.isReady)) {
             return data;
         }
 
-        if (HomeSearch.getCurrentQuery()) {
-            var status = HomeSearch.getStatus();
-            if (status.loaded) {
-                data.homes = HomeSearch.getData();
-            }
-        } else {
-            var homes = Homes.find({}, {
-                sort: {
-                    position: 1
-                }
-            }).fetch();
-            data.homes = homes;
+        let status = HomeSearch.getStatus();
+        if (status.loaded) {
+            data.homes = HomeSearch.getData();
         }
 
         return data;
     },
 
+    getInitialState() {
+        return {
+            forSale: false,
+            forRent: false,
+            numBedrooms: 0,
+            numBathrooms: 0,
+            searchText: ""
+        }
+    },
+
     _handleKey(event){
         if (document.getElementById('searchMapInput') === document.activeElement) {
+            var _this = this;
             event.preventDefault();
             var text = $(event.target).val().trim();
             searchTimeout = setTimeout(function() {
-                HomeSearch.search(text, {sort: {position: 1}}); // can change the sorting here
+                _this._setStateAndSearch({
+                    searchText: text
+                });
             }, 500);
             if (event.keyCode == 27) {
                 clearTimeout(searchTimeout);
                 $(event.target).val("");
-                HomeSearch.search("")
+                _this._setStateAndSearch({
+                    searchText: text
+                });
             }
             return false;
         }
     },
 
+    _setStateAndSearch(obj) {
+        this.setState(obj, this._doSearch);
+    },
+
+    _handleBeds(val) {
+        this._setStateAndSearch({numBedrooms: val})
+    },
+
+    _handleBaths(val) {
+        this._setStateAndSearch({numBathrooms: val})
+    },
+
+    _doSearch() {
+      HomeSearch.search(this.state.searchText,
+                        {sort: {position: 1},
+                         requirements: {
+                             numBedrooms: {$gt: parseInt(this.state.numBedrooms)},
+                             numBathrooms: {$gt: parseInt(this.state.numBathrooms)},
+                         }
+                        });
+    },
+
     componentWillMount(){
-        HomeSearch.search("");
+        this._doSearch();
         document.addEventListener("keyup", this._handleKey, false);
     },
 
@@ -386,7 +442,7 @@ MapWrapper = React.createClass({
     render: function(){
 
         return(
-            <Map homes={this.data.homes} {...this.props} />
+            <Map homes={this.data.homes} handleBeds={this._handleBeds} handleBaths={this._handleBaths} numBedrooms={this.state.numBedrooms} numBathrooms={this.state.numBathrooms} {...this.props} />
         )
     }
 });
