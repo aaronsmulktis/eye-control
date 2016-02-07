@@ -241,9 +241,7 @@ Map = React.createClass({
     },
 
     _handleBaths(val) {
-        this.setState({
-            baths: val
-        });
+        this.props.handleBaths(val);
     },
 
     // logChange(val) {
@@ -251,6 +249,9 @@ Map = React.createClass({
     // },
 
     render() {
+
+        let bedroomVal = this.props.numBedrooms || "";
+        let bathroomVal = this.props.numBathrooms || "";
 
         if (!this.state.items) {
             return (
@@ -260,7 +261,6 @@ Map = React.createClass({
             );
         }
 
-        var bedroomVal = this.props.numBedrooms || "";
         return (
 
             <div id="contentContainer" className="container-fluid noPadding">
@@ -322,7 +322,7 @@ Map = React.createClass({
                                     <Select
                                         id="bathsInput"
                                         name="baths"
-                                        value=""
+                                        value={bathroomVal}
                                         placeholder="Baths"
                                         options={bathOptions}
                                         onChange={this._handleBaths}
@@ -366,12 +366,12 @@ MapWrapper = React.createClass({
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         let data = {homes: []};
-        var handles = [Meteor.subscribe("homes")];
+        let handles = [Meteor.subscribe("homes")];
         if (!handles.every(utils.isReady)) {
             return data;
         }
 
-        var status = HomeSearch.getStatus();
+        let status = HomeSearch.getStatus();
         if (status.loaded) {
             data.homes = HomeSearch.getData();
         }
@@ -418,6 +418,10 @@ MapWrapper = React.createClass({
         this._setStateAndSearch({numBedrooms: val})
     },
 
+    _handleBaths(val) {
+        this._setStateAndSearch({numBathrooms: val})
+    },
+
     _doSearch() {
       HomeSearch.search(this.state.searchText,
                         {sort: {position: 1},
@@ -454,7 +458,7 @@ MapWrapper = React.createClass({
     render: function(){
 
         return(
-            <Map homes={this.data.homes} handleBeds={this._handleBeds} numBedrooms={this.state.numBedrooms} {...this.props} />
+            <Map homes={this.data.homes} handleBeds={this._handleBeds} numBedrooms={this.state.numBedrooms} numBathrooms={this.state.numBathrooms} {...this.props} />
         )
     }
 });
