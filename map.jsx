@@ -124,6 +124,16 @@ Map = React.createClass({
                 scale: 8
         };
 
+        let image = {
+            url: 'img/flag.svg',
+            // This marker is 20 pixels wide by 32 pixels high.
+            size: new google.maps.Size(20, 26),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(0, 32)
+        };
+
         let shape = {
                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                 type: 'poly'
@@ -132,7 +142,7 @@ Map = React.createClass({
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: house,
+                icon: image,
                 shape: shape,
                 path: google.maps.SymbolPath.CIRCLE,
                 title: html
@@ -166,11 +176,12 @@ Map = React.createClass({
         }
         for (let i = 0; i < homes.length; i++) {
             let homeName = homes[i].name,
-                homeDesc = homes[i].desc,
+                homeDesc = homes[i].notes,
                 homePrice = homes[i].price,
-                homeRooms = homes[i].rooms,
-                homeBaths = homes[i].baths,
-                content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
+                homeRooms = homes[i].numBedrooms,
+                homeBaths = homes[i].numBathrooms;
+            homePrice = homePrice && accounting.formatMoney(homePrice, "£", 0, ".", ",");
+            let content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
 
             this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id);
         }
@@ -186,7 +197,17 @@ Map = React.createClass({
         for (let i=0; i<homes.length;i++) {
             let home = homes[i],
                     position = home.position == null ? i : home.position;
-            processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
+            processedHomes[position] = <HomeBox 
+                                        key={home._id} 
+                                        home={home} 
+                                        name={home.name} 
+                                        propPic={home.propPic} 
+                                        numBedrooms={home.numBedrooms} 
+                                        numBaths={home.numBaths} 
+                                        latitude={home.latitude} 
+                                        longitude={home.longitude} 
+                                        index={position} 
+                                        {...this.movableProps} />;
         }
         return <ul>{processedHomes}</ul>;
     },
@@ -241,9 +262,7 @@ Map = React.createClass({
     },
 
     _handleBaths(val) {
-        this.setState({
-            baths: val
-        });
+        this.props.handleBaths(val);
     },
 
     // logChange(val) {
@@ -251,6 +270,9 @@ Map = React.createClass({
     // },
 
     render() {
+
+        let bedroomVal = this.props.numBedrooms || "";
+        let bathroomVal = this.props.numBathrooms || "";
 
         if (!this.state.items) {
             return (
@@ -260,7 +282,6 @@ Map = React.createClass({
             );
         }
 
-        var bedroomVal = this.props.numBedrooms || "";
         return (
 
             <div id="contentContainer" className="container-fluid noPadding">
@@ -279,34 +300,7 @@ Map = React.createClass({
                                   </div>
                                 </form>
                             </div>
-                            <div id="propTypes">
-                                <ul className="list-inline pull-left">
-                                    <li>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input id="forSaleInput"
-                                                       type="checkbox"
-                                                       defaultChecked={this.state.forSale}
-                                                       onChange={this._handleForSale}>
-                                                </input>
-                                              <span>For Sale</span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input id="forRentInput"
-                                                       type="checkbox"
-                                                       defaultChecked={this.state.forRent}
-                                                       onChange={this._handleForRent}>
-                                                </input>
-                                              <span>For Rent</span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+
                             <div id="propOptions">
                                 <div className="navbar-form form-group pull-left">
                                     <Select
@@ -322,7 +316,7 @@ Map = React.createClass({
                                     <Select
                                         id="bathsInput"
                                         name="baths"
-                                        value=""
+                                        value={bathroomVal}
                                         placeholder="Baths"
                                         options={bathOptions}
                                         onChange={this._handleBaths}
@@ -366,12 +360,12 @@ MapWrapper = React.createClass({
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         let data = {homes: []};
-        var handles = [Meteor.subscribe("homes")];
+        let handles = [Meteor.subscribe("homes")];
         if (!handles.every(utils.isReady)) {
             return data;
         }
 
-        var status = HomeSearch.getStatus();
+        let status = HomeSearch.getStatus();
         if (status.loaded) {
             data.homes = HomeSearch.getData();
         }
@@ -418,6 +412,10 @@ MapWrapper = React.createClass({
         this._setStateAndSearch({numBedrooms: val})
     },
 
+    _handleBaths(val) {
+        this._setStateAndSearch({numBathrooms: val})
+    },
+
     _doSearch() {
       HomeSearch.search(this.state.searchText,
                         {sort: {position: 1},
@@ -454,7 +452,7 @@ MapWrapper = React.createClass({
     render: function(){
 
         return(
-            <Map homes={this.data.homes} handleBeds={this._handleBeds} numBedrooms={this.state.numBedrooms} {...this.props} />
+            <Map homes={this.data.homes} handleBeds={this._handleBeds} handleBaths={this._handleBaths} numBedrooms={this.state.numBedrooms} numBathrooms={this.state.numBathrooms} {...this.props} />
         )
     }
 });
