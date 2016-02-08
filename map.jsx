@@ -161,10 +161,13 @@ Map = React.createClass({
                 homeDesc = homes[i].notes,
                 homePrice = homes[i].price,
                 homeRooms = homes[i].numBedrooms,
-                homeBaths = homes[i].numBathrooms;
+                homeBaths = homes[i].numBathrooms,
+                homeThumb = homes[i].propPic;
             homePrice = homePrice && accounting.formatMoney(homePrice, "£", 0, ".", ",");
-            let content = "<h3>" + homeName + "</h3><p>" + homeDesc + "</p> <p>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6>" + homePrice + "</h6>";
-
+            let homeThumbUrl = homeThumb && 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(homeThumb) + '&resize=1&width=200',
+                imageDiv =  "<div class='col-sm-4 noPadding pull-left'> <img data-url='"+ homeThumb +"' src='"+ homeThumbUrl +"'></img> </div>" ,
+                descriptionDiv = "<div class=' col-sm-8 pull-right'> <h3 class='no-margin'>" + homeName + "</h3><p class='no-margin'>" + homeDesc + "</p> <p class='no-margin'>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6 class='no-margin'>" + homePrice + "</h6></div>",
+                content = imageDiv + descriptionDiv;
             this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position);
         }
     },
