@@ -29,33 +29,25 @@ Header = React.createClass({
     event.preventDefault();
 
     // Find the text field via the React ref
-    var name = React.findDOMNode(this.refs.nameInput).value.trim();
-    var desc = React.findDOMNode(this.refs.propDesc).value.trim();
-    var price = React.findDOMNode(this.refs.priceInput).value.trim();
-    var street = React.findDOMNode(this.refs.streetInput).value.trim();
-    var apt = React.findDOMNode(this.refs.aptInput).value.trim();
-    var city = React.findDOMNode(this.refs.cityInput).value.trim();
-    var postal = React.findDOMNode(this.refs.postalInput).value.trim();
-    var country = React.findDOMNode(this.refs.countryInput).value.trim();
-    var latitude = React.findDOMNode(this.refs.latitudeInput).value.trim();
-    var longitude = React.findDOMNode(this.refs.longitudeInput).value.trim();
-    var rooms = React.findDOMNode(this.refs.roomsInput).value.trim();
-    var baths = React.findDOMNode(this.refs.bathsInput).value.trim();
-    var year = React.findDOMNode(this.refs.yearInput).value.trim();
-    var propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
+    let name = React.findDOMNode(this.refs.nameInput).value.trim();
+    let desc = React.findDOMNode(this.refs.propDesc).value.trim();
+    let price = React.findDOMNode(this.refs.priceInput).value.trim();
+    let address = React.findDOMNode(this.refs.addressInput).value.trim();
+    let latitude = React.findDOMNode(this.refs.latitudeInput).value.trim();
+    let longitude = React.findDOMNode(this.refs.longitudeInput).value.trim();
+    let rooms = React.findDOMNode(this.refs.roomsInput).value.trim();
+    let baths = React.findDOMNode(this.refs.bathsInput).value.trim();
+    let year = React.findDOMNode(this.refs.yearInput).value.trim();
+    let propPic = React.findDOMNode(this.refs.propPicInput).value.trim();
 
-    var homes = this.data.homes,
+    let homes = this.data.homes,
         highest_position = utils.getHighestPosition(homes);
 
     Homes.insert({
       name: name,
       desc: desc,
       price: price,
-      street: street,
-      apt: apt,
-      city: city,
-      postal: postal,
-      country: country,
+      address: address,
       latitude: latitude,
       longitude: longitude,
       rooms: rooms,
@@ -70,11 +62,7 @@ Header = React.createClass({
     React.findDOMNode(this.refs.nameInput).value = "";
     React.findDOMNode(this.refs.propDesc).value = "";
     React.findDOMNode(this.refs.priceInput).value = "";
-    React.findDOMNode(this.refs.streetInput).value = "";
-    React.findDOMNode(this.refs.aptInput).value = "";
-    React.findDOMNode(this.refs.cityInput).value = "";
-    React.findDOMNode(this.refs.postalInput).value = "";
-    React.findDOMNode(this.refs.countryInput).value = "";
+    React.findDOMNode(this.refs.addressInput).value = "";
     React.findDOMNode(this.refs.latitudeInput).value = "";
     React.findDOMNode(this.refs.longitudeInput).value = "";
     React.findDOMNode(this.refs.yearInput).value = "";
@@ -115,7 +103,7 @@ Header = React.createClass({
             <div className="form-group col-sm-5 noPadding">
               <input type="text" className="form-control" ref="roomsInput" placeholder="How many rooms?"></input>
             </div>
-            <div className="form-group col-sm-5 col-sm-offset-1 noPadding">
+            <div className="form-group col-sm-6 col-sm-offset-1 noPadding">
               <input type="text" className="form-control" ref="bathsInput" placeholder="How many baths?"></input>
             </div>
             <div className="form-group">
@@ -125,30 +113,18 @@ Header = React.createClass({
             <hr></hr>
             
             <h4>Location</h4>
-            <div className="form-group col-sm-8 noPadding">
-              <input type="text" className="form-control" ref="streetInput" placeholder="Street Address"></input>
+            <div className="form-group col-sm-12 noPadding">
+              <input type="text" className="form-control" ref="addressInput" placeholder="Address"></input>
             </div>
-            <div className="form-group col-sm-3 col-sm-offset-1 noPadding">
-              <input type="text" className="form-control" ref="aptInput" placeholder="Apt, Suite, Floor"></input>
-            </div>
-            <div className="form-group col-sm-8 noPadding">
-              <input type="text" className="form-control" ref="cityInput" placeholder="Town/City"></input>
-            </div>
-            <div className="form-group col-sm-3 col-sm-offset-1 noPadding">
-              <input type="text" className="form-control" ref="postalInput" placeholder="Postal Code"></input>
-            </div>
-            <div className="form-group">
-              <input type="text" className="form-control" ref="countryInput" placeholder="Country"></input>
-            </div>
-
-            <hr></hr>
             
             <div className="form-group col-sm-5 noPadding">
               <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
             </div>
-            <div className="form-group col-sm-5 col-sm-offset-1 noPadding">
+            <div className="form-group col-sm-6 col-sm-offset-1 noPadding">
               <input type="text" className="form-control" ref="longitudeInput" placeholder="Longitude"></input>
             </div>
+
+            <hr></hr>
 
             <h4>Property Picture URL</h4>
             <div className="form-group">
