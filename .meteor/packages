@@ -5,6 +5,7 @@
 # but you can also edit it by hand.
 
 meteor-base             # Packages every Meteor app needs to have
+meteorhacks:aggregate
 mobile-experience       # Packages for a great mobile UX
 mongo                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
@@ -36,3 +37,4 @@ ejson
 maxharris9:classnames
 cosmos:browserify
 praneybehl:react-select
+aldeed:collection2

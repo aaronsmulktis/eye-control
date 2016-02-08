@@ -359,8 +359,9 @@ MapWrapper = React.createClass({
     mixins: [ReactMeteorData],
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
-        let data = {homes: []};
-        let handles = [Meteor.subscribe("homes")];
+        let data = {homes: [], avgLat: []};
+        let handles = [Meteor.subscribe("homes"),
+                       Meteor.subscribe("avgLat")];
         if (!handles.every(utils.isReady)) {
             return data;
         }
@@ -370,6 +371,7 @@ MapWrapper = React.createClass({
             data.homes = HomeSearch.getData();
         }
 
+        console.log(data);
         return data;
     },
 
