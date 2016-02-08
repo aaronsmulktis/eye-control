@@ -117,6 +117,7 @@ Home = React.createClass({
 
         return (
             <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+
         );
     },
 
@@ -131,6 +132,8 @@ Home = React.createClass({
 
         var price = this.data.home.price;
         price = price && accounting.formatMoney(price, "£", 0, ".", ",");
+        var mapPath = "/img/map-round.png";
+        var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
 
         return (
 
@@ -181,7 +184,9 @@ Home = React.createClass({
                     </div>
 
                     <div id="content" className="col-sm-8 noPadding">
+
                       <div id="viewVR">
+                          <img id="map-overlay" style={mapStyle} src={mapPath} />
                           {this.renderSphere()}
                       </div>
 
@@ -297,7 +302,7 @@ Home = React.createClass({
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isMap")} type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isMap")} id="mapButton" type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Map
                         </button>
                     </li>
@@ -351,7 +356,12 @@ Home = React.createClass({
     _toggleViewOption(optionName) {
         let changedOption = !this.state[optionName];
         let optionState = {};
+        let $map = $("#map-overlay");
         optionState[optionName] = changedOption;
+
+        if (optionName === "isMap") {
+            changedOption ? $map.show() : $map.hide();
+        }
 
         this.setState(optionState);
 
