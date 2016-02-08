@@ -134,7 +134,7 @@ Home = React.createClass({
         price = price && accounting.formatMoney(price, "£", 0, ".", ",");
         var mapPath = "/img/map-round.png";
         var floorplanPath = "/img/floorplan-round.png";
-        var infoPath = "/img/map-round.png";
+        var infoPath = "/img/info-round.png";
         var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
         var floorplanStyle = {display: this.state.isFloorplan ? 'block' : 'none'};
         var infoStyle = {display: this.state.isInfoWindow ? 'block' : 'none'};
@@ -363,7 +363,8 @@ Home = React.createClass({
         let changedOption = !this.state[optionName];
         let optionState = {};
         let $map = $("#map-overlay"),
-            $floorplan = $("#floorplan-overlay");
+            $floorplan = $("#floorplan-overlay"),
+            $info = $("#info-overlay");
         optionState[optionName] = changedOption;
 
         if (optionName === "isMap") {
@@ -371,6 +372,9 @@ Home = React.createClass({
         }
         if (optionName === "isFloorplan") {
             changedOption ? $floorplan.show() : $floorplan.hide();
+        }
+        if (optionName === "isInfoWindow") {
+            changedOption ? $info.show() : $info.hide();
         }
 
         this.setState(optionState);
