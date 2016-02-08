@@ -248,26 +248,6 @@ Map = React.createClass({
                                   </div>
                                 </form>
                             </div>
-                            <div id="propTypes">
-                                <ul className="list-inline pull-left">
-                                    <li>
-                                        <div className="checkbox">
-                                            <label>
-                                              <input type="checkbox"></input>
-                                              <span>For Sale</span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="checkbox">
-                                            <label>
-                                              <input type="checkbox"></input>
-                                              <span>For Rent</span>
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
                             <div id="propOptions">
                                 <div className="navbar-form form-group pull-left">
                                     <Select

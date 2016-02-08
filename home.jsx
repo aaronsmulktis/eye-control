@@ -133,6 +133,7 @@ Home = React.createClass({
         var price = this.data.home.price;
         price = price && accounting.formatMoney(price, "£", 0, ".", ",");
         var mapPath = "/img/map-round.png";
+        var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
 
         return (
 
@@ -185,7 +186,7 @@ Home = React.createClass({
                     <div id="content" className="col-sm-8 noPadding">
 
                       <div id="viewVR">
-                          <img id="map-overlay" src={mapPath} />
+                          <img id="map-overlay" style={mapStyle} src={mapPath} />
                           {this.renderSphere()}
                       </div>
 
@@ -353,13 +354,14 @@ Home = React.createClass({
     },
 
     _toggleViewOption(optionName) {
-      console.log(optionName)
-        if(optionName == "isMap"){
-          $("#map-overlay").toggle();
-        }
         let changedOption = !this.state[optionName];
         let optionState = {};
+        let $map = $("#map-overlay");
         optionState[optionName] = changedOption;
+
+        if (optionName === "isMap") {
+            changedOption ? $map.show() : $map.hide();
+        }
 
         this.setState(optionState);
 
