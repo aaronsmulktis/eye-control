@@ -187,11 +187,11 @@ Header = React.createClass({
 
             <div className="collapse navbar-collapse">
               <ul className="navbar-nav navbar-right">
-                <li><a href="/"><i className="fa fa-navicon"></i> Listings</a></li>
-                <li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus-circle"></i> Add Property</a></li>
-                <li><a href="/about"><i className="fa fa-info-circle"></i> About</a></li>
-                <li><a href="javascript:;"><i className="fa fa-home" />Thompson Family</a></li>
-                <li><a href="javascript:;"><i className="fa fa-user" /> Agent Profile</a></li>
+                <li><a href="/"><i className="fa fa-navicon"></i>&nbsp;Listings</a></li>
+                <li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus-circle"></i>&nbsp;Add Property</a></li>
+                <li><a href="/about"><i className="fa fa-info-circle"></i>&nbsp;About</a></li>
+                <li><a href="javascript:;"><i className="fa fa-home" />&nbsp;Thompson Family</a></li>
+                <li><a href="javascript:;"><i className="fa fa-user" />&nbsp;Agent Profile</a></li>
               </ul>
             </div>
           </div>
