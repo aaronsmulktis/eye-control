@@ -133,7 +133,11 @@ Home = React.createClass({
         var price = this.data.home.price;
         price = price && accounting.formatMoney(price, "£", 0, ".", ",");
         var mapPath = "/img/map-round.png";
+        var floorplanPath = "/img/floorplan-round.png";
+        var infoPath = "/img/map-round.png";
         var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
+        var floorplanStyle = {display: this.state.isFloorplan ? 'block' : 'none'};
+        var infoStyle = {display: this.state.isInfoWindow ? 'block' : 'none'};
 
         return (
 
@@ -186,7 +190,9 @@ Home = React.createClass({
                     <div id="content" className="col-sm-8 noPadding">
 
                       <div id="viewVR">
-                          <img id="map-overlay" style={mapStyle} src={mapPath} />
+                          <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
+                          <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
+                          <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
                           {this.renderSphere()}
                       </div>
 
@@ -356,11 +362,15 @@ Home = React.createClass({
     _toggleViewOption(optionName) {
         let changedOption = !this.state[optionName];
         let optionState = {};
-        let $map = $("#map-overlay");
+        let $map = $("#map-overlay"),
+            $floorplan = $("#floorplan-overlay");
         optionState[optionName] = changedOption;
 
         if (optionName === "isMap") {
             changedOption ? $map.show() : $map.hide();
+        }
+        if (optionName === "isFloorplan") {
+            changedOption ? $floorplan.show() : $floorplan.hide();
         }
 
         this.setState(optionState);
