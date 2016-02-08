@@ -123,7 +123,7 @@ Header = React.createClass({
             </div>
 
             <hr></hr>
-            
+
             <h4>Location</h4>
             <div className="form-group col-sm-8 noPadding">
               <input type="text" className="form-control" ref="streetInput" placeholder="Street Address"></input>
@@ -142,7 +142,7 @@ Header = React.createClass({
             </div>
 
             <hr></hr>
-            
+
             <div className="form-group col-sm-5 noPadding">
               <input type="text" className="form-control" ref="latitudeInput" placeholder="Latitude"></input>
             </div>
@@ -190,6 +190,8 @@ Header = React.createClass({
                 <li><a href="/"><i className="fa fa-navicon"></i> Listings</a></li>
                 <li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus-circle"></i> Add Property</a></li>
                 <li><a href="/about"><i className="fa fa-info-circle"></i> About</a></li>
+                <li><a href="javascript:;"><i className="fa fa-home" />Thompson Family</a></li>
+                <li><a href="javascript:;"><i className="fa fa-user" /> Agent Profile</a></li>
               </ul>
             </div>
           </div>
