@@ -1,6 +1,8 @@
 /*global Picker Coords Homes Rooms Meteor AWS */
 
 var bodyParser = Meteor.npmRequire('body-parser');
+Picker.middleware( bodyParser.json({type: 'application/json'}));
+Picker.middleware( bodyParser.urlencoded( { extended: false } ) );  
 var multiparty = Meteor.npmRequire('multiparty');
 var util = Meteor.npmRequire('util');
 var s3Client = new AWS.S3({
@@ -59,7 +61,7 @@ var _getPartHandler = function(res, data_obj, callback) {
 }
 var _handlePart = function(res, data_obj, callback, part) {
 }
-
+   
 Picker.route('/api/v1/coord/update', function(params, req, res, next) {
     var coord = params['query']["coord"];
     Coords.update({_id:"headset"}, {$set: {coord: coord}});
@@ -82,27 +84,6 @@ Picker.route('/api/v1/template', function(params, req, res, next) {
     res.end();
 });
 
-Picker.route('/api/v1/property', function(params, req, res, next) {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    var data = {ok: true,
-                properties: []};
-    var homes = Homes.find({},
-                           {sort: {
-                               position: 1
-                           }}).fetch();
-    for (var i=0; i<homes.length; i++) {
-        var home = homes[i],
-            rooms = Rooms.find({homeId: home._id},
-                               {sort: {
-                                   position: 1
-                               }}).fetch();
-        home.rooms = rooms;
-    }
-    data.properties = homes;
-    res.write(JSON.stringify(data));
-    res.end();
-});
-
 var postRoutes = Picker.filter(function(req, res) {
     return req.method == "POST";
 });
@@ -113,6 +94,10 @@ var putRoutes = Picker.filter(function(req, res) {
 
 var deleteRoutes = Picker.filter(function(req, res) {
     return req.method == "DELETE";
+});
+
+var getRoutes = Picker.filter(function(req, res) {
+    return req.method == "GET";
 });
 
 deleteRoutes.route('/api/v1/property/:home_id/room/:room_id', function(params, req, res, next) {
@@ -227,4 +212,143 @@ var updateRoom = Meteor.bindEnvironment(function(data_obj, res) {
                          ok: true}));
                      res.end();
                  });
+});
+
+getRoutes.route('/api/v1/property', function(params, req, res, next) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    var data = {ok: true,
+                properties: []};
+    var homes = Homes.find({},
+                           {sort: {
+                               position: 1
+                           }}).fetch();
+    for (var i=0; i<homes.length; i++) {
+        var home = homes[i],
+            rooms = Rooms.find({homeId: home._id},
+                               {sort: {
+                                   position: 1
+                               }}).fetch();
+        home.rooms = rooms;
+    }
+    data.properties = homes;
+    res.write(JSON.stringify(data));
+    res.end();
+});
+
+postRoutes.route('/api/v1/property', function(params, req, res, next) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    var form = new multiparty.Form({});
+    var bucket = "gleitz";
+    var filename;
+    var data_obj = req.body;
+    form.on('part', _getPartHandler(res, data_obj, insertProperty));
+});
+
+var insertProperty = Meteor.bindEnvironment(function(data_obj, res) {
+    if (Object.keys(data_obj).length < 1) {
+        res.write(JSON.stringify({
+            ok: false,
+            error: "Property is empty"
+            }));
+        res.end();
+        return;
+    }
+    var homes = Homes.find().fetch(),
+        highest_position = 0;
+    for (var i=0; i<homes.length; i++) {
+        var position = homes[i].position;
+        if (position && position > highest_position) {
+            highest_position = position;
+        }
+    }
+
+    var objectToInsert = {
+        position: highest_position === 0 ? 0 : highest_position + 1,
+        createdAt: new Date(),
+        name : data_obj.title,
+        notes : data_obj.description,
+        address : data_obj.address,
+        year : data_obj.year,
+        latitude : data_obj.latitude,
+        longitude : data_obj.longitude,
+        type : data_obj.type,
+        numBedrooms : data_obj.numBedrooms,
+        numBathrooms : data_obj.numBathrooms,
+        price : data_obj.price
+    };
+   
+    Homes.insert(objectToInsert, function(err, record) {
+        res.write(JSON.stringify({
+            ok: true
+        }));
+        res.end();
+    });
+});
+
+putRoutes.route('/api/v1/property', function(params, req, res, next) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    var data_obj = req.body;
+    var form = new multiparty.Form({});
+    var bucket = "gleitz";
+    var filename;
+    form.on('part', _getPartHandler(res, data_obj, updateProperty));
+});
+
+var updateProperty = Meteor.bindEnvironment(function(data_obj, res) {
+    var homeId = data_obj._id;
+    var home = Homes.findOne({_id: homeId});
+    if (!home) {
+        var data = {ok: false,
+                    error: "Property '" + homeId + "' not found"};
+        res.write(JSON.stringify(data));
+        res.end();
+        return;
+    } 
+     for (var attrname in data_obj) {
+        if (attrname !== "_id") {
+            home[attrname] = data_obj[attrname];
+        }
+    }
+    Homes.update({_id: homeId},
+                 {$set: home}, function(err, record) {
+        res.write(JSON.stringify({
+            ok: true
+        }));
+        res.end();
+    });
+});
+
+putRoutes.route('/api/v1/property/:id', function(params, req, res, next) {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    var homeId = params.id;
+    var home = Homes.findOne({_id: homeId});
+    if (!home) {
+        var data = {ok: false,
+                    error: "Property '" + params.id + "' not found"};
+        res.write(JSON.stringify(data));
+        res.end();
+        return;
+    }
+    var data_obj = { homeId: homeId, order : req.body.rooms };
+    var form = new multiparty.Form({});
+    var bucket = "gleitz";
+    var filename;
+    form.on('part', _getPartHandler(res, data_obj, reorderRooms));
+});
+
+var reorderRooms = Meteor.bindEnvironment(function(data_obj, res) {
+    var rooms = Rooms.find({homeId: data_obj.homeId}).fetch();
+    var order = data_obj.order;
+    if (JSON.stringify(rooms.map(function(a){return a.position}).sort())!=JSON.stringify(order.slice().sort())){
+        var data = {ok: false,
+                    error: "Rooms list is incorrect"};
+        res.write(JSON.stringify(data));
+        res.end();
+        return;
+    }
+    for (room in rooms){
+        Rooms.update({homeId :  data_obj.homeId , position: parseInt(room)},{$set: {position : order.indexOf(parseInt(room))}});
+    }
+    res.write(JSON.stringify({ok: true}));
+    res.end();
 });
