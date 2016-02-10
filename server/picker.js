@@ -285,9 +285,10 @@ var insertProperty = Meteor.bindEnvironment(function(data_obj, res) {
     });
 });
 
-putRoutes.route('/api/v1/property', function(params, req, res, next) {
+putRoutes.route('/api/v1/property/:id', function(params, req, res, next) {
     res.writeHead(200, {'Content-Type': 'application/json'});
     var data_obj = req.body;
+    data_obj.id = params.id;
     var form = new multiparty.Form({});
     var bucket = "gleitz";
     var filename;
@@ -295,7 +296,7 @@ putRoutes.route('/api/v1/property', function(params, req, res, next) {
 });
 
 var updateProperty = Meteor.bindEnvironment(function(data_obj, res) {
-    var homeId = data_obj._id;
+    var homeId = data_obj.id;
     var home = Homes.findOne({_id: homeId});
     if (!home) {
         var data = {ok: false,
@@ -318,7 +319,7 @@ var updateProperty = Meteor.bindEnvironment(function(data_obj, res) {
     });
 });
 
-putRoutes.route('/api/v1/property/:id', function(params, req, res, next) {
+putRoutes.route('/api/v1/property/:id/reorder_rooms', function(params, req, res, next) {
     res.writeHead(200, {'Content-Type': 'application/json'});
     var homeId = params.id;
     var home = Homes.findOne({_id: homeId});
