@@ -279,8 +279,8 @@ var insertProperty = Meteor.bindEnvironment(function(data_obj, res) {
    
     Homes.insert(objectToInsert, function(err, record) {
         res.write(JSON.stringify({
-            ok: true
-        }));
+            ok: true,
+            propertyId: record}));
         res.end();
     });
 });
@@ -311,7 +311,7 @@ var updateProperty = Meteor.bindEnvironment(function(data_obj, res) {
     }
     Homes.update({_id: homeId},
                  {$set: home}, function(err, record) {
-        res.write(JSON.stringify({
+       res.write(JSON.stringify({
             ok: true
         }));
         res.end();
