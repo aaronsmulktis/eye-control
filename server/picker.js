@@ -340,15 +340,17 @@ putRoutes.route('/api/v1/property/:id/reorder_rooms', function(params, req, res,
 var reorderRooms = Meteor.bindEnvironment(function(data_obj, res) {
     var rooms = Rooms.find({homeId: data_obj.homeId}).fetch();
     var order = data_obj.order;
-    if (JSON.stringify(rooms.map(function(a){return a.position}).sort())!=JSON.stringify(order.slice().sort())){
+
+    if (!order || (JSON.stringify(rooms.map(function(a){return a._id}).sort())!=JSON.stringify(order.slice().sort()))){
         var data = {ok: false,
                     error: "Rooms list is incorrect"};
         res.write(JSON.stringify(data));
         res.end();
         return;
     }
-    for (room in rooms){
-        Rooms.update({homeId :  data_obj.homeId , position: parseInt(room)},{$set: {position : order.indexOf(parseInt(room))}});
+
+    for (var i = 0; i<order.length; i++){
+        Rooms.update({homeId :  data_obj.homeId , _id: order[i]},{$set: {position : i}});
     }
     res.write(JSON.stringify({ok: true}));
     res.end();
