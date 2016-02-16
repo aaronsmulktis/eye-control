@@ -38,12 +38,13 @@ FlowRouter.route('/radio', {
   }
 });
 
-FlowRouter.route('/home/:id', {
+FlowRouter.route('/home/:name/:id', {
   name: 'home',
   action: function(params) {
     ReactLayout.render(HomeWrapper, {
       header: <Header />,
       radioBtns: <RadioContainer />,
+      name: params.name,
       id: params.id
     });
   }

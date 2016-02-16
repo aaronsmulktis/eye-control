@@ -15,7 +15,7 @@ HomeBox = React.createClass({
     selectHome(evt) {
         evt.preventDefault();
         if (!window.moving) {
-            window.location = 'home/' + this.props.home._id;
+            window.location = 'home/' + this.props.home.name+"/"+this.props.home._id;
         }
         return false;
     },
@@ -34,7 +34,7 @@ HomeBox = React.createClass({
     // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
     const homeClassName = this.props.home.name;
-    const homeLink = 'home/' + this.props.home._id;
+    const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
     var price = this.props.home.price;
     price = price && accounting.formatMoney(price, "£", 0, ".", ",");
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';

@@ -227,7 +227,7 @@ Home = React.createClass({
     },
 
     _togglePopup() {
-        this.setState({ isPopup: !this.state.isPopup });
+        this.setState({ isPopup: !this.state.isPopup });z
     },
 
     _addRoom(e) {
