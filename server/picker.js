@@ -231,6 +231,7 @@ getRoutes.route('/api/v1/property', function(params, req, res, next) {
         home.rooms = rooms;
     }
     data.properties = homes;
+    console.log(homes);
     res.write(JSON.stringify(data));
     res.end();
 });
@@ -271,7 +272,7 @@ var insertProperty = Meteor.bindEnvironment(function(data_obj, res) {
         year : data_obj.year,
         latitude : data_obj.latitude,
         longitude : data_obj.longitude,
-        type : data_obj.type,
+        type : data_obj['type'],
         numBedrooms : data_obj.numBedrooms,
         numBathrooms : data_obj.numBathrooms,
         price : data_obj.price
