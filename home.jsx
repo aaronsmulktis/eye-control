@@ -138,7 +138,6 @@ Home = React.createClass({
         var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
         var floorplanStyle = {display: this.state.isFloorplan ? 'block' : 'none'};
         var infoStyle = {display: this.state.isInfoWindow ? 'block' : 'none'};
-
         return (
 
             <div id="contentContainer">
@@ -310,7 +309,7 @@ Home = React.createClass({
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isMap")} id="mapButton" type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Map
-                        </button>
+                        </button>   
                     </li>
                     {/*
                     <li>
@@ -362,25 +361,38 @@ Home = React.createClass({
     _toggleViewOption(optionName) {
         let changedOption = !this.state[optionName];
         let optionState = {};
-        let $map = $("#map-overlay"),
-            $floorplan = $("#floorplan-overlay"),
-            $info = $("#info-overlay");
-        optionState[optionName] = changedOption;
-
-        if (optionName === "isMap") {
-            changedOption ? $map.show() : $map.hide();
+         optionState[optionName] = changedOption;
+        if (optionName === "isMap") 
+            if (changedOption) {
+                optionState['isFloorplan'] = false;
+                optionState['isInfoWindow'] = false;
+            } 
+        if (optionName === "isFloorplan") 
+            if (changedOption) {
+                optionState['isMap'] = false;
+                optionState['isInfoWindow'] = false;
+            }  
+        if (optionName === "isFullscreen") {
+            let vrIframeDiv = $('#vr-iframe'),
+                vrIframe = $('.vr-iframe')[0],
+                sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1",
+                sphereIframe = "<iframe src="+sphere+" frameBorder=\"0\" className=\"vr-iframe\" height=\"100%\" width=\"100%\"></iframe>";
+            vrIframeDiv.empty();
+            requestFullScreen(vrIframeDiv[0]);
+            vrIframeDiv.append(sphereIframe);
+            //this._toggleViewOption.bind(this, "isFullscreen");
         }
-        if (optionName === "isFloorplan") {
-            changedOption ? $floorplan.show() : $floorplan.hide();
-        }
-        if (optionName === "isInfoWindow") {
-            changedOption ? $info.show() : $info.hide();
-        }
-
+        if (optionName === "isInfoWindow") 
+            if (changedOption) {
+                optionState['isMap'] = false;
+                optionState['isFloorplan'] = false;
+            } 
         this.setState(optionState);
-
         let hud = this._getHud();
         hud[optionName] = changedOption;
+        for (let s in optionState){
+            hud[s] = optionState[s];
+        }
         Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
     }
 
