@@ -49,7 +49,7 @@ HomeBox = React.createClass({
                   <img src={vaultUrl} />
               </div>
               <div className="propDetails col-sm-8">
-                  <h4 className="homeName">{this.props.home.name}</h4>
+                  <h4 className="homeName"><small>{this.props.home.position}</small>  {this.props.home.name}</h4>
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>

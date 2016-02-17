@@ -114,8 +114,7 @@ Map = React.createClass({
 
     createMarker(lat, lon, html, link, position) {
         let state = this.state;
-        let house = [{url: 'img/letter_a.png'}, {url: 'img/letter_b.png'}, {url: 'img/letter_c.png'}, {url: 'img/letter_d.png'}, , {url: 'img/letter_e.png'}, , {url: 'img/letter_f.png'}, {url: 'img/letter_g.png'}];
-
+       
         let shape = {
                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                 type: 'poly'
@@ -124,10 +123,10 @@ Map = React.createClass({
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: house[position],
+                icon: {url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="+position+"|338000|FFFFFF"},
                 shape: shape,
                 path: google.maps.SymbolPath.CIRCLE,
-                title: html
+                title: ''
         });
 
         newMarker['infowindow'] = new google.maps.InfoWindow({
