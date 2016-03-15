@@ -15,30 +15,7 @@ let styles = [
     }
 ];
 
-let bedOptions = [
-    { value: '1', label: '1' },
-    { value: '2', label: '2' },
-    { value: '3', label: '3' },
-    { value: '4', label: '4' },
-    { value: '5', label: '5' },
-    { value: '6', label: '6' },
-    { value: '7', label: '7' },
-    { value: '8', label: '8' },
-    { value: '9', label: '9' },
-    { value: '10', label: '10' },
-    { value: '11', label: '11' },
-    { value: '12', label: '12' },
-    { value: '13', label: '13' },
-    { value: '14', label: '14' },
-    { value: '15', label: '15' }
-];
-
-let bathOptions = [
-    { value: '1', label: '1' },
-    { value: '2', label: '2' },
-    { value: '3', label: '3' },
-    { value: '4', label: '4' }
-];
+// TODO: Move this to a service
 
 let sortOptions = [
     { value: 'price:hi-lo', label: 'Price: Hi - Lo' },
@@ -50,6 +27,8 @@ let sortOptions = [
     { value: 'baths:hi-lo', label: 'Baths: Hi - Lo' },
     { value: 'baths:lo-hi', label: 'Baths: Lo - Hi' }
 ];
+
+//END
 
 let searchTimeout;
 
@@ -95,7 +74,9 @@ Map = React.createClass({
     getInitialState() {
         return {
             mainMap: false,
-            markers: []
+            markers: [],
+            filterText: '',
+            inStockOnly: false
         }
     },
 
@@ -183,9 +164,19 @@ Map = React.createClass({
                     position = home.position == null ? i : home.position;
             processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
+        console.log("process");
         return <ul>{processedHomes}</ul>;
     },
-
+    handleUserInput: function(filter) {
+            console.log(filter);
+               searchTimeout = setTimeout(function() {
+               // HomeSearch.search(filter.text, {sort: {position: 1}}); // can change the sorting here
+                   console.log(this.state);
+                   console.log(this.props);
+                    HomeSearch =  Homes.find( { numBedrooms: 4 } );
+            }, 500);
+             return true;
+    },
     renderSearchView() {
         let defaultClasses = [''],
             listClasses = classNames(defaultClasses, {active: this.state.isList}),
@@ -219,11 +210,8 @@ Map = React.createClass({
         hud[optionName] = changedOption;
     },
 
-    // logChange(val) {
-    //     console.log("Selected: " + val);
-    // },
-
-    render() {
+    
+        render() {
 
         if (!this.state.items) {
             return (
@@ -240,34 +228,9 @@ Map = React.createClass({
                             {this.props.header}
                     </header>
                     <div className="container-fluid noPadding">
-
-                        <div id="searchOptions" className="col-sm-12">
-                            {this.renderSearchView()}
-                            <div id="searchMap">
-                                <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
-                                  <div className="form-group">
-                                      <input id="searchMapInput" type="text" className="font4 form-control" placeholder="Search..." dangerouslySetInnerHTML={this.renderSearchIcon()}></input>
-                                  </div>
-                                </form>
-                            </div>
-                            <div id="propOptions">
-                                <div className="navbar-form form-group pull-left">
-                                    <Select
-                                        name="bedrooms"
-                                        placeholder="Bedrooms"
-                                        options={bedOptions}
-                                    />
-                                </div>
-                                <div className="navbar-form form-group pull-left">
-                                    <Select
-                                        name="baths"
-                                        placeholder="Baths"
-                                        options={bathOptions}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
+           
+                        <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
+                       
                         <div id="mainMap" className="col-sm-12 noPadding"></div>
 
                         <div className="mapList col-sm-6">
@@ -325,22 +288,6 @@ MapWrapper = React.createClass({
         return data;
     },
 
-    _handleKey(event){
-        if (document.getElementById('searchMapInput') === document.activeElement) {
-            event.preventDefault();
-            var text = $(event.target).val().trim();
-            searchTimeout = setTimeout(function() {
-                HomeSearch.search(text, {sort: {position: 1}}); // can change the sorting here
-            }, 500);
-            if (event.keyCode == 27) {
-                clearTimeout(searchTimeout);
-                $(event.target).val("");
-                HomeSearch.search("")
-            }
-            return false;
-        }
-    },
-
     componentWillMount(){
         HomeSearch.search("");
         document.addEventListener("keyup", this._handleKey, false);
@@ -371,3 +318,4 @@ MapWrapper = React.createClass({
         )
     }
 });
+

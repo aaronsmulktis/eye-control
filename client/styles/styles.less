@@ -210,10 +210,30 @@ i#logoEye.90degCC {
   }
 }
 
-#search-homes, #searchMapInput {
+.input-min {
   background: white;
   border: none;
+  border-radius: 0;
 }
+input[type="radio"].input-min {
+    vertical-align: bottom!important;
+    margin-left: 10px;
+}
+.Select {
+  width: 100px;
+}
+.input-min-select {
+    margin-left: 4px;
+    padding: 0px 0px 0px;
+}
+#search-homes, #searchMapInput {
+     background: white;
+  border: none;
+    width: 300px;
+}
+.middle-label  {
+    margin-top: 15px;
+    }
 
 #searchMap #searchIcon {
   color: @brand !important;
@@ -567,6 +587,21 @@ header .hide-completed {
     width: 350px;
     height: 350px;
     display: none;
+}
+
+modal {
+    z-index: 1050;
+    margin: 100px;
+}
+
+.modal-header{
+    background: #003a55;
+    color: white;
+}
+.btn-primary{
+    background: #003a55;
+    color: white;
+    float: left;
 }
 
 .no-margin {

@@ -14,9 +14,9 @@ HomeBox = React.createClass({
 
     selectHome(evt) {
         evt.preventDefault();
-        if (!window.moving) {
+        
             window.location = 'home/' + this.props.home.name+"/"+this.props.home._id;
-        }
+        
         return false;
     },
 
