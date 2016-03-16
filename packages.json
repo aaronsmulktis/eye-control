@@ -1,5 +1,6 @@
 {
   "body-parser": "1.14.1",
   "multer": "1.1.0",
-  "multiparty": "4.1.2"
+  "multiparty": "4.1.2",
+  "bootstrap-tokenfield" : "0.12.0"
 }

@@ -41,11 +41,29 @@ let currencies = [
     { value: 'USD', label: 'USD' },
     { value: 'EUR', label: 'EUR' }
 ];
+let inic = false;
 MoreOptionsModal = React.createClass({
+	componentDidUpdate(){
+
+        if (!inic){            
+            inic= true;
+            $('#tokenfield').tokenfield({
+                delimiter : ';',
+                autocomplete: {
+                    source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
+                    delay: 100
+                },
+            showAutocompleteOnFocus: true
+            });
+            console.log("inic token control [OK]");
+        }
+
+	},
 	render : function(){
 		return (
 			<div id="modalSearchOptions" className="col-sm-12">
-         
+      	<input type="text" className="form-control" id="tokenfield" value="London, KY ; London, OH" />
+
           <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
                 <div className="form-group">
                     <div className="input-group">

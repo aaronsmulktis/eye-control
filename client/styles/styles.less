@@ -613,11 +613,12 @@ modal {
     border-radius: 4px;
     padding: 8px;
 }
+@second-color :#003a55;
 
 #modalSearchOptions {
   background: white;
-  border-color: #003a55;
-  color: #003a55;
+  border-color: @second-color;
+  color: @second-color;
   position: relative;
   z-index: 999;
   padding: 0 10px;
@@ -627,7 +628,7 @@ modal {
 }
 
 .input-min-modal {
-color: #003a55;
+color: @second-color;
   background: white;
   border: 1px;
   border-radius: 0;
@@ -767,4 +768,42 @@ color: #003a55;
 .forgot-password:active,
 .forgot-password:focus{
     color: rgb(12, 97, 33);
+}
+
+
+.tokenfield.form-control {
+    height: 100px;
+}
+.token {
+
+    height: 20px;
+    display: inline-block;
+    background-color: @second-color;
+    color: white;
+    border-radius: 4px;
+    padding: 2px;
+    margin: 2px;
+    max-width: 150px;  
+   
+    text-align: center;
+}
+
+.token .token-label {
+     max-width: 120px!important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-height: 20px;
+    height: 20px;
+    display: inherit;
+    
+}
+
+.token .close {
+    width: 20px;
+    float: right;
+    font-size: 15px;
+    line-height: 1;
+    color: white;
+    opacity: 1;
 }
