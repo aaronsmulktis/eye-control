@@ -1,5 +1,3 @@
-// TODO: Move to service this default data
-
 let bedOptions = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
@@ -43,63 +41,26 @@ let currencies = [
     { value: 'USD', label: 'USD' },
     { value: 'EUR', label: 'EUR' }
 ];
-
-// END TODO
-
-SearchBar = React.createClass({
-       getInitialState() {
-        return {
-            openMoreOptions : false
-        }
-    },
-    handleChange: function() {
-        this.props.onUserInput({
-             text : this.refs.searchMapInput.value,
-             type : this.refs.types.value,
-             currency : this.refs.currency.state.value,
-             minValue : this.refs.min.value,
-             maxValue : this.refs.max.value,
-             bedrooms : this.refs.bedrooms.value,
-             baths : this.refs.baths.value
-            });
-        return true;
-},
-
-  render: function() {
-      let modalOptions = {
-          title: "Search Items",
-          optButton:"Edit Search Radius",
-          optButtonIcon:"glyphicon glyphicon-map-marker",
-          opt2Button:"Save Search",
-          opt2ButtonIcon:"glyphicon glyphicon-star",
-          doneButton:"View Results",
-          doneButtonIcon:"glyphicon glyphicon-eye-open",
-          msj: ""
-      };
-       let loginOptions = {
-          title: "Login",
-           noFooter:true,
-       };
-    return (
-        <div>
-    <div id="searchOptions" className="col-sm-12">
-        <div id="searchMap">
-            <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
+MoreOptionsModal = React.createClass({
+	render : function(){
+		return (
+			<div id="modalSearchOptions" className="col-sm-12">
+         
+          <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
                 <div className="form-group">
                     <div className="input-group">
-                        <div className="input-min input-group-addon ">UK</div>
+                        <div className="input-min input-group-addon">UK</div>
                         <input ref="searchMapInput" id="searchMapInput" type="text" className="font4 form-control input-min" placeholder="Enter Address, City, State or ZIP" onChange={this.handleChange}></input>
                         <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
-                    </div>
-           
-                    <div className="checkbox">
+                    <div className="checkbox" id="modal-checkbox">
                         <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="all" /> All </label>
                         <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="sale"/> For Sale </label>
                         <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="rent"/> For Rent  </label>
                     </div>
                     </div>
+                    </div>
             </form> 
-                    <div id="currencyOptions">
+            <div id="currencyOptions">
                         <div className="navbar-form form-group pull-left input-min-select">
                             <Select name="currency" ref="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
                         </div>
@@ -120,29 +81,7 @@ SearchBar = React.createClass({
                             <Select naem="baths" ref="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
                         </div>
                     </div>
-        
-                    <label className="navbar-form form-group pull-left middle-label" onClick={this.moreOptions}>More <i className="glyphicon glyphicon-plus-sign"/> </label>
-             
         </div>
-       
-    </div>
-     <Modal options={modalOptions} id="searchMoldalOptions" ref="searchMoldalOptions">
-        <MoreOptionsModal/>
-     </Modal>
-     <Modal options={loginOptions} id="loginOptions" ref="loginOptions">
-        <Login/>
-     </Modal>
-    </div>
-    );
-  },
-    moreOptions : function(){
-      console.log(Session.get('currentUser'));
-      if (Session.get('currentUser')){
-        this.refs.searchMoldalOptions.open("#modalOptions");
-      } else {
-       this.refs.loginOptions.open("#loginOptions");
-       }
-        return true;
-    }
+		);
+	}
 });
-
