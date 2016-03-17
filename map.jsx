@@ -27,7 +27,6 @@ let sortOptions = [
     { value: 'baths:hi-lo', label: 'Baths: Hi - Lo' },
     { value: 'baths:lo-hi', label: 'Baths: Lo - Hi' }
 ];
-
 //END
 
 let searchTimeout;
@@ -42,13 +41,6 @@ Map = React.createClass({
         for(let i = 0; i < items.length; i++) {
             items[i].position = i;
             Homes.update({_id:items[i]._id}, {$set: {position: i}});
-        }
-    },
-
-    getInitialState() {
-        return {
-            isList: false,
-            isMap: false
         }
     },
 
@@ -76,7 +68,9 @@ Map = React.createClass({
             mainMap: false,
             markers: [],
             filterText: '',
-            inStockOnly: false
+            inStockOnly: false,
+            isList: false,
+            isMap: false
         }
     },
 
@@ -169,13 +163,14 @@ Map = React.createClass({
     },
     handleUserInput: function(filter) {
             console.log(filter);
-               searchTimeout = setTimeout(function() {
-               // HomeSearch.search(filter.text, {sort: {position: 1}}); // can change the sorting here
-                   console.log(this.state);
-                   console.log(this.props);
-                    HomeSearch =  Homes.find( { numBedrooms: 4 } );
-            }, 500);
-             return true;
+            console.log(this);
+            console.log(Homes.find({"name" : {$regex : (".*" + filter.text + ".*")}}).fetch());
+            this.setState({items:Homes.find( {"name" : {$regex : (".*" + filter.text + ".*")}},{
+                sort: {
+                    position: 1
+                }
+            }).fetch()});
+            return true;
     },
     renderSearchView() {
         let defaultClasses = [''],
@@ -266,50 +261,35 @@ MapWrapper = React.createClass({
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         let data = {homes: []};
+        console.log("reload data");
         var handles = [Meteor.subscribe("homes")];
         if (!handles.every(utils.isReady)) {
             return data;
         }
 
-        if (HomeSearch.getCurrentQuery()) {
-            var status = HomeSearch.getStatus();
-            if (status.loaded) {
-                data.homes = HomeSearch.getData();
-            }
-        } else {
+      
             var homes = Homes.find({}, {
                 sort: {
                     position: 1
                 }
             }).fetch();
             data.homes = homes;
-        }
+       
 
         return data;
     },
 
     componentWillMount(){
-        HomeSearch.search("");
-        document.addEventListener("keyup", this._handleKey, false);
+      console.log("MO");
+        //document.addEventListener("keyup", this._handleKey, false);
     },
 
 
     componentWillUnmount() {
-        document.removeEventListener("keyup", this._handleKey, false);
+        console.log("UN");
+      //  document.removeEventListener("keyup", this._handleKey, false);
     },
-    /*
-       getHomes: function() {
-       return HomeSearch.getData({
-       transform: function(matchText, regExp) {
-       return matchText.replace(regExp, "<b>$&</b>")
-       },
-       sort: {createdAt: -1}
-       });
-       },
-       isLoading: function() {
-       return HomeSearch.getStatus().loading;
-       },
-     */
+       
 
     render: function(){
 

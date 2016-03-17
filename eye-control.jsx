@@ -15,24 +15,20 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
 	SearchSource.defineSource('homes', function(searchText, opts) {
-        opts = opts || {};
-        sort = opts.sort || {position: 1};
+      opts = opts || {};
+      sort = opts.sort || {position: 1};
 	  var options = {sort: sort};
 	  if(searchText) {
-	    var regExp = buildRegExp(searchText);
-	    var selector = {$or: [
-	      {name: regExp},
-	      {notes: regExp},
-	      {address: regExp}
-	    ]};
-          let homes = Homes.find(selector, options).fetch();
+ 
+          let homes = Homes.find( {name: searchText.text}).fetch();
           for (let i=0; i<homes.length;i++) {
               homes[i].position = i;
           }
           return homes;
 	  } else {
-	      return Homes.find({}, options).fetch();
+	      return Homes.find().fetch();
 	  }
+	  return true;
 	});
 
 	SearchSource.defineSource('rooms', function(searchText, opts) {
