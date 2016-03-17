@@ -53,18 +53,23 @@ let currencies = [
 ];
 
 // END TODO
-
+// Seach nav-bar component
 SearchBar = React.createClass({
        getInitialState() {
         return {
+            // state enable when the modal more options is show
             openMoreOptions : false,
+            // state contains
             options : {}
         }
     },
+    // This function handled the instant seach event
     handleChange: function() {
+      //copy this to access in the time out function
       var _this = this;
-      // the select update need time
+      // the select update need time, when trigger onChange late to update the value
       setTimeout(function() { 
+        // this object contains all search filters
         let option = {
              text : _this.refs.searchMapInput.value,
              types : _this.refs.types.value,
@@ -74,8 +79,11 @@ SearchBar = React.createClass({
              numBedrooms : _this.refs.bedrooms.state.value,
              numBathrooms : _this.refs.baths.state.value
          }
+         // set state for keep values after render
         _this.setState({options:option});   
+        // 
         _this.props.onUserInput(option);
+        // success
         return true;
       }, 100);
      

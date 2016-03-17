@@ -6,6 +6,8 @@ Login = React.createClass({
       if ((this.refs.email.value != "" ) && (this.refs.password.value != "" )){
         Session.set('currentUser',this.refs.email.value);
         $('#loginOptions').modal('hide');
+        // this is only for the demo (is bad code)
+        $("#userName").text(this.refs.email.value);
         $('#searchMoldalOptions').modal('show');
       }
     },
@@ -14,11 +16,11 @@ Login = React.createClass({
         return (
       <div className="container">
         <div className="card card-container">
-            <img id="profile-img" className="profile-img-card" src="/img/login.png" />
+            <img id="profile-img" className="profile-img-card" src="/img/virtuocity.jpg" />
             <p id="profile-name" className="profile-name-card"></p>
            
                 <span id="reauth-email" className="reauth-email"></span>
-                <input type="email" id="inputEmail" className="form-control" ref="email" placeholder="Email address"  autofocus />
+                <input type="email" id="inputEmail" className="form-control" ref="email" placeholder="Username"  autofocus />
                 <input type="password" id="inputPassword" className="form-control" ref="password" placeholder="Password"  />
                 <div id="remember" className="checkbox">
                     <label>

@@ -191,7 +191,7 @@ Header = React.createClass({
                 <li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus-circle"></i>&nbsp;Add Property</a></li>
                 <li><a href="/about"><i className="fa fa-info-circle"></i>&nbsp;About</a></li>
                 <li><a href="javascript:;"><i className="fa fa-home" />&nbsp;Thompson Family</a></li>
-                <li><a href="javascript:;"><i className="fa fa-user" />&nbsp;Agent Profile</a></li>
+                <li><a href="javascript:;"><i className="fa fa-user" />&nbsp;<span id="userName">Agent Profile</span></a></li>
               </ul>
             </div>
           </div>
