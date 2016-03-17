@@ -26,10 +26,6 @@ Login = React.createClass({
                     </label>
                 </div>
                 <button className="btn btn-lg btn-primary btn-block btn-signin" onClick={this.submit}>Sign in</button>
-        
-            <a href="#" className="forgot-password">
-                Forgot the password?
-            </a>
         </div>
     </div>
         );
