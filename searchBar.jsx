@@ -29,14 +29,22 @@ let minValue = [
     { value: '100', label: '100' },
     { value: '500', label: '500' },
     { value: '1000', label: '1000' },
-    { value: '10000', label: '10000' }
+    { value: '10000', label: '10000' },
+    { value: '100000', label: '100000' },
+    { value: '1000000', label: '1000000' },
+    { value: '10000000', label: '10000000' },
+    { value: '20000000', label: '20000000' }
 ];
 
 let maxValue = [
-  { value: '100', label: '100' },
+    { value: '100', label: '100' },
     { value: '500', label: '500' },
     { value: '1000', label: '1000' },
-    { value: '10000', label: '10000' }
+    { value: '10000', label: '10000' },
+    { value: '100000', label: '100000' },
+    { value: '1000000', label: '1000000' },
+    { value: '10000000', label: '10000000' },
+    { value: '20000000', label: '20000000' }
 ];
 let currencies = [
     { value: 'GBP', label: 'GBP' },
@@ -49,20 +57,28 @@ let currencies = [
 SearchBar = React.createClass({
        getInitialState() {
         return {
-            openMoreOptions : false
+            openMoreOptions : false,
+            options : {}
         }
     },
     handleChange: function() {
-        this.props.onUserInput({
-             text : this.refs.searchMapInput.value,
-             type : this.refs.types.value,
-             currency : this.refs.currency.state.value,
-             minValue : this.refs.min.value,
-             maxValue : this.refs.max.value,
-             bedrooms : this.refs.bedrooms.value,
-             baths : this.refs.baths.value
-            });
+      var _this = this;
+      // the select update need time
+      setTimeout(function() { 
+        let option = {
+             text : _this.refs.searchMapInput.value,
+             types : _this.refs.types.value,
+             currency : _this.refs.currency.state.value,
+             minValue : _this.refs.min.state.value,
+             maxValue : _this.refs.max.state.value,
+             numBedrooms : _this.refs.bedrooms.state.value,
+             numBathrooms : _this.refs.baths.state.value
+         }
+        _this.setState({options:option});   
+        _this.props.onUserInput(option);
         return true;
+      }, 100);
+     
 },
 
   render: function() {
@@ -79,6 +95,7 @@ SearchBar = React.createClass({
           title: "Login",
            noFooter:true,
        };
+
     return (
         <div>
           <div id="searchOptions" className="col-sm-12">
@@ -92,7 +109,7 @@ SearchBar = React.createClass({
                           </div>
                  
                           <div className="checkbox">
-                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="all" /> All </label>
+                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label>
                               <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="sale"/> For Sale </label>
                               <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="rent"/> For Rent  </label>
                           </div>
@@ -100,23 +117,23 @@ SearchBar = React.createClass({
                   </form> 
                           <div id="currencyOptions">
                               <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select name="currency" ref="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
+                                  <Select value={this.state.options.currency} name="currency" ref="currency"  id="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
                               </div>
                               <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select name="min" ref="min" placeholder="No Min" options={minValue} onChange={this.handleChange}/>
+                                  <Select  value={this.state.options.minValue}  name="min" ref="min" id="min" placeholder="No Min" options={minValue} onChange={this.handleChange}/>
                               </div>
                               <label className="navbar-form form-group pull-left middle-label">to </label>
                               <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select name="max" ref="max" placeholder="No Max" options={maxValue} onChange={this.handleChange}/>
+                                  <Select value={this.state.options.maxValue}  name="max" ref="max" id="max" placeholder="No Max" options={maxValue} onChange={this.handleChange}/>
                               </div>
                           </div>
               
                           <div id="propOptions">
                               <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select name="bedrooms" ref="bedrooms" placeholder="Beds" options={bedOptions} onChange={this.handleChange}/>
+                                  <Select value={this.state.options.numBedrooms} name="bedrooms" id="bedrooms" ref="bedrooms" placeholder="Beds" options={bedOptions} onChange={this.handleChange}/>
                               </div>
                               <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select naem="baths" ref="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
+                                  <Select value={this.state.options.numBathrooms} name="baths" ref="baths" id="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
                               </div>
                           </div>
               
@@ -141,6 +158,10 @@ SearchBar = React.createClass({
         this.refs.loginOptions.open("#loginOptions");
       }
       return true;
+    },
+    componentDidUpdate(){
+      //$("#types-all").prop( "checked", true );;
+
     }
 });
 

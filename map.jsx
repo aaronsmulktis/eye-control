@@ -158,20 +158,48 @@ Map = React.createClass({
                     position = home.position == null ? i : home.position;
             processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
-        console.log("process");
         return <ul>{processedHomes}</ul>;
     },
     handleUserInput: function(filter) {
-            console.log(filter);
-            console.log(this);
-            console.log(Homes.find({"name" : {$regex : (".*" + filter.text + ".*")}}).fetch());
-            this.setState({items:Homes.find( {"name" : {$regex : (".*" + filter.text + ".*")}},{
-                sort: {
-                    position: 1
-                }
-            }).fetch()});
-            return true;
+          
+        //FORMAT FILTER
+        var buildRegExp = function(searchText) {
+            // this is a dumb implementation
+            var parts = searchText.trim().split(/[ \-\:]+/);
+            return new RegExp("(" + parts.join('|') + ")", "ig");
+        };
+        let query = {$and:[]};
+        if (filter.text!=""){
+            var regExp = buildRegExp(filter.text);
+            var selector =  {$or:
+                                    [
+                                        {name: regExp},
+                                        {desc: regExp},
+                                        {address: regExp},
+                                        {city: regExp},
+                                        {country: regExp},
+                                        {postal: regExp},
+                                    ]};
+           
+            query.$and.push(selector);
+        }
+        if (filter.numBedrooms!="")
+             query.$and.push({ numBedrooms: parseInt(filter.numBedrooms) } );
+        if (filter.numBathrooms!="")
+             query.$and.push({ numBathrooms: parseInt(filter.numBathrooms) } );
+        if ((filter.minValue!="") && (filter.maxValue!=""))
+             query.$and.push({ price: {$in: [parseInt(filter.minValue),parseInt(filter.maxValue)] }} );
+        else if (filter.minValue!="")
+             query.$and.push({ price:{ $gt: parseInt(filter.minValue) } });
+        else if (filter.maxValue!="")
+             query.$and.push({ price:{$lt: parseInt(filter.maxValue)} } );
+        //END FORMAT FILTER
+       this.setState({items:Homes.find(query.$and.length ? query: {}).fetch()});
+        return true;
+  
+        
     },
+
     renderSearchView() {
         let defaultClasses = [''],
             listClasses = classNames(defaultClasses, {active: this.state.isList}),
@@ -280,14 +308,12 @@ MapWrapper = React.createClass({
     },
 
     componentWillMount(){
-      console.log("MO");
-        //document.addEventListener("keyup", this._handleKey, false);
+     
     },
 
 
     componentWillUnmount() {
-        console.log("UN");
-      //  document.removeEventListener("keyup", this._handleKey, false);
+    
     },
        
 

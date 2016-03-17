@@ -1,7 +1,7 @@
 // Home Box component - represents a single todo item
 HomeBox = React.createClass({
 
-  mixins: [sortable.ItemMixin],
+  
 
   deleteThisHome(evt) {
       evt.preventDefault();
