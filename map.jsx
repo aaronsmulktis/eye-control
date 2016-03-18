@@ -1,3 +1,4 @@
+// Main map styles
 let styles = [
     {
         featureType: "road",
@@ -194,7 +195,18 @@ Map = React.createClass({
         else if (filter.maxValue!="")
              query.$and.push({ price:{$lt: parseInt(filter.maxValue)} } );
         //END FORMAT FILTER
-       this.setState({items:Homes.find(query.$and.length ? query: {}).fetch()});
+        // SEARCH
+        this.setState({items:Homes.find(query.$and.length ? query: {}).fetch()});
+        
+        let qLength = this.state.items.length;
+        //format the search title label
+        let seachTitle = "";
+        if (query.$and.length)
+            seachTitle = qLength + (qLength == 1 ? " Result of ":" Results of ") + filter.text;
+        
+        $(".results-label").text(seachTitle);
+
+
         return true;
   
         
@@ -259,13 +271,19 @@ Map = React.createClass({
                         <div className="mapList col-sm-6">
 
                             <div className="listOptions">
-
+                                
+                                <h3 className="results-label"></h3>
+                                
                                 <div className="filter-results form-group pull-left noMargin">
+                                  <div className="input-group">
+                                    <div className="addon-min addon-selected input-group-addon "><i className="glyphicon glyphicon-menu-hamburger"/></div>
+                                    <div className="addon-min input-group-addon "><i className="glyphicon glyphicon-map-marker"/></div>
                                     <Select
                                         name="bedrooms"
                                         placeholder="Sort"
                                         options={sortOptions}
                                     />
+                                    </div>
                                 </div>
 
                             </div>

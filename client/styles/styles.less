@@ -215,6 +215,16 @@ i#logoEye.90degCC {
   border: none;
   border-radius: 0;
 }
+.addon-min {
+  background: white;
+  border: 4px;
+  margin: 4px;
+  border-radius: 0;
+}
+.addon-selected {
+  background: @brand;
+  color: white;
+}
 input[type="radio"].input-min {
     vertical-align: bottom!important;
     margin-left: 10px;
@@ -594,9 +604,17 @@ modal {
     margin: 100px;
     
 }
+
+
+
 .modal-content{
  min-width: 700px;  
    max-height: 400px;
+}
+.modal-login{
+    min-width: 250px;
+    max-height: 400px;
+    width: 400px;
 }
 
 .modal-header{
@@ -640,9 +658,9 @@ color: @second-color;
 
 
 .card-container.card {
-    max-width: 640px;
+    width: 100%;
+    margin-bottom: 30px;
     padding: 0px ;
-    margin: 0px;
 }
 
 .btn {
@@ -803,4 +821,9 @@ color: @second-color;
     white-space: nowrap;
     text-overflow: ellipsis;
   
+}
+
+h3.results-label {
+    color: @brand;
+    font-weight: bold;
 }

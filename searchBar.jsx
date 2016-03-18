@@ -102,6 +102,7 @@ SearchBar = React.createClass({
        let loginOptions = {
           title: "Login",
            noFooter:true,
+           class: "modal-login"
        };
 
     return (
@@ -118,8 +119,8 @@ SearchBar = React.createClass({
                  
                           <div className="checkbox">
                               <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label>
-                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="sale"/> For Sale </label>
-                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="rent"/> For Rent  </label>
+                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label>
+                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label>
                           </div>
                           </div>
                   </form> 
@@ -168,8 +169,8 @@ SearchBar = React.createClass({
       return true;
     },
     componentDidUpdate(){
-      //$("#types-all").prop( "checked", true );;
-
+      if (!($("#types-rent").prop( "checked") || $("#types-rent").prop("checked") || $("#types-sale").prop("checked")))
+        $("#types-all").prop( "checked", true );
     }
 });
 

@@ -18,7 +18,7 @@ Modal = React.createClass({
         return (
         <div id={this.props.id} className="modal fade" tabindex="-1" role="dialog">
   <div className="modal-dialog">
-    <div className="modal-content">
+    <div className={this.props.options.class + " modal-content"}>
       <div className="modal-header">
         <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h5 className="modal-title"> {this.props.options.title} </h5>
