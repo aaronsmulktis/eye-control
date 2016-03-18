@@ -49,12 +49,13 @@ HomeBox = React.createClass({
                   <img src={vaultUrl} />
               </div>
               <div className="propDetails col-sm-8">
-                  <h4 className="homeName"><small>{this.props.home.position}</small>  {this.props.home.name}</h4>
+                  <h4 className="homeName"><small>{this.props.home.position}</small> <strong> {this.props.home.name}</strong></h4>
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>
                   <p>{this.props.home.numBedrooms} <i className="fa fa-bed"></i> | {this.props.home.numBathrooms} <i className="fa fa-recycle"></i></p>
               </div>
+              <br/>
           </li>
       );
   }

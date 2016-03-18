@@ -130,6 +130,7 @@ i#logoEye.90degCC {
   position: relative;
   z-index: 999;
   padding: 0 10px;
+   font-size: smaller;
 }
 
 #searchView {
@@ -146,6 +147,7 @@ i#logoEye.90degCC {
   bottom: 110px;
   left: 5px;*/
 }
+
 
 /* == Radio Buttons == */
 
@@ -200,6 +202,7 @@ i#logoEye.90degCC {
 
 .mapList {
   height: 100%;
+  width: 38%;
   position: fixed;
   overflow: scroll;
   padding: 55px 0 100px 10px;
@@ -237,17 +240,23 @@ input[type="radio"].input-min {
     padding: 0px 0px 0px;
 }
 #search-homes, #searchMapInput {
-     background: white;
-  border: none;
-    width: 300px;
+    background: white;
+    border: none;
+    width: 250px;
+    font-size: smaller;
 }
 .middle-label  {
-    margin-top: 15px;
+       margin-top: 12px;
+    padding: 6px;
     }
 
 #searchMap #searchIcon {
   color: @brand !important;
   margin-left: -25px !important;
+}
+
+.checkbox {
+  margin-left: 0;
 }
 
 /*.propList {
@@ -309,7 +318,10 @@ input[type="radio"].input-min {
   height: 100%;
 }
 
-.homeName {}
+
+.propDetails p {
+margin:0;
+}
 
 .propDetails {
   pointer-events: none;
@@ -827,3 +839,4 @@ h3.results-label {
     color: @brand;
     font-weight: bold;
 }
+
