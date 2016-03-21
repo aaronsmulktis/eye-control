@@ -145,7 +145,7 @@ Map = React.createClass({
                 descriptionDiv = "<div class=' col-sm-8 pull-right'> <h3 class='no-margin'>" + homeName + "</h3><p class='no-margin'>" + homeDesc + "</p> <p class='no-margin'>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6 class='no-margin'>" + homePrice + "</h6></div>",
                 content = imageDiv + descriptionDiv;
 
-            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,i);
+            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,i+1);
         }
     },
 
@@ -159,7 +159,7 @@ Map = React.createClass({
         for (let i=0; i<homes.length;i++) {
             let home = homes[i],
                     position = home.position == null ? i : home.position;
-            processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
+            processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position+1} {...this.movableProps}/>;
         }
         return <ul>{processedHomes}</ul>;
     },
