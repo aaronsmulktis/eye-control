@@ -27,13 +27,13 @@
 }
 
 .navbar-brand {
+  min-width:220px;
   font-weight: 700;
-  background: url(img/knightfrank.svg) no-repeat;
+  background: url(img/logo.jpg) no-repeat;
   background-size: cover;
   display: block;
-  /*min-width: 200px;*/
   .transition;
-  background-size: 80% 80%;
+
   background-position: center left;
 }
 
@@ -125,7 +125,7 @@ i#logoEye.90degCC {
 }
 
 #searchOptions {
-  background: @brand;
+  background: #013a55;
   color: white;
   position: relative;
   z-index: 999;
@@ -617,8 +617,6 @@ modal {
     
 }
 
-
-
 .modal-content{
  min-width: 700px;  
    max-height: 400px;
@@ -630,7 +628,7 @@ modal {
 }
 
 .modal-header{
-    background: #003a55;
+    background: #013a55;
     color: white;
 }
 .btn-primary{
@@ -654,7 +652,7 @@ modal {
   padding: 0 10px;
 }
 #modal-checkbox {
-    margin-top: -20px;
+       margin-bottom: -20px;
 }
 
 .input-min-modal {
@@ -667,7 +665,9 @@ color: @second-color;
 .no-margin {
   margin : 0;
 }
-
+.no-padding {
+  padding : 0;
+}
 
 .card-container.card {
     width: 100%;
@@ -791,10 +791,11 @@ color: @second-color;
 
 
 .tokenfield.form-control {
-    height: 100px;
+    border-width: 0px;
+    display: inline-block;
 }
 .token {
-
+   border-width: 0px;
     height: 20px;
     display: inline-block;
     background-color: @second-color;
@@ -840,3 +841,8 @@ h3.results-label {
     font-weight: bold;
 }
 
+.fit-control{
+      border-width: thin;
+    border-style: solid;
+    border-color: lightgray;
+}

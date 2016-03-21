@@ -51,12 +51,11 @@ MoreOptionsModal = React.createClass({
             $('#tokenfield').tokenfield({
                 delimiter : ';',
                 autocomplete: {
-                    source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
+                    source: [],
                     delay: 100
                 },
             showAutocompleteOnFocus: true
             });
-            console.log("inic token control [OK]");
         }
 
 	},
@@ -68,9 +67,11 @@ MoreOptionsModal = React.createClass({
           <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
                 <div className="form-group">
                     <div className="input-group">
-                        <div className="input-min input-group-addon">UK</div>
+                        <div className="input-min input-group-addon fit-control">UK</div>
+                        <div className="input-min input-group-addon fit-control no-margin no-padding">
                         <input ref="searchMapInput" id="searchMapInput" type="text" className="font4 form-control input-min" placeholder="Enter Address, City, State or ZIP" onChange={this.handleChange}></input>
                         <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
+                        </div>
                     <div className="checkbox" id="modal-checkbox">
                         <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="all" /> All </label>
                         <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="sale"/> For Sale </label>
@@ -80,23 +81,23 @@ MoreOptionsModal = React.createClass({
                     </div>
             </form> 
             <div id="currencyOptions">
-                        <div className="navbar-form form-group pull-left input-min-select">
+                        <div className="navbar-form form-group pull-left input-min-select fit-control">
                             <Select name="currency" ref="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
                         </div>
-                        <div className="navbar-form form-group pull-left input-min-select">
+                        <div className="navbar-form form-group pull-left input-min-select fit-control">
                             <Select name="min" ref="min" placeholder="No Min" options={minValue} onChange={this.handleChange}/>
                         </div>
-                        <label className="navbar-form form-group pull-left middle-label">to </label>
-                        <div className="navbar-form form-group pull-left input-min-select">
+                        <label className="navbar-form form-group pull-left middle-label ">to </label>
+                        <div className="navbar-form form-group pull-left input-min-select fit-control">
                             <Select name="max" ref="max" placeholder="No Max" options={maxValue} onChange={this.handleChange}/>
                         </div>
                     </div>
         
                     <div id="propOptions">
-                        <div className="navbar-form form-group pull-left input-min-select">
+                        <div className="navbar-form form-group pull-left input-min-select fit-control">
                             <Select name="bedrooms" ref="bedrooms" placeholder="Beds" options={bedOptions} onChange={this.handleChange}/>
                         </div>
-                        <div className="navbar-form form-group pull-left input-min-select">
+                        <div className="navbar-form form-group pull-left input-min-select fit-control">
                             <Select naem="baths" ref="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
                         </div>
                     </div>

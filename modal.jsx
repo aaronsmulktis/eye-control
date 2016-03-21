@@ -8,10 +8,13 @@ Modal = React.createClass({
     },
     open(modalSelector){
 
-      console.log(this.props.id);
-       $("#"+this.props.id).modal('show');
-               
-    },
+       modalSelector = "#"+this.props.id;
+       var callback = this.props.callback;
+       $(modalSelector).modal('show');
+       $(modalSelector).on('hidden.bs.modal', function () {
+          callback();
+      })       
+    }, 
     
     render : function() {
        

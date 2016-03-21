@@ -182,7 +182,7 @@ Header = React.createClass({
             </div>
 
             <div className="navbar-left">
-              <p className="verMar15">Virtual Reality Powered by Virtuocity</p>
+              <p className="verMar15"></p>
             </div>
 
             <div className="collapse navbar-collapse">

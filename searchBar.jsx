@@ -89,6 +89,10 @@ SearchBar = React.createClass({
      
 },
 
+ searchModalCallback: function(){
+        console.log("searchModalCallback");
+       },
+
   render: function() {
       let modalOptions = {
           title: "Search Items",
@@ -151,8 +155,8 @@ SearchBar = React.createClass({
               </div>
        
         </div>
-         <Modal options={modalOptions} id="searchMoldalOptions" ref="searchMoldalOptions">
-            <MoreOptionsModal/>
+         <Modal options={modalOptions} callback={this.searchModalCallback} id="searchMoldalOptions" ref="searchMoldalOptions">
+            <MoreOptionsModal callback={this.searchModalCallback}/>
          </Modal>
          <Modal options={loginOptions} id="loginOptions" ref="loginOptions">
             <Login/>
