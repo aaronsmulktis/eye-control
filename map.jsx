@@ -91,23 +91,20 @@ Map = React.createClass({
     createMarker(lat, lon, html, link, position,i) {
         let state = this.state;
        
-        let shape = {
-                coords: [1, 1, 1, 20, 18, 20, 18, 1],
-                type: 'poly'
-        };
-
+        //create a marker
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
                 icon: {url: "/img/map-pin.png"},
-                shape: shape,
                 label: i.toString(),
                 path: google.maps.SymbolPath.CIRCLE,
                 title: ''
         });
 
+        // set the marker info window
         newMarker['infowindow'] = new google.maps.InfoWindow({
-                content: html
+                content: html,
+                 zoom: 10
         });
 
         google.maps.event.addListener(newMarker, 'click', function() {
@@ -144,8 +141,7 @@ Map = React.createClass({
                 imageDiv =  "<div class='col-sm-4 noPadding pull-left'> <img data-url='"+ homeThumb +"' src='"+ homeThumbUrl +"'></img> </div>" ,
                 descriptionDiv = "<div class=' col-sm-8 pull-right'> <h3 class='no-margin'>" + homeName + "</h3><p class='no-margin'>" + homeDesc + "</p> <p class='no-margin'>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6 class='no-margin'>" + homePrice + "</h6></div>",
                 content = imageDiv + descriptionDiv;
-
-            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,i+1);
+            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,i);
         }
     },
 
@@ -159,7 +155,7 @@ Map = React.createClass({
         for (let i=0; i<homes.length;i++) {
             let home = homes[i],
                     position = home.position == null ? i : home.position;
-            processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position+1} {...this.movableProps}/>;
+            processedHomes[position] = <HomeBox key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
         return <ul>{processedHomes}</ul>;
     },
