@@ -43,9 +43,17 @@ let currencies = [
     { value: 'EUR', label: 'EUR' }
 ];
 let inic = false;
-MoreOptionsModal = React.createClass({
-	componentDidUpdate(){
 
+MoreOptionsModal = React.createClass({
+    getInitialState() {
+        return {
+            // state contains
+            options : {}
+        }
+    },
+	componentDidUpdate(){
+        console.log("new props");
+        console.log(this.props);
         if (!inic){            
             inic= true;
             $('#tokenfield').tokenfield({
@@ -59,6 +67,27 @@ MoreOptionsModal = React.createClass({
         }
 
 	},
+    handleChange : function(){
+           var _this = this;
+      // the select update need time, when trigger onChange late to update the value
+      setTimeout(function() { 
+        // this object contains all search filters
+        let option = {
+             text : _this.refs.searchMapInput.value + " " ,
+             types : _this.refs.types.value,
+             currency : _this.refs.currency.state.value,
+             minValue : _this.refs.min.state.value,
+             maxValue : _this.refs.max.state.value,
+             numBedrooms : _this.refs.bedrooms.state.value,
+             numBathrooms : _this.refs.baths.state.value
+         }
+         // set state for keep values after render
+        _this.setState({options:option});  
+        _this.props.updateObjCall(option);   
+    
+        return true;
+      }, 100);
+    },
 	render : function(){
 		return (
 			<div id="modalSearchOptions" className="col-sm-12">
@@ -82,23 +111,23 @@ MoreOptionsModal = React.createClass({
             </form> 
             <div id="currencyOptions">
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select name="currency" ref="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
+                            <Select value={this.state.options.currency} name="currency" ref="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
                         </div>
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select name="min" ref="min" placeholder="No Min" options={minValue} onChange={this.handleChange}/>
+                            <Select value={this.state.options.minValue} name="min" ref="min" placeholder="No Min" options={minValue} onChange={this.handleChange}/>
                         </div>
                         <label className="navbar-form form-group pull-left middle-label ">to </label>
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select name="max" ref="max" placeholder="No Max" options={maxValue} onChange={this.handleChange}/>
+                            <Select value={this.state.options.maxValue} name="max" ref="max" placeholder="No Max" options={maxValue} onChange={this.handleChange}/>
                         </div>
                     </div>
         
                     <div id="propOptions">
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select name="bedrooms" ref="bedrooms" placeholder="Beds" options={bedOptions} onChange={this.handleChange}/>
+                            <Select value={this.state.options.numBedrooms} name="bedrooms" ref="bedrooms" placeholder="Beds" options={bedOptions} onChange={this.handleChange}/>
                         </div>
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select naem="baths" ref="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
+                            <Select value={this.state.options.numBathrooms} name="baths" ref="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
                         </div>
                     </div>
         </div>

@@ -88,9 +88,24 @@ SearchBar = React.createClass({
       }, 100);
      
 },
-
+updateObjCall : function(obj){
+  this.setState({callbackObj: obj});
+},
  searchModalCallback: function(){
         console.log("searchModalCallback");
+         console.log(this.state.callbackObj);
+         var result = this.state.callbackObj;
+         
+                 text : _this.refs.searchMapInput.value + " " ,
+             types : _this.refs.types.value,
+             currency : _this.refs.currency.state.value,
+             minValue : _this.refs.min.state.value,
+             maxValue : _this.refs.max.state.value,
+             numBedrooms : _this.refs.bedrooms.state.value,
+             numBathrooms : _this.refs.baths.state.value
+         }
+         // set state for keep values after render
+        _this.setState({options:option}); 
        },
 
   render: function() {
@@ -155,8 +170,8 @@ SearchBar = React.createClass({
               </div>
        
         </div>
-         <Modal options={modalOptions} callback={this.searchModalCallback} id="searchMoldalOptions" ref="searchMoldalOptions">
-            <MoreOptionsModal callback={this.searchModalCallback}/>
+         <Modal options={modalOptions} callback={this.searchModalCallback} objCall={this.searchModalObjCall} id="searchMoldalOptions" ref="searchMoldalOptions">
+            <MoreOptionsModal callback={this.searchModalCallback}  updateObjCall={this.updateObjCall}/>
          </Modal>
          <Modal options={loginOptions} id="loginOptions" ref="loginOptions">
             <Login/>
