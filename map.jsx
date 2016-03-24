@@ -184,9 +184,9 @@ Map = React.createClass({
             query.$and.push(selector);
         }
         if (filter.numBedrooms!="")
-             query.$and.push({ numBedrooms: parseInt(filter.numBedrooms) } );
+             query.$and.push({ numBedrooms:{ $gt: parseInt(filter.numBedrooms) } } );
         if (filter.numBathrooms!="")
-             query.$and.push({ numBathrooms: parseInt(filter.numBathrooms) } );
+             query.$and.push({ numBathrooms:{ $gt: parseInt(filter.numBathrooms)  } } );
         if ((filter.minValue!="") && (filter.maxValue!=""))
              query.$and.push({ price: {$in: [parseInt(filter.minValue),parseInt(filter.maxValue)] }} );
         else if (filter.minValue!="")
