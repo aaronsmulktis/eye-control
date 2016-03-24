@@ -445,12 +445,15 @@ HomeWrapper = React.createClass({
     componentWillMount(){
         RoomSearch.search("", {homeId: this.props.id});
         document.addEventListener("keyup", this._handleKey, false);
+        console.log("pase");
     },
 
 
     componentWillUnmount() {
         document.removeEventListener("keyup", this._handleKey, false);
+
     },
+
 
     render: function(){
         return(

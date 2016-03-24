@@ -95,15 +95,15 @@ updateObjCall : function(obj){
         console.log("searchModalCallback");
          console.log(this.state.callbackObj);
          var result = this.state.callbackObj;
-         
-                 text : _this.refs.searchMapInput.value + " " ,
+
+             /* text : _this.refs.searchMapInput.value + " " ,
              types : _this.refs.types.value,
              currency : _this.refs.currency.state.value,
              minValue : _this.refs.min.state.value,
              maxValue : _this.refs.max.state.value,
              numBedrooms : _this.refs.bedrooms.state.value,
              numBathrooms : _this.refs.baths.state.value
-         }
+         */
          // set state for keep values after render
         _this.setState({options:option}); 
        },
