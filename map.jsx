@@ -77,6 +77,7 @@ Map = React.createClass({
 
     componentDidMount() {
         this.initialize();
+        this.setState({items:Homes.find().fetch()});
     },
 
     componentDidUpdate() {
@@ -131,7 +132,7 @@ Map = React.createClass({
         }
         for (let i = 0; i < homes.length; i++) {
             let homeName = homes[i].name,
-                homeDesc = homes[i].notes,
+                homeDesc = homes[i].desc,
                 homePrice = homes[i].price,
                 homeRooms = homes[i].numBedrooms,
                 homeBaths = homes[i].numBathrooms,
@@ -160,7 +161,7 @@ Map = React.createClass({
         return <ul>{processedHomes}</ul>;
     },
     handleUserInput: function(filter) {
-          
+        
         //FORMAT FILTER
         var buildRegExp = function(searchText) {
             // this is a dumb implementation
@@ -329,7 +330,7 @@ MapWrapper = React.createClass({
 
 
     componentWillUnmount() {
-    
+
     },
        
 
