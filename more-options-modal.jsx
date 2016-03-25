@@ -1,47 +1,3 @@
-// TODO: NO repeat code move let
-let bedOptions = [
-    { value: '1', label: '1' },
-    { value: '2', label: '2' },
-    { value: '3', label: '3' },
-    { value: '4', label: '4' },
-    { value: '5', label: '5' },
-    { value: '6', label: '6' },
-    { value: '7', label: '7' },
-    { value: '8', label: '8' },
-    { value: '9', label: '9' },
-    { value: '10', label: '10' },
-    { value: '11', label: '11' },
-    { value: '12', label: '12' },
-    { value: '13', label: '13' },
-    { value: '14', label: '14' },
-    { value: '15', label: '15' }
-];
-
-let bathOptions = [
-    { value: '1', label: '1' },
-    { value: '2', label: '2' },
-    { value: '3', label: '3' },
-    { value: '4', label: '4' }
-];
-
-let minValue = [
-    { value: '100', label: '100' },
-    { value: '500', label: '500' },
-    { value: '1000', label: '1000' },
-    { value: '10000', label: '10000' }
-];
-
-let maxValue = [
-  { value: '100', label: '100' },
-    { value: '500', label: '500' },
-    { value: '1000', label: '1000' },
-    { value: '10000', label: '10000' }
-];
-let currencies = [
-    { value: 'GBP', label: 'GBP' },
-    { value: 'USD', label: 'USD' },
-    { value: 'EUR', label: 'EUR' }
-];
 let inic = false;
 
 MoreOptionsModal = React.createClass({
@@ -111,23 +67,23 @@ MoreOptionsModal = React.createClass({
             </form> 
             <div id="currencyOptions">
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select value={this.state.options.currency} name="currency" ref="currency" placeholder="Usd" options={currencies} onChange={this.handleChange}/>
+                            <Select value={this.state.options.currency} name="currency" ref="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
                         </div>
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select value={this.state.options.minValue} name="min" ref="min" placeholder="No Min" options={minValue} onChange={this.handleChange}/>
+                            <Select value={this.state.options.minValue} name="min" ref="min" placeholder="No Min" options={SearchOptions.get('minValue').toArray()} onChange={this.handleChange}/>
                         </div>
                         <label className="navbar-form form-group pull-left middle-label ">to </label>
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select value={this.state.options.maxValue} name="max" ref="max" placeholder="No Max" options={maxValue} onChange={this.handleChange}/>
+                            <Select value={this.state.options.maxValue} name="max" ref="max" placeholder="No Max" options={SearchOptions.get('maxValue').toArray()} onChange={this.handleChange}/>
                         </div>
                     </div>
         
                     <div id="propOptions">
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select value={this.state.options.numBedrooms} name="bedrooms" ref="bedrooms" placeholder="Beds" options={bedOptions} onChange={this.handleChange}/>
+                            <Select value={this.state.options.numBedrooms} name="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
                         </div>
                         <div className="navbar-form form-group pull-left input-min-select fit-control">
-                            <Select value={this.state.options.numBathrooms} name="baths" ref="baths" placeholder="Baths" options={bathOptions} onChange={this.handleChange}/>
+                            <Select value={this.state.options.numBathrooms} name="baths" ref="baths" placeholder="Baths" options={SearchOptions.get('bathOptions').toArray()} onChange={this.handleChange}/>
                         </div>
                     </div>
         </div>

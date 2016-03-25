@@ -85,11 +85,8 @@
         }
       }
     },
-    "jquery": {
-      "version": "2.2.1"
-    },
-    "jqueryui": {
-      "version": "1.11.1"
+    "immutable": {
+      "version": "3.7.6"
     },
     "multer": {
       "version": "1.1.0",
