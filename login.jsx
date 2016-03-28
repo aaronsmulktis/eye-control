@@ -16,7 +16,7 @@ Login = React.createClass({
         return (
       <div className="">
         <div className="card card-container">
-            <img id="profile-img" className="profile-img-card" src="/img/virtuocity.jpg" />
+            <div id="profile-img" className="profile-img-card"  />
             <p id="profile-name" className="profile-name-card"></p>
            
                 <span id="reauth-email" className="reauth-email"></span>
