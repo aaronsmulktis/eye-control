@@ -8,8 +8,6 @@ MoreOptionsModal = React.createClass({
         }
     },
 	componentDidUpdate(){
-        console.log("new props");
-        console.log(this.props);
         if (!inic){            
             inic= true;
             $('#tokenfield').tokenfield({

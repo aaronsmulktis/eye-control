@@ -20,6 +20,7 @@ try {
 // Meteor to watch it and reload this package when it changes
 Package.onUse(function(api) {
   api.addFiles('index.js', 'server');
+
   if (api.addAssets) {
     api.addAssets('../../packages.json', 'server');
   } else {
@@ -27,4 +28,5 @@ Package.onUse(function(api) {
       isAsset: true
     });
   }
+
 });

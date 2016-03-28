@@ -1,0 +1,73 @@
+@import "{}/client/styles/mixins.import.less";
+
+.navbar-brand {
+  background: url(img/logo.jpg) no-repeat;
+}
+
+#searchOptions {
+  background: @four;
+}
+
+#viewOptions [type="radio"]:checked + label:before {
+  border: 2px solid @brand;
+  background-color: @brand;
+}
+
+#searchMap #searchIcon {
+  color: @brand !important;
+}
+
+.propList a:hover .propDetails {
+  color: @brand;
+}
+
+.propList ul li:hover .boxBorder, #roomPics ul li:hover .boxBorder {
+  border: 4px solid @brand;
+}
+
+
+i.fa-recycle:before {
+  color: @grey !important;
+}
+
+#propTitle {
+  background: @accent;
+}
+
+#plaque a {color: @four;.transition;}
+
+#plaque #circ {
+  background-color: @sky;
+  /*background-image: linear-gradient(left top, @brand, @two 140%);*/
+  background: -webkit-linear-gradient(-50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66%));
+  background: -o-linear-gradient(-50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66%));
+  background: -moz-linear-gradient(-50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66%));
+  background: linear-gradient(to -50deg, lighten(@sky, 17%) 10%, @sky 66%, fade(@brand, 66));
+
+  border: 1px solid darken(@three, 5%);
+}
+
+#addRoomBtn {
+  background: lighten(@brand, 10%);
+}
+
+#addRoomBtn a:hover {
+  background: darken(@brand, 10%);
+}
+
+
+#modalSearchOptions {
+  border-color: @four;
+  color: @four;
+}
+
+.input-min-modal {
+color:@four;
+}
+
+.token {
+    background-color: @four;
+}
+h3.results-label {
+    color: @brand;
+}

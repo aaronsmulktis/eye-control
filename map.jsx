@@ -306,7 +306,6 @@ MapWrapper = React.createClass({
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         let data = {homes: []};
-        console.log("reload data");
         var handles = [Meteor.subscribe("homes")];
         if (!handles.every(utils.isReady)) {
             return data;

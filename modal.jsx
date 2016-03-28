@@ -1,7 +1,6 @@
 
 Modal = React.createClass({
     getInitialState() {
-      console.log(this.props);
         return {
             visible : false
         }
@@ -13,8 +12,8 @@ Modal = React.createClass({
        var callbackChild = (this.props.children && this.props.children.props) ? this.props.children.props.callback : null;
        $(modalSelector).modal('show');
        $(modalSelector).on('hidden.bs.modal', function () {
-         if (callbackChild) {callbackChild(); console.log("hijo") }
-         else if (callback) {callback(); console.log("padre")}
+         if (callbackChild) {callbackChild();  }
+         else if (callback) {callback(); }
          return true;
       })       
     }, 
@@ -22,7 +21,7 @@ Modal = React.createClass({
     render : function() {
        
         return (
-        <div id={this.props.id} className="modal fade" tabindex="-1" role="dialog">
+        <div id={this.props.id} className="modal fade" tabIndex="-1" role="dialog">
   <div className="modal-dialog">
     <div className={this.props.options.class + " modal-content"}>
       <div className="modal-header">
