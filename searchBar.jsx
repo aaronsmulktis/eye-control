@@ -37,8 +37,6 @@ updateObjCall : function(obj){
   this.setState({callbackObj: obj});
 },
  searchModalCallback: function(){
-        console.log("searchModalCallback");
-         console.log(this.state.callbackObj);
          var result = this.state.callbackObj;
 
              /* text : _this.refs.searchMapInput.value + " " ,

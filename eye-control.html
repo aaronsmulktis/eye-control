@@ -3,6 +3,7 @@
 	<script src="/js/h5utils.js"></script>
 	<script src="/js/main.js"></script>
 	<script src="/js/searchOptions.js"></script>
+	<script src="/js/templates.js"></script>
     <link rel="icon" href="/img/favicon.ico">
     <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
  
@@ -26,6 +27,7 @@
 		});
 		var Host = location.hostname.split('.')[0];
 		$("body").addClass(Host);
+		Session.set('template',Host);
 	</script>
 
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDI1UZpsaowlO7XYZK1V1d7cCRZ-fymBOs"></script>

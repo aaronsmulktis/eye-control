@@ -46,6 +46,12 @@ Map = React.createClass({
     },
 
     initialize() {
+        let getMapStyle = Skins.getMapStyle(Session.get('template'));
+
+        if (getMapStyle) {
+            styles.push(getMapStyle);
+        };
+
         if (this.state.mainMap) {
                 return;
         }
@@ -96,7 +102,7 @@ Map = React.createClass({
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: {url: "/img/map-pin.png"},
+                icon: {url: "/img/"+Skins.getPin(Session.get('template'))},
                 label: i.toString(),
                 path: google.maps.SymbolPath.CIRCLE,
                 title: ''
