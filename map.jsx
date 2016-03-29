@@ -35,6 +35,16 @@ let searchTimeout;
 // Map component - entry component setup in router
 Map = React.createClass({
     // This mixin makes the getMeteorData method work
+    getBg() {
+        var bg = $("#topBar").css('background-color');
+        bg = bg.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+            }
+        bg = (hex(bg[1]) + hex(bg[2]) + hex(bg[3]));
+
+        return bg;
+    },
 
     mixins: [sortable.ListMixin],
 
@@ -46,10 +56,9 @@ Map = React.createClass({
     },
 
     initialize() {
-        let getMapStyle = Skins.getMapStyle(Session.get('template'));
-
-        if (getMapStyle) {
-            styles.push(getMapStyle);
+       
+        if (this.getBg() != "ffffff") {
+            styles.push({stylers: [{ hue: "#"+this.getBg() } ] });
         };
 
         if (this.state.mainMap) {
@@ -102,7 +111,7 @@ Map = React.createClass({
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: {url: "/img/"+Skins.getPin(Session.get('template'))},
+                icon: {url: "/img/"+this.getBg()+".png"},
                 label: i.toString(),
                 path: google.maps.SymbolPath.CIRCLE,
                 title: ''
