@@ -12,7 +12,7 @@ a {
   color : @grey;
 }
 .borderBottom {
-    border-bottom: 2px solid @three;
+    border-bottom: solid @three;
 }
 .btn-default, .btn-default:focus {
     background: @brand;
@@ -48,9 +48,9 @@ a {
 
 .navbar-brand {
   background: url(img/faronsutaira.png) no-repeat;
-    min-width:220px;
+    
   font-weight: 700;
-  background-size: cover;
+  
   display: block;
   .transition;
   background-position: center left;
@@ -88,7 +88,7 @@ i.fa-recycle:before {
 }
 
 #propTitle {
-  background: @accent;
+  background: @brandLight;
 }
 
 #plaque a {color: @four;.transition;}
@@ -143,5 +143,6 @@ h3.results-label {
       background: url(/img/faronsutaira-login.png) no-repeat;
       width: 112px;
       height: 112px;
+          border-radius: 0;
 }
 }

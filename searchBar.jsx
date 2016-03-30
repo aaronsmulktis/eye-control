@@ -133,6 +133,7 @@ updateObjCall : function(obj){
     componentDidUpdate(){
       if (!($("#types-rent").prop( "checked") || $("#types-rent").prop("checked") || $("#types-sale").prop("checked")))
         $("#types-all").prop( "checked", true );
+        if (!(Session.get('currentUser'))) this.refs.loginOptions.open("#loginOptions");
     }
 });
 

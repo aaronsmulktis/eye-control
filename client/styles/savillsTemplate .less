@@ -1,7 +1,7 @@
 @import "{}/client/styles/mixins.savills.less";
 
 
-.savills{
+ .savills{
 
 body {
   background-color : @grey!important;
@@ -12,7 +12,7 @@ a {
   color : @grey;
 }
 .borderBottom {
-    border-bottom: 2px solid @three;
+    border-bottom: solid @three;
 }
 .btn-default, .btn-default:focus {
     background: @brand;
@@ -88,7 +88,7 @@ i.fa-recycle:before {
 }
 
 #propTitle {
-  background: @accent;
+  background: @brandLight;
 }
 
 #plaque a {color: @four;.transition;}
@@ -141,7 +141,8 @@ h3.results-label {
 }
 .profile-img-card{
       background: url(/img/savills.png) no-repeat;
-      width: 65px;
-      height: 60px;
+          width: 200px;
+    /* height: 60px; */
+    border-radius: 0;
 }
 }

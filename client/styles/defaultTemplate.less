@@ -1,7 +1,12 @@
 @import "{}/client/styles/mixins.import.less";
 
-.navbar-brand {
+ .navbar-brand {
   background: url(img/logo.jpg) no-repeat;
+}
+
+
+.borderBottom {
+    border-bottom-width: 4px!important;
 }
 
 #searchOptions {
@@ -9,7 +14,7 @@
 }
 
 #viewOptions [type="radio"]:checked + label:before {
-  border: 2px solid @brand;
+  border: 4px solid @brand;
   background-color: @brand;
 }
 
@@ -31,7 +36,7 @@ i.fa-recycle:before {
 }
 
 #propTitle {
-  background: @accent;
+  background: @brandLight;
 }
 
 #plaque a {color: @four;.transition;}
