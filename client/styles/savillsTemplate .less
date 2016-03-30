@@ -1,11 +1,68 @@
-@import "{}/client/styles/mixins.import.less";
+@import "{}/client/styles/mixins.savills.less";
+
+
+.savills{
+
+body {
+  background-color : @grey!important;
+
+}
+a {
+  
+  color : @grey;
+}
+.borderBottom {
+    border-bottom: 2px solid @three;
+}
+.btn-default, .btn-default:focus {
+    background: @brand;
+}
+.btn-primary {
+    color: #fff;
+    background-color:  @brand;
+    border-color:  @brand;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color:  @grey;
+    border-color:  @grey;
+}
+
+.btn-default:hover {
+    background: @grey;
+}
+
+.addon-selected {
+    background: @brand;
+    color: white;
+}
+ #topBar{
+  background: @four  
+}
+
+#topBar ul li a:hover {
+  text-decoration: none;
+   background: @one;
+   color:@three ;
+}
 
 .navbar-brand {
-  background: url(img/logo.jpg) no-repeat;
+  background: url(img/savills.png) no-repeat;
+    min-width:100px;
+  font-weight: 700;
+  background-size: cover;
+  display: block;
+  .transition;
+  background-position: center left;
+}
+
+.pin {
+  background: url(img/map-pin-black.jpg) no-repeat;
 }
 
 #searchOptions {
   background: @four;
+  opacity: 0.8;
 }
 
 #viewOptions [type="radio"]:checked + label:before {
@@ -71,4 +128,20 @@ color:@four;
 h3.results-label {
     color: @brand;
 }
+.modal-header {
+    background: @brand;
+    color: white;
+}
+.btn.btn-signin:hover, .btn.btn-signin:active, .btn.btn-signin:focus {
+    background-color: @grey;
+}
 
+.btn.btn-signin {
+    background-color: @brand;
+}
+.profile-img-card{
+      background: url(/img/savills.png) no-repeat;
+      width: 65px;
+      height: 60px;
+}
+}
