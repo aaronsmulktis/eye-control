@@ -33,7 +33,7 @@ HomeBox = React.createClass({
   render() {
     // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
-    const homeClassName = this.props.home.name;
+    const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
     var price = this.props.home.price;
     price = price && accounting.formatMoney(price, "£", 0, ".", ",");

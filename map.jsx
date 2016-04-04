@@ -9,7 +9,7 @@ let styles = [
         ]
     },{
         featureType: "road",
-        elementType: "labels",
+        elementType: "labels",        
         stylers: [
                 { visibility: "off" }
         ]
@@ -73,6 +73,7 @@ Map = React.createClass({
             new google.maps.Map(document.getElementById('mainMap'), {
                 scrollwheel: false,
                 center: {lat: 51.491194, lng: -0.200085},
+                streetViewControl: false,
                 zoom: 12,
                 styles: styles
             })
@@ -86,7 +87,8 @@ Map = React.createClass({
             filterText: '',
             inStockOnly: false,
             isList: false,
-            isMap: false
+            isMap: false,
+            currentHome : ''
         }
     },
 
@@ -104,7 +106,7 @@ Map = React.createClass({
         this.processHomes(nextProps.homes);
     },
 
-    createMarker(lat, lon, html, link, position,i) {
+    createMarker(lat, lon, html, link, position,i,id) {
         let state = this.state;
        
         //create a marker
@@ -114,7 +116,8 @@ Map = React.createClass({
                 icon: {url: "/img/"+this.getBg()+".png"},
                 label: i.toString(),
                 path: google.maps.SymbolPath.CIRCLE,
-                title: ''
+                title: '',
+                id: id,
         });
 
         // set the marker info window
@@ -128,11 +131,11 @@ Map = React.createClass({
         });
 
         google.maps.event.addListener(newMarker, 'mouseover', function() {
-                // this['infowindow'].open(state.mainMap, this);
+              $("."+newMarker.id).addClass('selectedBorder');
         });
 
         google.maps.event.addListener(newMarker, 'mouseout', function(){
-                // this['infowindow'].close(state.mainMap, this);
+              $("."+newMarker.id).removeClass('selectedBorder');
         });
 
         this.state.markers.push(newMarker);
@@ -152,12 +155,12 @@ Map = React.createClass({
                 homeRooms = homes[i].numBedrooms,
                 homeBaths = homes[i].numBathrooms,
                 homeThumb = homes[i].propPic;
-            homePrice = homePrice && accounting.formatMoney(homePrice, "£", 0, ".", ",");
-            let homeThumbUrl = homeThumb && 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(homeThumb) + '&resize=1&width=200',
+                homePrice = homePrice && accounting.formatMoney(homePrice, "£", 0, ".", ",");
+                let homeThumbUrl = homeThumb && 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(homeThumb) + '&resize=1&width=200',
                 imageDiv =  "<div class='col-sm-4 noPadding pull-left'> <img data-url='"+ homeThumb +"' src='"+ homeThumbUrl +"'></img> </div>" ,
                 descriptionDiv = "<div class=' col-sm-8 pull-right'> <h3 class='no-margin'>" + homeName + "</h3><p class='no-margin'>" + homeDesc + "</p> <p class='no-margin'>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6 class='no-margin'>" + homePrice + "</h6></div>",
                 content = imageDiv + descriptionDiv;
-            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,(i+1));
+            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,(i+1),homes[i]._id);
         }
     },
 
@@ -210,7 +213,8 @@ Map = React.createClass({
              query.$and.push({ price:{$lt: parseInt(filter.maxValue)} } );
         //END FORMAT FILTER
         // SEARCH
-        this.setState({items:Homes.find(query.$and.length ? query: {}).fetch()});
+        var filterHomes = Homes.find(query.$and.length ? query: {}).fetch();
+        this.setState({items:filterHomes});
         
         let qLength = this.state.items.length;
         //format the search title label
@@ -219,35 +223,19 @@ Map = React.createClass({
             seachTitle = qLength + (qLength == 1 ? " Result of ":" Results of ") + filter.text;
         
         $(".results-label").text(seachTitle);
-
-
+    
+        //this function filter pins in the map
+        this.state.markers.forEach(function(marker){
+            //valid map
+            if (filterHomes.map(function(obj){ return obj._id;}).indexOf(marker.id) >= (0)){
+                marker.setVisible(true);
+            }
+            else marker.setVisible(false);
+        });
+            
         return true;
   
         
-    },
-
-    renderSearchView() {
-        let defaultClasses = [''],
-            listClasses = classNames(defaultClasses, {active: this.state.isList}),
-            mapClasses = classNames(defaultClasses, {active: this.state.isMap});
-        return (
-            <div id="searchView" className="pull-left">
-                <ul className="list-inline">
-                    <li>
-                        <a onClick={this._toggleViewOption.bind(this, "isList")} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            <i className="fa fa-navicon"></i> List
-                        </a>
-                    </li>
-                    {/*
-                    <li>
-                        <a onClick={this._toggleViewOption.bind(this, "isMap")} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            <i className="fa fa-map-marker"></i> Map
-                        </a>
-                    </li>
-                    */}
-                </ul>
-            </div>
-        );
     },
 
     _toggleViewOption(optionName) {
