@@ -1,4 +1,28 @@
 // Room Box component - represents a single todo item
+class Action {
+    getData() { }
+}
+class Transition extends Action {
+    constructor(type, url) {
+        super();
+        this.type = type;
+        this.time = 0.5;
+        this.url = url;
+    }
+    getData() {
+        return {
+            actionName: 'loadSphere',
+            actionParams: {
+                transition: this.type,
+                params: {
+                    time: this.time
+                },
+                url: this.url
+            }
+        };
+    }
+}
+
 RoomBox = React.createClass({
   mixins: [sortable.ItemMixin],
 
@@ -16,19 +40,22 @@ RoomBox = React.createClass({
       }
       return false;
   },
-
-  selectRoom(evt) {
-      if (window.moving) {
-          return false;
-      }
+ selectRoom(evt) {
       evt.preventDefault();
-      var $li = $(evt.target).closest("li");
-      Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: {sphereUrl:$li.find('img').data('url')}});
-      $('#circTitle').text($li.find(".roomName").text());
-      $('#desc').text($li.find(".roomDesc").text());
-      return false;
-  },
 
+      if (!$(evt.currentTarget).hasClass("is-positioning-post-drag")) {
+          let sphere = Spheres.findOne('5ff7bef11efaf8b657d709b9'); 
+          let transitionStyle = sphere.transition;
+          let url = this.props.room.picUrl;
+          let name = this.props.room.name;
+          let desc = this.props.room.desc;
+          let transition = new Transition(transitionStyle, url);
+          let data = Object.assign({sphereUrl: url, momentName: name, momentDesc: desc}, transition.getData());
+
+          Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: data});  
+      }
+      return true;
+  },
   getInitialState() {
       return {
           condition:false

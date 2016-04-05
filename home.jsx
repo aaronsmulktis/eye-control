@@ -1,5 +1,90 @@
 /*global React ReactMeteorData sortable Meteor Homes Rooms Spheres classNames */
 
+class Action {
+    getData() { }
+}
+class NoIntroVideoAction extends Action {
+    getData() {
+        return {
+            introVideo: {
+                enabled: false
+            }
+        };
+    }
+}
+class IntroVideoAction extends Action {
+    getData() {
+        return {
+            introVideo: {
+                enabled: true,
+                url: 'intro_video_url.webm'
+            }
+        };
+    }
+}
+class HideHudAction extends Action {
+    getData() {
+        return {
+            actionName: 'hideHud',
+            actionParams: null,
+            hudObjects: []
+        };
+    }
+}
+class ShowHudAction extends Action {
+    constructor(url) {
+        super();
+        this.url = url;
+        this.class = undefined;
+    }
+    getData() {
+        // Duplicate data to make sure there is backward compatibility.
+        let fullParams = {
+            url: this.url
+        };
+        if (this.params) {
+            Object.assign(fullParams, this.params);
+        }
+
+        let coreData = {
+            instance: this.class,
+            class: this.class,
+            params: fullParams
+        };
+        return {
+            actionName: 'showHud',
+            hudObjects: [
+                coreData
+            ],
+            actionParams: coreData
+        };
+    }
+}
+class ImageAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'image';
+    }
+}
+class VideoAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'video';
+    }
+}
+class FloorplanAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'floorplan';
+    }
+    get params() {
+        return {
+            userLocationX:100,
+            userLocationY:200
+        };
+    }
+}
+
 function getCurrentSphere() {
     return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
 }
@@ -284,57 +369,82 @@ Home = React.createClass({
         );
     },
 
+    transitionStyles: [
+        'none',
+        'fade',
+        'shutterFade',
+        'flowerFade',
+        'glitchMosaic',
+        'horizontalWipe',
+        'ripples'
+    ],
+
     _renderViewOptions() {
         let defaultClasses = ['btn', 'btn-default'],
+            videoClasses = classNames(defaultClasses, {active: this.state.isVideo}),
             introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
             mapClasses = classNames(defaultClasses, {active: this.state.isMap}),
             floorLogoClasses = classNames(defaultClasses, {active: this.state.isFloorLogo}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
+            fullscreenClasses = classNames(defaultClasses, {active: this.state.isFullscreen}),
+            calderClasses = classNames(defaultClasses, {active: this.state.isCalder}),
             infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
 
         return (
             <div id="viewOptions">
+
+                <HudButtons home={this.data.home} sphere={this.data.sphere}></HudButtons>
+
                 <ul className="list-inline">
-                    <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            Intro Video
+
+                     <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFullscreen")} type="button" className={fullscreenClasses} autoComplete="off">
+                            Full Screen
                         </button>
                     </li>
+
                     <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isFloorLogo")} type="button" className={floorLogoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isCalder")} type="button" className={calderClasses} autoComplete="off">
+                            Calder View
+                        </button>
+                    </li>
+
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isInfoWindow")} type="button" className={infoWindowClasses} autoComplete="off">
+                            Action
+                        </button>
+                    </li>
+
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} autoComplete="off">
+                            Object
+                        </button>
+                    </li>
+
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isFloorLogo")} type="button" className={floorLogoClasses} autoComplete="off">
                             Logo
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isMap")} id="mapButton" type="button" className={mapClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            Map
-                        </button>   
-                    </li>
-                    {/*
-                    <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            Plaque
-                        </button>
-                    </li>
-                    */}
-                    <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            Floorplan
+                        <button onClick={this._toggleViewOption.bind(this, "isIntroVideo")} type="button" className={introVideoClasses} autoComplete="off">
+                            Intro Video
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isInfoWindow")} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            Info
+                        <button onClick={this._toggleViewOption.bind(this, "isVideo")} type="button" className={videoClasses} aria-pressed="false" autoComplete="off">
+                            Video
                         </button>
+                    </li>
+                    <li>
+                        <select onChange={this.changeTransition} value={this.data.sphere.transition}>
+                            {this.transitionStyles.map( t => {
+                                return <option value={t}>{t}</option>
+                            })}
+                        </select>
                     </li>
                 </ul>
-
-                {/*
-                <div className="hudOptions">
-                    {this.props.radioBtns}
-                </div>
-                */}
             </div>
         );
     },
@@ -354,49 +464,113 @@ Home = React.createClass({
                 'isFloorLogo': this.state.isFloorLogo,
                 'isPlaque': this.state.isPlaque,
                 'isFloorplan': this.state.isFloorplan,
+                'isFullscreen':this.state.isFullscreen,
+                'isCalder':this.state.isCalder,
                 'isInfoWindow': this.state.isInfoWindow,
+                'isVideo': this.state.isVideo,
                 'text': $('#circTitle').text()}
     },
 
+    changeTransition(transition='none') {
+        Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: {
+            transition: transition.target.value
+        }});
+    },
+
+    toggleHud(action) {
+        console.log(this.data.sphere);
+        console.log(this.state);
+    },
+
     _toggleViewOption(optionName) {
+        /**
+         * React seems to make changing states a little more difficult than *I* think necessary.
+         */
         let changedOption = !this.state[optionName];
-        let optionState = {};
-         optionState[optionName] = changedOption;
-        if (optionName === "isMap") 
-            if (changedOption) {
-                optionState['isFloorplan'] = false;
-                optionState['isInfoWindow'] = false;
-            } 
-        if (optionName === "isFloorplan") 
-            if (changedOption) {
-                optionState['isMap'] = false;
-                optionState['isInfoWindow'] = false;
-            }  
-        if (optionName === "isFullscreen") {
+        // dbAction is executed at the end of this function (if there is an action)
+        let dbAction = undefined;
+        // state is updated to next state at end of function
+        let nextState = {};
+
+        let actionMap = {
+            isInfoWindow: { 
+                uiAction() { $('#info-overlay').toggle(); },
+                dbAction: new ImageAction('info_window.png')
+            },
+            isMap: { 
+                uiAction() { $('#map-overlay').toggle(); },
+                dbAction: new ImageAction('map.png')
+            },
+            isFloorplan: { 
+                uiAction() { $('#floorplan-overlay').toggle(); },
+                dbAction: new FloorplanAction('floorplan.png')
+            },
+            isVideo: {
+                dbAction: new VideoAction('video.webm')
+            }
+        };
+        let isHudOption = actionMap.hasOwnProperty(optionName);
+        if ( isHudOption ) {
+            let actionSet = actionMap[optionName];
+            // we do some jQuery to toggle the HUD, this should be updated to 2way binding
+            if (actionSet.uiAction) {
+                actionSet.uiAction();
+            }
+            // if we are turning a button off, then we do  a HudHideAction
+            dbAction = changedOption ? actionSet.dbAction : new HideHudAction();
+            // HUD actions are mutually exclusive, so we set all actions to false
+            // We update the nextState just outside of this if/elseif block
+            Object.keys(actionMap).forEach( v => nextState[v] = false );
+        } else if ( optionName === 'isIntroVideo') {
+            dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
+        } else if (optionName === "isFullscreen") {
             let vrIframeDiv = $('#vr-iframe'),
-                vrIframe = $('.vr-iframe')[0],
-                sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1",
-                sphereIframe = "<iframe src="+sphere+" frameBorder=\"0\" className=\"vr-iframe\" height=\"100%\" width=\"100%\"></iframe>";
-            vrIframeDiv.empty();
+                html = vrIframeDiv.html();
             requestFullScreen(vrIframeDiv[0]);
-            vrIframeDiv.append(sphereIframe);
-            //this._toggleViewOption.bind(this, "isFullscreen");
-        }
-        if (optionName === "isInfoWindow") 
+            vrIframeDiv.empty();
+            vrIframeDiv.html(html);
+        } else if (optionName === "isCalder") {
+            let vrIframeDiv = $("#vr-iframe"),
+                vrIframe = vrIframeDiv.find(".vr-iframe"),
+                vrCalder = vrIframeDiv.find(".calder");
             if (changedOption) {
-                optionState['isMap'] = false;
-                optionState['isFloorplan'] = false;
-            } 
-        this.setState(optionState);
-        let hud = this._getHud();
-        hud[optionName] = changedOption;
-        for (let s in optionState){
-            hud[s] = optionState[s];
+                // show the calder
+                vrIframe.hide();
+                vrIframeDiv.append("<iframe class='calder' frameBorder='0' height='100%' width='100%' src='http://calder.ruselaboratories.com/projects/pepo'>");
+            } else {
+                // hide the calder
+                vrIframe.show();
+                vrCalder.remove();
+            }
         }
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
+
+        nextState[optionName] = changedOption;
+        // setState is not synchronous, this causes issues when _getHud() relies on the state
+        // so do the hud updates and subsequent db updates in the callback
+        this.setState(nextState, () => {
+            let data = dbAction ? dbAction.getData() : {};
+            data.hud = JSON.stringify(this._getHud());
+            Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: data });
+        });
+
     }
 
 });
+
+ var requestFullScreen = function(element) {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
 
 HomeWrapper = React.createClass({
     mixins: [ReactMeteorData],
