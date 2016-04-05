@@ -56,6 +56,9 @@ Map = React.createClass({
     },
 
     initialize() {
+        
+        console.log("Id's vistos:");
+        console.log(Cookie.getViewed());
        
         if (this.getBg() != "ffffff") {
             styles.push({stylers: [{ hue: "#"+this.getBg() } ] });
