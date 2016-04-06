@@ -57,6 +57,7 @@ Map = React.createClass({
     },
 
     initialize() {
+        
         vistas = Cookie.getViewed();
                  
         if (this.getBg() != "ffffff") {
@@ -97,10 +98,12 @@ Map = React.createClass({
     componentDidMount() {
         this.initialize();
         this.setState({items:Homes.find().fetch()});
+        this.processHomes(this.state.items);
     },
 
     componentDidUpdate() {
         this.initialize();
+        this.processHomes(this.state.items);
     },
 
     componentWillReceiveProps(nextProps) {
@@ -110,11 +113,11 @@ Map = React.createClass({
 
     createMarker(lat, lon, html, link, position,i,id) {
        let state = this.state;
-       //create a marker
+        //create a marker
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: {url: "/img/"+( vistas.indexOf(id)>=0 ? '000000': this.getBg())+".png"},
+                icon: {url: "/img/"+( ((typeof vistas === 'object') && (vistas.indexOf(id)>=0)) ? '000000': this.getBg())+".png"},
                 label: i.toString(),
                 path: google.maps.SymbolPath.CIRCLE,
                 title: '',
