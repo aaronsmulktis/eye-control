@@ -556,7 +556,6 @@ Home = React.createClass({
     }
 
 });
-
  var requestFullScreen = function(element) {
     // Supports most browsers and their versions.
     var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
@@ -618,8 +617,9 @@ HomeWrapper = React.createClass({
 
     componentWillMount(){
         RoomSearch.search("", {homeId: this.props.id});
-        document.addEventListener("keyup", this._handleKey, false);
-        console.log("pase");
+        // save home on cookie (mark viewed)
+        Cookie.setViewed(this.props.id);
+        document.addEventListener("keyup", this._handleKey, false);       
     },
 
 

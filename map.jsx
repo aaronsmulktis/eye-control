@@ -29,6 +29,7 @@ let sortOptions = [
     { value: 'baths:lo-hi', label: 'Baths: Lo - Hi' }
 ];
 //END
+let vistas;
 
 let searchTimeout;
 
@@ -56,10 +57,8 @@ Map = React.createClass({
     },
 
     initialize() {
-        
-        console.log("Id's vistos:");
-        console.log(Cookie.getViewed());
-       
+        vistas = Cookie.getViewed();
+                 
         if (this.getBg() != "ffffff") {
             styles.push({stylers: [{ hue: "#"+this.getBg() } ] });
         };
@@ -110,13 +109,12 @@ Map = React.createClass({
     },
 
     createMarker(lat, lon, html, link, position,i,id) {
-        let state = this.state;
-       
-        //create a marker
+       let state = this.state;
+       //create a marker
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: state.mainMap,
-                icon: {url: "/img/"+this.getBg()+".png"},
+                icon: {url: "/img/"+( vistas.indexOf(id)>=0 ? '000000': this.getBg())+".png"},
                 label: i.toString(),
                 path: google.maps.SymbolPath.CIRCLE,
                 title: '',
