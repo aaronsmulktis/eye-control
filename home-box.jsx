@@ -33,6 +33,7 @@ HomeBox = React.createClass({
   render() {
     // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
+    let isViewed = Cookie.getViewed().indexOf(this.props.home._id) >= 0;    
     const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
     var price = this.props.home.price;
@@ -41,7 +42,7 @@ HomeBox = React.createClass({
 
       return (
           <li id="homeBox" className={homeClassName + ' homeBox container-fluid'} onClick={this.selectHome}>
-              <div className="boxBorder"></div>
+              <div className="boxBorder"></div>              
               <p className="price">{price}</p>
               {/*          <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>*/}
               <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a>
@@ -49,7 +50,9 @@ HomeBox = React.createClass({
                   <img src={vaultUrl} />
               </div>
               <div className="propDetails col-sm-8">
+                  {isViewed ? <p className="viewedTag">VIEWED</p> : ''} 
                   <h4 className="homeName"><small>{this.props.home.position+1}</small> <strong> {this.props.home.name}</strong></h4>
+                 
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>
