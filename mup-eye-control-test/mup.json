@@ -30,7 +30,7 @@
   "appName": "eye-control-test",
 
   // Location of app (local directory)
-  "app": "/Users/JHS458/Documents/projects/ruse/eye-control",
+  "app": "../",
 
   // Configure environment
   "env": {
