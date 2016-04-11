@@ -137,6 +137,7 @@ Map = React.createClass({
 
         google.maps.event.addListener(newMarker, 'mouseover', function() {
               $("."+newMarker.id).addClass('selectedBorder');
+              $(".mapList").scrollTop($("."+newMarker.id).position().top);
         });
 
         google.maps.event.addListener(newMarker, 'mouseout', function(){

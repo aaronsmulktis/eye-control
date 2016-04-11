@@ -49,7 +49,7 @@ var Cookie = (function() {
 	    return setCookie("viewed", JSON.stringify(viewed)); 
 	},
     getViewed: function () {
-    	return JSON.parse(checkCookie("viewed"));
+    	return JSON.parse(checkCookie("viewed")) || [];
     }
   };
 })();

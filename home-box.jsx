@@ -30,10 +30,31 @@ HomeBox = React.createClass({
       this.setState( { condition : !this.state.condition } );
   },
 
+  lightenMarker(){
+    var image = $(".gmnoprint > img")[this.props.home.position];
+    console.log(image);
+    this.props.home.isViewing = true;
+    $(image).remove();
+    //$(image).attr('src','http://design.ubuntu.com/wp-content/uploads/ubuntu-logo32.png');
+    return true;
+  },
+
+  handleOver(e) {
+    e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+    this.lightenMarker();
+    return true;
+  },
+    handleOut() {
+      console.log("out");
+      return true;
+  },
+
+
   render() {
     // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
-    let isViewed = Cookie.getViewed().indexOf(this.props.home._id) >= 0;    
+    let isViewed =Cookie.getViewed().indexOf(this.props.home._id) >= 0;    
     const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
     var price = this.props.home.price;
@@ -41,7 +62,7 @@ HomeBox = React.createClass({
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';
 
       return (
-          <li id="homeBox" className={homeClassName + ' homeBox container-fluid'} onClick={this.selectHome}>
+                 <li id="homeBox" className={homeClassName + ' homeBox container-fluid'} onClick={this.selectHome} onMouseOver={this.handleOver}  onMouseOut={this.handleOut}>
               <div className="boxBorder"></div>              
               <p className="price">{price}</p>
               {/*          <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>*/}
@@ -50,9 +71,9 @@ HomeBox = React.createClass({
                   <img src={vaultUrl} />
               </div>
               <div className="propDetails col-sm-8">
-                  {isViewed ? <p className="viewedTag">VIEWED</p> : ''} 
+                  
                   <h4 className="homeName"><small>{this.props.home.position+1}</small> <strong> {this.props.home.name}</strong></h4>
-                 
+                  {isViewed ? <p className="viewedTag">VIEWED</p> : ''}
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>
