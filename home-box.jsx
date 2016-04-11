@@ -31,23 +31,35 @@ HomeBox = React.createClass({
   },
 
   lightenMarker(){
-    var image = $(".gmnoprint > img")[this.props.home.position];
-    console.log(image);
-    this.props.home.isViewing = true;
-    $(image).remove();
-    //$(image).attr('src','http://design.ubuntu.com/wp-content/uploads/ubuntu-logo32.png');
+    var id = this.props.home._id;
+    var color ;
+    this.props.markers.forEach(function(element){
+      if (element.id  == id){      
+          color = element.getIcon();
+          element.setIcon('img/light.png');
+        }
+    });
+     this.setState( { oldColor : color} );
     return true;
   },
 
   handleOver(e) {
-    e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
+      this.setState( { over : true} );
     this.lightenMarker();
     return true;
   },
     handleOut() {
-      console.log("out");
-      return true;
+      this.setState( { over : false} );
+    var id = this.props.home._id;
+    var oldColor = this.state.oldColor;
+    
+    if (!oldColor) return;
+    this.props.markers.forEach(function(element){
+      if (element.id  == id){      
+          element.setIcon(oldColor);
+        }
+    });
+    return true;
   },
 
 
@@ -73,7 +85,7 @@ HomeBox = React.createClass({
               <div className="propDetails col-sm-8">
                   
                   <h4 className="homeName"><small>{this.props.home.position+1}</small> <strong> {this.props.home.name}</strong></h4>
-                  {isViewed ? <p className="viewedTag">VIEWED</p> : ''}
+                  {(isViewed && this.state.over) ? <p className="viewedTag">VIEWED</p> : ''}
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>
