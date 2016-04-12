@@ -49,12 +49,12 @@ Map = React.createClass({
 
     mixins: [sortable.ListMixin],
 
-    onBeforeSetState: function(items){
+   /* onBeforeSetState: function(items){
         for(let i = 0; i < items.length; i++) {
             items[i].position = i;
             Homes.update({_id:items[i]._id}, {$set: {position: i}});
         }
-    },
+    },*/
 
     initialize() {
         
@@ -111,23 +111,23 @@ Map = React.createClass({
         this.processHomes(nextProps.homes);
     },
 
-    createMarker(lat, lon, html, link, position,i,id) {
+    createMarker(home,infowindow) {
        let state = this.state;
        let colorViewed = '663366';
         //create a marker
         let newMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lon),
+                position: new google.maps.LatLng(home.latitude, home.longitude),
                 map: state.mainMap,
-                icon: {url: "/img/"+( ((typeof vistas === 'object') && (vistas.indexOf(id)>=0)) ? colorViewed : this.getBg())+".png"},
-                label: i.toString(),
+                icon: {url: "/img/"+( ((typeof vistas === 'object') && (vistas.indexOf(home._id)>=0)) ? colorViewed : this.getBg())+".png"},
+                label: (home.position+1).toString(),
                 path: google.maps.SymbolPath.CIRCLE,
                 title: '',
-                id: id,
+                id: home._id,
         });
 
         // set the marker info window
         newMarker['infowindow'] = new google.maps.InfoWindow({
-                content: html,
+                content: infowindow,
                  zoom: 10
         });
 
@@ -167,7 +167,8 @@ Map = React.createClass({
                 imageDiv =  "<a class='mapPopup' href='"+homeLink+"'><div class='col-sm-4 noPadding pull-left'> <img data-url='"+ homeThumb +"' src='"+ homeThumbUrl +"'></img> </div>" ,
                 descriptionDiv = "<div class=' col-sm-8 pull-right'> <h3 class='no-margin'>" + homeName + "</h3><p class='no-margin'>" + homeDesc + "</p> <p class='no-margin'>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6 class='no-margin'>" + homePrice + "</h6></div></a>",
                 content = imageDiv + descriptionDiv;
-            this.createMarker(homes[i].latitude, homes[i].longitude, content, 'home/' + homes[i]._id, homes[i].position,(i+1),homes[i]._id);
+                console.log(homes[i]);
+            this.createMarker(homes[i], content);
         }
     },
 
