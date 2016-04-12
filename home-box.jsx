@@ -85,7 +85,7 @@ HomeBox = React.createClass({
               <div className="propDetails col-sm-8">
                   
                   <h4 className="homeName"><small>{this.props.home.position+1}</small> <strong> {this.props.home.name}</strong></h4>
-                  {(isViewed && this.state.over) ? <p className="viewedTag">VIEWED</p> : ''}
+                  { isViewed  ? <p className="viewedTag">VIEWED</p> : ''}
                   <p className="homeDesc">
                       {this.props.home.address}
                   </p>
