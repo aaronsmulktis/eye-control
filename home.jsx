@@ -1,4 +1,30 @@
 /*global React ReactMeteorData sortable Meteor Homes Rooms Spheres classNames */
+// Room Box component - represents a single todo item
+
+//TODO: Remove this classes and unify with the same classs on roomBox
+class Action {
+    getData() { }
+}
+class Transition extends Action {
+    constructor(type, url) {
+        super();
+        this.type = type;
+        this.time = 0.5;
+        this.url = url;
+    }
+    getData() {
+        return {
+            actionName: 'loadSphere',
+            actionParams: {
+                transition: this.type,
+                params: {
+                    time: this.time
+                },
+                url: this.url
+            }
+        };
+    }
+}
 
 function getCurrentSphere() {
     return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
@@ -92,7 +118,9 @@ Home = React.createClass({
     },
 
     renderRoomBoxes() {
+           
         let rooms = this.state.items;
+        // Hay que refactorizar el codigo supongo que es asi porque habria problemas con positions repetidos
         let processedRooms = [];
         for (let i=0; i<rooms.length;i++) {
             let room = rooms[i],
@@ -226,12 +254,12 @@ Home = React.createClass({
     },
 
     _togglePopup() {
-        this.setState({ isPopup: !this.state.isPopup });z
+        this.setState({ isPopup: !this.state.isPopup });
     },
 
     _addRoom(e) {
         e.preventDefault();
-
+        //TODO: quit references to Find DOM Node
         // Find the text field via the React ref
         let name = React.findDOMNode(this.refs.nameInput).value.trim();
         let desc = React.findDOMNode(this.refs.descInput).value.trim();
@@ -412,6 +440,8 @@ HomeWrapper = React.createClass({
             let status = RoomSearch.getStatus();
             if (status.loaded) {
                 data.rooms = RoomSearch.getData();
+             
+            
             }
         } else {
             let rooms = Rooms.find({homeId: this.props.id}, {
@@ -419,43 +449,41 @@ HomeWrapper = React.createClass({
                     position: 1
                 }
             }).fetch();
-            data.rooms = rooms;
+            data.rooms = rooms;           
         }
+       
         return data;
     },
-
-    _handleKey(event){
-        let search = document.getElementById('search-rooms');
-        if (search === document.activeElement) {
-            let homeId = this.props.id;
-            event.preventDefault();
-            if (event.keyCode == 27) {
-                $(event.target).val("");
-                RoomSearch.search("", {homeId: homeId});
-                return false;
-            }
-            let text = $(event.target).val().trim();
-            searchTimeout = setTimeout(function() {
-                RoomSearch.search(text, {homeId: homeId});
-            }, 500);
-            return false;
+      getInitialState() {
+        return {
+            inic: false,
         }
     },
 
+    _showDefaultRoom(firstRoom){
+        
+        if (firstRoom && !this.state.inic){
+              let sphere = Spheres.findOne('5ff7bef11efaf8b657d709b9'); 
+              let transitionStyle = sphere.transition;
+              let url = firstRoom.picUrl;
+              let name = firstRoom.name;
+              let desc = firstRoom.desc;
+              let transition = new Transition(transitionStyle, url);
+              let data = Object.assign({sphereUrl: url, momentName: name, momentDesc: desc}, transition.getData());
+
+              Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: data});  
+              this.setState({inic:true});
+              console.log("move it");
+          }   
+    },
+
+
     componentWillMount(){
-        RoomSearch.search("", {homeId: this.props.id});
         Cookie.setViewed(this.props.id);
-        document.addEventListener("keyup", this._handleKey, false);     
     },
-
-
-    componentWillUnmount() {
-        document.removeEventListener("keyup", this._handleKey, false);
-
-    },
-
 
     render: function(){
+         this._showDefaultRoom(this.data.rooms[this.data.rooms.map(function(o){ return o.position}).indexOf(0)]);
         return(
             <Home rooms={this.data.rooms} hud={this.data.hud} {...this.props} />
         )
