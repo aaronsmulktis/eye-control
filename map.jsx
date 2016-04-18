@@ -167,7 +167,6 @@ Map = React.createClass({
                 imageDiv =  "<a class='mapPopup' href='"+homeLink+"'><div class='col-sm-4 noPadding pull-left'> <img data-url='"+ homeThumb +"' src='"+ homeThumbUrl +"'></img> </div>" ,
                 descriptionDiv = "<div class=' col-sm-8 pull-right'> <h3 class='no-margin'>" + homeName + "</h3><p class='no-margin'>" + homeDesc + "</p> <p class='no-margin'>" + homeRooms + " <i class='fa fa-bed'></i> | " + homeBaths + " <i class='fa fa-recycle'></i></p> <h6 class='no-margin'>" + homePrice + "</h6></div></a>",
                 content = imageDiv + descriptionDiv;
-                console.log(homes[i]);
             this.createMarker(homes[i], content);
         }
     },
@@ -179,10 +178,11 @@ Map = React.createClass({
     renderHomeBoxes() {
         let homes = this.state.items;
         let processedHomes = [];
+        let editMode = FlowRouter.getQueryParam("edit");
         for (let i=0; i<homes.length;i++) {
             let home = homes[i],
                     position = home.position == null ? i : home.position;
-            processedHomes[position] = <HomeBox markers={this.state.markers} key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
+            processedHomes[position] = <HomeBox edit={editMode} markers={this.state.markers} key={home._id} home={home} name={home.name} propPic={home.propPic} latitude={home.latitude} longitude={home.longitude} index={position} {...this.movableProps}/>;
         }
         return <ul>{processedHomes}</ul>;
     },
@@ -317,6 +317,7 @@ MapWrapper = React.createClass({
     // Loads items from the Homes collection and puts them on this.data.homes
     getMeteorData() {
         let data = {homes: []};
+      
         var handles = [Meteor.subscribe("homes")];
         if (!handles.every(utils.isReady)) {
             return data;

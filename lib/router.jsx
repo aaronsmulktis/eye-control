@@ -1,7 +1,8 @@
 FlowRouter.route('/', {
-  action: function() {
+  action: function(params) {
     ReactLayout.render(MapWrapper, {
-      header: <Header />
+      header: <Header />,
+      editMode: params.query ? params.query.edit : false
     });
   }
 });
