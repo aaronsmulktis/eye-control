@@ -49,6 +49,7 @@ Home = React.createClass({
             data.loading = true;
             return data;
         }
+
         let homes = Homes.find({_id: this.props.id}).fetch(),
             thisHome = homes[0];
 
@@ -122,10 +123,11 @@ Home = React.createClass({
         let rooms = this.state.items;
         // Hay que refactorizar el codigo supongo que es asi porque habria problemas con positions repetidos
         let processedRooms = [];
+        let editMode = FlowRouter.getQueryParam("edit");
         for (let i=0; i<rooms.length;i++) {
             let room = rooms[i],
                 position = room.position == null ? i : room.position;
-            processedRooms[position] = <RoomBox key={room._id} room={room} desc={room.desc} index={position} {...this.movableProps}/>
+            processedRooms[position] = <RoomBox edit={editMode} key={room._id} room={room} desc={room.desc} index={position} {...this.movableProps}/>
                                           }
             return <ul>{processedRooms}</ul>;
     },
@@ -238,7 +240,7 @@ Home = React.createClass({
                         </div>
 
                         <div id="plaque" className="col-sm-4">
-                            {this._renderPlaque()}
+                           // {this._renderPlaque()}
                         </div>
 
                       </div>

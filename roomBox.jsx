@@ -71,12 +71,12 @@ RoomBox = React.createClass({
       // so that we can style them nicely in CSS
       const roomClassName = this.props.room.name,
             vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.room.picUrl) + '&resize=1&width=200';
-
+      let editMode = this.props.edit == "1" ? true : false;
       return (
           <li onClick={this.selectRoom} className={roomClassName + ' roomBox container-fluid'}>
               <div className="boxBorder"></div>
-              <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>
-              <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a>
+             {editMode ?  <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>  :  ""}
+             {editMode ?  <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a> :  ""}
               <div className="roomPic col-sm-4 noPadding">
                   <img data-url={this.props.room.picUrl} src={vaultUrl} />
               </div>
