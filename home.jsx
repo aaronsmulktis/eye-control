@@ -26,6 +26,88 @@ class Transition extends Action {
     }
 }
 
+class NoIntroVideoAction extends Action {
+    getData() {
+        return {
+            introVideo: {
+                enabled: false
+            }
+        };
+    }
+}
+class IntroVideoAction extends Action {
+    getData() {
+        return {
+            introVideo: {
+                enabled: true,
+                url: 'intro_video_url.webm'
+            }
+        };
+    }
+}
+class HideHudAction extends Action {
+    getData() {
+        return {
+            actionName: 'hideHud',
+            actionParams: null,
+            hudObjects: []
+        };
+    }
+}
+class ShowHudAction extends Action {
+    constructor(url) {
+        super();
+        this.url = url;
+        this.class = undefined;
+    }
+    getData() {
+        // Duplicate data to make sure there is backward compatibility.
+        let fullParams = {
+            url: this.url
+        };
+        if (this.params) {
+            Object.assign(fullParams, this.params);
+        }
+
+        let coreData = {
+            instance: this.class,
+            class: this.class,
+            params: fullParams
+        };
+        return {
+            actionName: 'showHud',
+            hudObjects: [
+                coreData
+            ],
+            actionParams: coreData
+        };
+    }
+}
+class ImageAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'image';
+    }
+}
+class VideoAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'video';
+    }
+}
+class FloorplanAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'floorplan';
+    }
+    get params() {
+        return {
+            userLocationX:100,
+            userLocationY:200
+        };
+    }
+}
+
 function getCurrentSphere() {
     return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
 }
@@ -378,53 +460,81 @@ Home = React.createClass({
         );
     },
 
-    _getHud() {
+     _getHud() {
         return {'isIntroVideo': this.state.isIntroVideo,
                 'isMap': this.state.isMap,
                 'isFloorLogo': this.state.isFloorLogo,
                 'isPlaque': this.state.isPlaque,
                 'isFloorplan': this.state.isFloorplan,
                 'isInfoWindow': this.state.isInfoWindow,
+                'isVideo': this.state.isVideo,
                 'text': $('#circTitle').text()}
     },
 
+    changeTransition(transition='none') {
+        Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: {
+            transition: transition.target.value
+        }});
+    },
+
+    toggleHud(action) {
+        console.log(this.data.sphere);
+        console.log(this.state);
+    },
+
     _toggleViewOption(optionName) {
+
+    /**
+         * React seems to make changing states a little more difficult than *I* think necessary.
+         */
         let changedOption = !this.state[optionName];
-        let optionState = {};
-         optionState[optionName] = changedOption;
-        if (optionName === "isMap") 
-            if (changedOption) {
-                optionState['isFloorplan'] = false;
-                optionState['isInfoWindow'] = false;
-            } 
-        if (optionName === "isFloorplan") 
-            if (changedOption) {
-                optionState['isMap'] = false;
-                optionState['isInfoWindow'] = false;
-            }  
-        if (optionName === "isFullscreen") {
-            let vrIframeDiv = $('#vr-iframe'),
-                vrIframe = $('.vr-iframe')[0],
-                sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1",
-                sphereIframe = "<iframe src="+sphere+" frameBorder=\"0\" className=\"vr-iframe\" height=\"100%\" width=\"100%\"></iframe>";
-            vrIframeDiv.empty();
-            requestFullScreen(vrIframeDiv[0]);
-            vrIframeDiv.append(sphereIframe);
-            //this._toggleViewOption.bind(this, "isFullscreen");
-        }
-        if (optionName === "isInfoWindow") 
-            if (changedOption) {
-                optionState['isMap'] = false;
-                optionState['isFloorplan'] = false;
-            } 
-        this.setState(optionState);
-        let hud = this._getHud();
-        hud[optionName] = changedOption;
-        for (let s in optionState){
-            hud[s] = optionState[s];
-        }
-        Spheres.update({_id: "5ff7bef11efaf8b657d709b9"}, {$set: {hud: JSON.stringify(hud)}});
+        // dbAction is executed at the end of this function (if there is an action)
+        let dbAction = undefined;
+        // state is updated to next state at end of function
+        let nextState = {};
+
+        let actionMap = {
+            isInfoWindow: { 
+                uiAction() { $('#info-overlay').toggle(); },
+                dbAction: new ImageAction('info_window.png')
+            },
+            isMap: { 
+                uiAction() { $('#map-overlay').toggle(); },
+                dbAction: new ImageAction('map.png')
+            },
+            isFloorplan: { 
+                uiAction() { $('#floorplan-overlay').toggle(); },
+                dbAction: new FloorplanAction('floorplan.png')
+            },
+            isVideo: {
+                dbAction: new VideoAction('video.webm')
+            }
+        };
+         let isHudOption = actionMap.hasOwnProperty(optionName);
+        if ( isHudOption ) {
+            let actionSet = actionMap[optionName];
+            // we do some jQuery to toggle the HUD, this should be updated to 2way binding
+            if (actionSet.uiAction) {
+                actionSet.uiAction();
+            }
+            // if we are turning a button off, then we do  a HudHideAction
+            dbAction = changedOption ? actionSet.dbAction : new HideHudAction();
+            // HUD actions are mutually exclusive, so we set all actions to false
+            // We update the nextState just outside of this if/elseif block
+            Object.keys(actionMap).forEach( v => nextState[v] = false );
+        } else if ( optionName === 'isIntroVideo') {
+            dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
+        } 
+        nextState[optionName] = changedOption;
+        // setState is not synchronous, this causes issues when _getHud() relies on the state
+        // so do the hud updates and subsequent db updates in the callback
+        this.setState(nextState, () => {
+            let data = dbAction ? dbAction.getData() : {};
+            data.hud = JSON.stringify(this._getHud());
+            Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: data });
+        });
     }
+
 
 });
 
