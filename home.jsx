@@ -150,6 +150,7 @@ Home = React.createClass({
             isPlaque: false,
             isFloorplan: false,
             isInfoWindow: false,
+            isDualHeadset: false,
             rooms: [],
             // items: [] // Added automatically by the mixin
         }
@@ -300,14 +301,16 @@ Home = React.createClass({
 
                     <div id="content" className="col-sm-8 noPadding">
 
-                      <div id="viewVR">
+                      <div id="viewVR" className={this.state.isDualHeadset? "dual":""}>
                           <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
                           <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
                           <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
+                          
                           {this.renderSphere()}
+                          {this.state.isDualHeadset ? this.renderSphere() : ""}
                       </div>
 
-                      <div id="propDetails">
+                      <div id="propDetails" className={this.state.isDualHeadset? "dualB":""}>
 
                         <div id="viewDetails" className="col-sm-8">
                             <h4>Viewer Options:</h4>
@@ -403,7 +406,8 @@ Home = React.createClass({
             floorLogoClasses = classNames(defaultClasses, {active: this.state.isFloorLogo}),
             plaqueClasses = classNames(defaultClasses, {active: this.state.isPlaque}),
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
-            infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow});
+            infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow}),
+            dualHeadsetClasses = classNames(defaultClasses, {active: this.state.isDualHeadset});
 
         return (
             <div id="viewOptions">
@@ -438,6 +442,11 @@ Home = React.createClass({
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isInfoWindow")} type="button" className={infoWindowClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Info
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isDualHeadset")} type="button" className={dualHeadsetClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                           Dual Headset
                         </button>
                     </li>
                 </ul>
@@ -524,6 +533,11 @@ Home = React.createClass({
             Object.keys(actionMap).forEach( v => nextState[v] = false );
         } else if ( optionName === 'isIntroVideo') {
             dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
+        } else if (optionName === "isDualHeadset") {
+            
+            this.setState({isDualHeadset : !this.state.isDualHeadset });
+            
+            
         } 
         nextState[optionName] = changedOption;
         // setState is not synchronous, this causes issues when _getHud() relies on the state
