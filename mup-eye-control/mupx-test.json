@@ -2,7 +2,7 @@
   // Server authentication info
   "servers": [
     {
-      "host": "52.36.255.4",
+      "host": "52.39.59.0",
       "username": "ubuntu",
       "env": {},
       //"password": "password"
