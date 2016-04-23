@@ -172,7 +172,7 @@ Header = React.createClass({
           <div className="container-fluid">
 
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed">
+              <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav">
                 <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
@@ -181,11 +181,7 @@ Header = React.createClass({
               <a href="/" className="navbar-brand"><span id="innerLogo">Eye <i id="logoEye" className="fa fa-eye 90degCC"></i> Control</span></a>
             </div>
 
-            <div className="navbar-left">
-              <p className="verMar15"></p>
-            </div>
-
-            <div className="collapse navbar-collapse">
+            <div id="nav" className="collapse navbar-collapse">
               <ul className="navbar-nav navbar-right">
                 <li><a href="/"><i className="fa fa-navicon"></i>&nbsp;Listings</a></li>
                 <li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus-circle"></i>&nbsp;Add Property</a></li>
