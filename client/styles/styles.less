@@ -182,10 +182,13 @@ i#logoEye.90degCC {
 
 .mapList {
   height: 100%;
-  width: 38%;
-  position: fixed;
+  height: 60vh;
+
+  @media (max-width: 768px) {
+      height: initial;
+  }
+
   overflow: scroll;
-  padding: 55px 0 100px 10px;
   .transition;
 
   .filter-results {
@@ -216,13 +219,13 @@ input[type="radio"].input-min {
   width: 100px;
 }
 .input-min-select {
-    margin-left: 4px;
+    margin: 4px;
     padding: 0px 0px 0px;
 }
 #search-homes, #searchMapInput {
     background: white;
     border: none;
-    width: 250px;
+    min-width: 250px;
     font-size: smaller;
 }
 .middle-label  {
@@ -859,4 +862,7 @@ color: black;
 
 .icon-bar {
     background-color: white;
+}
+.navbar {
+    z-index: 1;
 }
