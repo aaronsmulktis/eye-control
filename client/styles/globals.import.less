@@ -92,7 +92,11 @@ a:focus, a:active {
 	outline: none;
 }
 
-input {height: 36px; border: 0;}
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+    height: 36px; border: 0;
+}
 
 .checkbox input {
 	height: auto;
@@ -147,7 +151,6 @@ label {
 #mainContent {
 	background: white;
 	height: 100%;
-	position: absolute;
 }
 
 #content {

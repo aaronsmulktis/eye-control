@@ -72,7 +72,7 @@ updateObjCall : function(obj){
           <div id="searchOptions" className="col-sm-12">
               <div id="searchMap" className="row">
                   <div className="clearfix col-sm-12 col-md-4">
-                      <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
+                      <form className="noPadding form-inline" role="search" action="javascript:;">
                           <div className="form-group">
                               <div className="input-group">
                                   <div className="input-min input-group-addon ">UK</div>
@@ -80,15 +80,15 @@ updateObjCall : function(obj){
                                   <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
                               </div>
                      
-                              <div className="checkbox">
-                                  <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label>
-                                  <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label>
-                                  <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label>
+                              <div>
+                                  <div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label></div>
+                                  <div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label></div>
+                                  <div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label></div>
                               </div>
                           </div>
                       </form> 
                   </div>
-                  <div id="currencyOptions" className="clearfix col-sm-12 col-md-5">
+                  <div id="currencyOptions" className="clearfix col-sm-12 col-md-4">
                       <div className="form-group pull-left input-min-select">
                           <Select value={this.state.options.currency} name="currency" ref="currency"  id="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
                       </div>
@@ -101,7 +101,7 @@ updateObjCall : function(obj){
                       </div>
                   </div>
               
-                  <div id="propOptions" className="clearfix col-sm-12 col-md-3">
+                  <div id="propOptions" className="clearfix col-sm-12 col-md-4">
                       <div className="form-group pull-left input-min-select">
                           <Select value={this.state.options.numBedrooms} name="bedrooms" id="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
                       </div>
