@@ -35,8 +35,8 @@ Modal = React.createClass({
       <div id="Body"></div>
       { this.props.options.noFooter ? "" :
       <div className="modal-footer">
-        <button type="button"  className="btn btn-primary" > <span className={this.props.options.optButtonIcon}></span>{this.props.options.optButton}</button>
-         <button type="button"  className="btn btn-primary" > <span className={this.props.options.opt2ButtonIcon}></span>{this.props.options.opt2Button}</button>
+        { this.props.options.optButton ? <button type="button"  className="btn btn-primary" > <span className={this.props.options.optButtonIcon}></span>{this.props.options.optButton}</button> : ""}
+         { this.props.options.opt2Button ?<button type="button"  className="btn btn-primary" > <span className={this.props.options.opt2ButtonIcon}></span>{this.props.options.opt2Button}</button> : ""}
          <button type="button"  className="btn btn-default " data-dismiss="modal"> <span className={this.props.options.doneButtonIcon}></span>{this.props.options.doneButton}</button>
       </div>
       }
