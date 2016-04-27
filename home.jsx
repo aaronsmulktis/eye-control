@@ -296,9 +296,11 @@ Home = React.createClass({
         var mapPath = "/img/map-round.png";
         var floorplanPath = "/img/floorplan-round.png";
         var infoPath = "/img/info-round.png";
+        var videoPath = "/video/virtuocity.mp4";
         var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
         var floorplanStyle = {display: this.state.isFloorplan ? 'block' : 'none'};
         var infoStyle = {display: this.state.isInfoWindow ? 'block' : 'none'};
+        var videoStyle = {display: this.state.isVideo ? 'block' : 'none'};
         return (
 
             <div id="contentContainer">
@@ -353,7 +355,9 @@ Home = React.createClass({
                           <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
                           <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
                           <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
-                          
+                          <video id="video-overlay" width="320" style={videoStyle} className="generic-overlay" src={videoPath} height="240" controls muted>
+                                <source src="movie.mp4" type="video/mp4"/>
+                          </video>
                           {this.renderSphere()}
                           {this.state.isDualHeadset ? this.renderSphere() : ""}
                       </div>
@@ -498,7 +502,7 @@ Home = React.createClass({
                         </button>
                     </li>
                     <li>
-                        <button onClick={ this._toggleViewOption.bind(this, "isConsole")} type="button" className={consoleClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this._toggleViewOption.bind(this, "isConsole")} type="button" className={consoleClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                            Console
                         </button>
                     </li>
@@ -577,6 +581,7 @@ Home = React.createClass({
                 dbAction: new FloorplanAction('https://dl.dropboxusercontent.com/u/60203355/eyecontrol/floorplan.png')
             },
             isVideo: {
+                 uiAction() { $('#video-overlay').toggle(); },
                 dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AADkN3PPq18_oZ-uk47WMzNia?dl=0')
             }
         };
