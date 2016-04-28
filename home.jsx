@@ -269,11 +269,11 @@ Home = React.createClass({
             Rooms.update({_id:items[i]._id}, {$set: {position: i}});
         }
     },
-
-    renderSphere() {
+     renderSphere() {
         if (!this.data.sphere) {
             return;
         }
+        
         let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1";
 
         return (
@@ -360,6 +360,7 @@ Home = React.createClass({
                           </video>
                           {this.renderSphere()}
                           {this.state.isDualHeadset ? this.renderSphere() : ""}
+                          {this.setSplash()}
                       </div>
 
                       <div id="propDetails" className={this.state.isDualHeadset? "dualB":""}>
@@ -555,6 +556,36 @@ Home = React.createClass({
         console.log(this.data.sphere);
         console.log(this.state);
     },
+
+    setSplash(){
+        let color = $("#topBar").css('background-color');
+        console.log(color);
+        if (color){
+
+            let bg = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            let logoUrl = "http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png";
+            // add intro information
+             Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: {
+                "intro" : { 
+                        // show realtor logo
+                        "showLogo":true,
+                        
+                        // logo image, should be a png with alpha, and have a lot of alpha space around the logo for the blur fx
+                        "logoUrl": logoUrl,
+
+                        // background color that changes when logo appears
+                        "bgColor":{ "r":bg[1], "g":bg[2], "b":bg[3], "a":1 },
+                        
+                        // logo shadow blob color
+                        "floorColor":{ "r":1, "g":1, "b":1, "a":1 },
+
+                        // show intro video?
+                        "showIntroVideo":false
+                    }
+                }
+            } );
+         }
+     },
 
     _toggleViewOption(optionName) {
 
