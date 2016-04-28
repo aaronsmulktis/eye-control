@@ -13,7 +13,7 @@ let styles = [
         stylers: [
                 { visibility: "off" }
         ]
-    }
+  }
 ];
 
 // TODO: Move this to a service
@@ -113,13 +113,22 @@ Map = React.createClass({
 
     createMarker(home,infowindow) {
        let state = this.state;
+       let index = String.fromCharCode(home.position+97).toString();
        let colorViewed = '663366';
+       let image = {
+                        url: "/img/"+( ((typeof vistas === 'object') && (vistas.indexOf(home._id)>=0)) ? colorViewed : this.getBg())+".png",
+                        // This marker is 20 pixels wide by 32 pixels high.
+                        size: new google.maps.Size(52, 52),
+                        // The origin for this image is (0, 0).
+                        origin: new google.maps.Point(0, 0),
+                      };
+
         //create a marker
         let newMarker = new google.maps.Marker({
                 position: new google.maps.LatLng(home.latitude, home.longitude),
                 map: state.mainMap,
-                icon: {url: "/img/"+( ((typeof vistas === 'object') && (vistas.indexOf(home._id)>=0)) ? colorViewed : this.getBg())+".png"},
-                label: (home.position+1).toString(),
+                icon: image,
+                label: index,
                 path: google.maps.SymbolPath.CIRCLE,
                 title: '',
                 id: home._id,
