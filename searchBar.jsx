@@ -71,44 +71,36 @@ updateObjCall : function(obj){
         <div>
           <div id="searchOptions" className="col-sm-12">
               <div id="searchMap" className="row">
-                  <div className="clearfix col-sm-12 col-md-4">
-                      <form className="noPadding form-inline" role="search" action="javascript:;">
-                          <div className="form-group">
+                  <div className="col-xs-12 col-lg-4">
+                      <form className="row" role="search" action="javascript:;">
+                          <div className="col-xs-12 col-md-6 col-lg-12">
                               <div className="input-group">
                                   <div className="input-min input-group-addon ">UK</div>
                                   <input ref="searchMapInput" id="searchMapInput" type="text" className="font4 form-control input-min" placeholder="Enter Address, City, State or ZIP" onChange={this.handleChange}></input>
                                   <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
                               </div>
-                     
-                              <div>
-                                  <div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label></div>
-                                  <div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label></div>
-                                  <div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label></div>
+                          </div>
+                 
+                          <div className="col-xs-12 col-md-6 col-lg-12">
+                              <div className="search-radios row">
+                                  <div className="col-xs-4"><div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label></div></div>
+                                  <div className="col-xs-4"><div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label></div></div>
+                                  <div className="col-xs-4"><div className="radio"><label> <input className="font4 input-min" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label></div></div>
                               </div>
                           </div>
                       </form> 
                   </div>
-                  <div id="currencyOptions" className="clearfix col-sm-12 col-md-4">
-                      <div className="form-group pull-left input-min-select">
-                          <Select value={this.state.options.currency} name="currency" ref="currency"  id="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
-                      </div>
-                      <div className="form-group pull-left input-min-select">
-                          <Select  value={this.state.options.minValue}  name="min" ref="min" id="min" placeholder="No Min" options={SearchOptions.get('minValue').toArray()} onChange={this.handleChange}/>
-                      </div>
-                      <label className="form-group pull-left middle-label">to </label>
-                      <div className="form-group pull-left input-min-select">
-                          <Select value={this.state.options.maxValue}  name="max" ref="max" id="max" placeholder="No Max" options={SearchOptions.get('maxValue').toArray()} onChange={this.handleChange}/>
-                      </div>
+                  <div id="currencyOptions" className="col-xs-12 col-sm-6 col-lg-4">
+                      <Select value={this.state.options.currency} name="currency" ref="currency"  id="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
+                      <Select  value={this.state.options.minValue}  name="min" ref="min" id="min" placeholder="No Min" options={SearchOptions.get('minValue').toArray()} onChange={this.handleChange}/>
+                      <label className="middle-label">to </label>
+                      <Select value={this.state.options.maxValue}  name="max" ref="max" id="max" placeholder="No Max" options={SearchOptions.get('maxValue').toArray()} onChange={this.handleChange}/>
                   </div>
               
-                  <div id="propOptions" className="clearfix col-sm-12 col-md-4">
-                      <div className="form-group pull-left input-min-select">
-                          <Select value={this.state.options.numBedrooms} name="bedrooms" id="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
-                      </div>
-                      <div className="form-group pull-left input-min-select">
-                          <Select value={this.state.options.numBathrooms} name="baths" ref="baths" id="baths" placeholder="Baths" options={SearchOptions.get('bathOptions').toArray()} onChange={this.handleChange}/>
-                      </div>
-                      <label className="form-group pull-left middle-label" onClick={this.moreOptions}>More <i className="glyphicon glyphicon-plus-sign"/> </label>
+                  <div id="propOptions" className="col-xs-12 col-sm-6 col-lg-4">
+                      <Select value={this.state.options.numBedrooms} name="bedrooms" id="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
+                      <Select value={this.state.options.numBathrooms} name="baths" ref="baths" id="baths" placeholder="Baths" options={SearchOptions.get('bathOptions').toArray()} onChange={this.handleChange}/>
+                      <label className="middle-label" onClick={this.moreOptions}>More <i className="glyphicon glyphicon-plus-sign"/> </label>
                   </div>
 
               </div>

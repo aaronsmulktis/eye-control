@@ -154,15 +154,15 @@ label {
 }
 
 #content {
-	height: 100%;
 	overflow: scroll;
 }
 
 #rooms {
-	/*background: @brand;*/
-  	transform: translateZ(0px);
 	height: 100%;
 	overflow: scroll;
+    @media (max-width: 768px) {
+        overflow: initial;
+    }
 }
 
 #rooms h1, #rooms h2, #rooms h3, #rooms h4, #rooms h5 {

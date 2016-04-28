@@ -44,10 +44,10 @@ MoreOptionsModal = React.createClass({
     },
 	render : function(){
 		return (
-			<div id="modalSearchOptions" className="col-sm-12">
+			<div id="modalSearchOptions" className="row">
       	<input type="text" className="form-control" id="tokenfield" value="London, KY ; London, OH" />
 
-          <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
+          <form className="col-xs-12 form-inline" role="search" action="javascript:;">
                 <div className="form-group">
                     <div className="input-group">
                         <div className="input-min input-group-addon fit-control">UK</div>
@@ -55,32 +55,32 @@ MoreOptionsModal = React.createClass({
                         <input ref="searchMapInput" id="searchMapInput" type="text" className="font4 form-control input-min" placeholder="Enter Address, City, State or ZIP" onChange={this.handleChange}></input>
                         <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
                         </div>
-                    <div className="checkbox" id="modal-checkbox">
-                        <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="all" /> All </label>
-                        <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="sale"/> For Sale </label>
-                        <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="rent"/> For Rent  </label>
                     </div>
-                    </div>
-                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="radio-inline"> <input className="font4" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="all" /> All </label>
+                    <label className="radio-inline"> <input className="font4" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="sale"/> For Sale </label>
+                    <label className="radio-inline"> <input className="font4" type="radio" ref="types" name="types" id="types" onChange={this.handleChange} value="rent"/> For Rent  </label>
+                </div>
             </form> 
-            <div id="currencyOptions">
-                        <div className="navbar-form form-group pull-left input-min-select fit-control">
+            <div id="currencyOptions" className="col-xs-12">
+                        <div className="pull-left input-min-select fit-control">
                             <Select value={this.state.options.currency} name="currency" ref="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
                         </div>
-                        <div className="navbar-form form-group pull-left input-min-select fit-control">
+                        <div className="pull-left input-min-select fit-control">
                             <Select value={this.state.options.minValue} name="min" ref="min" placeholder="No Min" options={SearchOptions.get('minValue').toArray()} onChange={this.handleChange}/>
                         </div>
-                        <label className="navbar-form form-group pull-left middle-label ">to </label>
-                        <div className="navbar-form form-group pull-left input-min-select fit-control">
+                        <label className="pull-left middle-label ">to </label>
+                        <div className="pull-left input-min-select fit-control">
                             <Select value={this.state.options.maxValue} name="max" ref="max" placeholder="No Max" options={SearchOptions.get('maxValue').toArray()} onChange={this.handleChange}/>
                         </div>
                     </div>
         
-                    <div id="propOptions">
-                        <div className="navbar-form form-group pull-left input-min-select fit-control">
+                    <div id="propOptions" className="col-xs-12">
+                        <div className="pull-left input-min-select fit-control">
                             <Select value={this.state.options.numBedrooms} name="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
                         </div>
-                        <div className="navbar-form form-group pull-left input-min-select fit-control">
+                        <div className="pull-left input-min-select fit-control">
                             <Select value={this.state.options.numBathrooms} name="baths" ref="baths" placeholder="Baths" options={SearchOptions.get('bathOptions').toArray()} onChange={this.handleChange}/>
                         </div>
                     </div>
