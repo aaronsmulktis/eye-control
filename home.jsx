@@ -40,7 +40,7 @@ class IntroVideoAction extends Action {
         return {
             introVideo: {
                 enabled: true,
-                url: 'intro_video_url.webm'
+                url: 'https://www.dropbox.com/sh/zk8yv34cpnl8a13/AADkN3PPq18_oZ-uk47WMzNia?dl=0'
             }
         };
     }
@@ -108,12 +108,56 @@ class FloorplanAction extends ShowHudAction {
     }
 }
 
+class InfoWindowAction extends ShowHudAction {
+    constructor(home) {
+        super();
+        this.home = home;  
+        this.class = 'infoWindow';
+    }
+    get params() {
+        return {
+            id : this.home._id,
+            address : this.home.address,
+            createdAt : this.home.createdAt,
+            latitude : this.home.latitude,
+            longitude : this.home.longitude,
+            name : this.home.name,
+            notes : this.home.notes,
+            numBathrooms : this.home.numBathrooms,
+            numBedrooms : this.home.numBedrooms,
+            position : this.home.position,
+            price : this.home.price,
+            propPic : this.home.propPic,
+            slug : this.home.slug,
+            year : this.home.year
+        };
+    }
+}
+class TextMessageAction extends ShowHudAction {
+    constructor(msg) {
+        super();
+        this.text = msg; 
+        this.class = 'textMessage';
+    }
+    get params() {
+        return {
+            text : this.text,
+            anchorX:0.5,
+            anchorY:0.5 
+        };
+    }
+}
+
+function getLatestSphere() {
+    return Spheres.find({}, { sort: { 'timestamp' : 1 } , limit:1}).fetch()[0];
+}
+
 function getCurrentSphere() {
     return Spheres.find({_id: "5ff7bef11efaf8b657d709b9"}).fetch()[0];
 }
 
 function getCurrentHud() {
-    return JSON.parse(getCurrentSphere().hud)
+    return JSON.parse(getLatestSphere().hud)
 }
 
 let searchTimeout;
@@ -137,7 +181,7 @@ Home = React.createClass({
 
         return {
             home: thisHome,
-            sphere: getCurrentSphere()
+            sphere: getLatestSphere()
         }
     },
 
@@ -151,6 +195,8 @@ Home = React.createClass({
             isFloorplan: false,
             isInfoWindow: false,
             isDualHeadset: false,
+            isConsole: false,
+            isVideo: false,
             rooms: [],
             // items: [] // Added automatically by the mixin
         }
@@ -198,6 +244,8 @@ Home = React.createClass({
                        isIntroVideo: nextProps.hud.isIntroVideo,
                        isPlaque: nextProps.hud.isPlaque,
                        isFloorplan: nextProps.hud.isFloorplan,
+                       isConsole: nextProps.hud.isConsole,
+                       isVideo: nextProps.hud.isVideo,
                        isInfoWindow: nextProps.hud.isInfoWindow});
     },
 
@@ -229,7 +277,7 @@ Home = React.createClass({
         let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1";
 
         return (
-            <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width="100%"></iframe>
+            <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width={this.state.isDualHeadset ? "50%" : "100%"}></iframe>
 
         );
     },
@@ -248,9 +296,11 @@ Home = React.createClass({
         var mapPath = "/img/map-round.png";
         var floorplanPath = "/img/floorplan-round.png";
         var infoPath = "/img/info-round.png";
+        var videoPath = "/video/virtuocity.mp4";
         var mapStyle = {display: this.state.isMap ? 'block' : 'none'};
         var floorplanStyle = {display: this.state.isFloorplan ? 'block' : 'none'};
         var infoStyle = {display: this.state.isInfoWindow ? 'block' : 'none'};
+        var videoStyle = {display: this.state.isVideo ? 'block' : 'none'};
         return (
 
             <div id="contentContainer">
@@ -265,6 +315,9 @@ Home = React.createClass({
                           <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
                           <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
                           <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
+                          <video id="video-overlay" width="320" style={videoStyle} className="generic-overlay" src={videoPath} height="240" controls muted>
+                                <source src="movie.mp4" type="video/mp4"/>
+                          </video>
                           
                           {this.renderSphere()}
                           {this.state.isDualHeadset ? this.renderSphere() : ""}
@@ -400,6 +453,11 @@ Home = React.createClass({
     },
 
     _renderViewOptions() {
+        let modalOptions = {
+          title: "Console Options",
+          doneButton:"Send",
+          doneButtonIcon:"glyphicon glyphicon-eye-open",
+      };
         let defaultClasses = ['btn', 'btn-default'],
             introVideoClasses = classNames(defaultClasses, {active: this.state.isIntroVideo}),
             mapClasses = classNames(defaultClasses, {active: this.state.isMap}),
@@ -408,6 +466,8 @@ Home = React.createClass({
             floorplanClasses = classNames(defaultClasses, {active: this.state.isFloorplan}),
             infoWindowClasses = classNames(defaultClasses, {active: this.state.isInfoWindow}),
             dualHeadsetClasses = classNames(defaultClasses, {active: this.state.isDualHeadset});
+            videoClasses = classNames(defaultClasses, {active: this.state.isVideo});
+            consoleClasses = classNames(defaultClasses, {active: this.state.isConsole});
 
         return (
             <div id="viewOptions">
@@ -427,16 +487,14 @@ Home = React.createClass({
                             Map
                         </button>   
                     </li>
-                    {/*
-                    <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isPlaque")} type="button" className={plaqueClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
-                            Plaque
-                        </button>
-                    </li>
-                    */}
                     <li>
                         <button onClick={this._toggleViewOption.bind(this, "isFloorplan")} type="button" className={floorplanClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                             Floorplan
+                        </button>
+                    </li>
+                     <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isVideo")} type="button" className={videoClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                            Video
                         </button>
                     </li>
                     <li>
@@ -445,11 +503,19 @@ Home = React.createClass({
                         </button>
                     </li>
                     <li>
+                        <button onClick={this._toggleViewOption.bind(this, "isConsole")} type="button" className={consoleClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                           Console
+                        </button>
+                    </li>
+                    <li>
                         <button onClick={this._toggleViewOption.bind(this, "isDualHeadset")} type="button" className={dualHeadsetClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                            Dual Headset
                         </button>
                     </li>
                 </ul>
+                 <Modal options={modalOptions} callback={this.consoleModalCallback} objCall={this.consoleModalObjCall} id="consoleMoldalOptions" ref="consoleMoldalOptions">
+                     <ConsoleOptionsModal callback={this.consoleModalCallback}  updateObjCall={this.updateObjCall}/>
+                </Modal>
 
                 {/*
                 <div className="hudOptions">
@@ -501,22 +567,23 @@ Home = React.createClass({
         let dbAction = undefined;
         // state is updated to next state at end of function
         let nextState = {};
-
+        let home = this.data.home;
         let actionMap = {
             isInfoWindow: { 
                 uiAction() { $('#info-overlay').toggle(); },
-                dbAction: new ImageAction('info_window.png')
+                dbAction: new InfoWindowAction(home)
             },
             isMap: { 
                 uiAction() { $('#map-overlay').toggle(); },
-                dbAction: new ImageAction('map.png')
+                dbAction: new ImageAction('https://dl.dropboxusercontent.com/u/60203355/eyecontrol/map.png')
             },
             isFloorplan: { 
                 uiAction() { $('#floorplan-overlay').toggle(); },
-                dbAction: new FloorplanAction('floorplan.png')
+                dbAction: new FloorplanAction('https://dl.dropboxusercontent.com/u/60203355/eyecontrol/floorplan.png')
             },
             isVideo: {
-                dbAction: new VideoAction('video.webm')
+                 uiAction() { $('#video-overlay').toggle(); },
+                dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AADkN3PPq18_oZ-uk47WMzNia?dl=0')
             }
         };
          let isHudOption = actionMap.hasOwnProperty(optionName);
@@ -533,12 +600,18 @@ Home = React.createClass({
             Object.keys(actionMap).forEach( v => nextState[v] = false );
         } else if ( optionName === 'isIntroVideo') {
             dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
-        } else if (optionName === "isDualHeadset") {
-            
+        }
+         else if (optionName === "isDualHeadset") {
             this.setState({isDualHeadset : !this.state.isDualHeadset });
-            
-            
+            let dual = this.state.isDualHeadset;
         } 
+        else if (optionName === "isConsole") {
+            this.setState({isConsole : !this.state.isConsole});
+            if (!this.state.isConsole) 
+                this.refs.consoleMoldalOptions.open("#modalOptions");
+            dbAction = new TextMessageAction("Hello, World!");
+        } 
+        
         nextState[optionName] = changedOption;
         // setState is not synchronous, this causes issues when _getHud() relies on the state
         // so do the hud updates and subsequent db updates in the callback
