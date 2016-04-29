@@ -4,6 +4,7 @@ HomeBox = React.createClass({
   
 
   deleteThisHome(evt) {
+      console.log("puff");
       evt.preventDefault();
       var result = confirm("Are you sure you want to delete " + this.props.home.name + "?");
       if (result === true) {
@@ -76,17 +77,17 @@ HomeBox = React.createClass({
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';
 
       return (
-                 <li id="homeBox" className={homeClassName + ' homeBox container-fluid'} onClick={this.selectHome} onMouseOver={this.handleOver}  onMouseOut={this.handleOut}>
+              <li id="homeBox" className={homeClassName + ' homeBox container-fluid'} onClick={this.selectHome} onMouseOver={this.handleOver}  onMouseOut={this.handleOut}>
               <div className="boxBorder"></div>              
               <p className="price">{price}</p>
-              { /*          <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>*/}
-              {editMode ? <a href="javascript:;" className="delete" onClick={this.deleteThisHome}><i className="fa fa-close"></i></a> : ""}
+              
+              {editMode ? <a href="javascript:;" className="delete" onClick={this.editThisHome}><i className="fa fa-close"></i></a> : ""}
               <div className="homePic col-sm-4 noPadding">
                   <img src={vaultUrl} />
               </div>
               <div className="propDetails col-sm-8">
                   
-                  <h4 className="homeName"><small>{String.fromCharCode(this.props.home.position+97)}</small> <strong> {this.props.home.name}</strong></h4>
+                  <h4 className="homeName"><small>{/*String.fromCharCode(this.props.home.position+97)*/}</small> <strong> {this.props.home.name}</strong></h4>
                   { isViewed  ? <p className="viewedTag">VIEWED</p> : ''}
                   <p className="homeDesc">
                       {this.props.home.address}

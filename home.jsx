@@ -89,6 +89,21 @@ class ImageAction extends ShowHudAction {
         this.class = 'image';
     }
 }
+
+class MapAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'map';
+    }
+}
+
+class LogoAction extends ShowHudAction {
+    constructor(url) {
+        super(url);
+        this.class = 'logo';
+    }
+}
+
 class VideoAction extends ShowHudAction {
     constructor(url) {
         super(url);
@@ -98,7 +113,7 @@ class VideoAction extends ShowHudAction {
 class FloorplanAction extends ShowHudAction {
     constructor(url) {
         super(url);
-        this.class = 'floorplan';
+        this.class = 'floorplan';        
     }
     get params() {
         return {
@@ -138,10 +153,12 @@ class TextMessageAction extends ShowHudAction {
         super();
         this.text = msg; 
         this.class = 'textMessage';
+        this.timestamp =  Date.now();
     }
     get params() {
         return {
             text : this.text,
+            timestamp: this.timestamp,
             anchorX:0.5,
             anchorY:0.5 
         };
@@ -240,7 +257,7 @@ Home = React.createClass({
     componentWillReceiveProps(nextProps) {
         this.setState({items: nextProps.rooms,
                        isMap: nextProps.hud.isMap,
-                       isFloorLogo: nextProps.hud.isFloorLogo,
+                       
                        isIntroVideo: nextProps.hud.isIntroVideo,
                        isPlaque: nextProps.hud.isPlaque,
                        isFloorplan: nextProps.hud.isFloorplan,
@@ -598,14 +615,19 @@ Home = React.createClass({
         // state is updated to next state at end of function
         let nextState = {};
         let home = this.data.home;
+        let modalConsole = this.refs.consoleMoldalOptions;
         let actionMap = {
+            isFloorLogo: { 
+                uiAction() {  },
+                dbAction: new LogoAction("http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png")
+            },
             isInfoWindow: { 
                 uiAction() { $('#info-overlay').toggle(); },
                 dbAction: new InfoWindowAction(home)
             },
             isMap: { 
                 uiAction() { $('#map-overlay').toggle(); },
-                dbAction: new ImageAction('https://dl.dropboxusercontent.com/u/60203355/eyecontrol/map.png')
+                dbAction: new MapAction('https://dl.dropboxusercontent.com/u/60203355/eyecontrol/map.png')
             },
             isFloorplan: { 
                 uiAction() { $('#floorplan-overlay').toggle(); },
@@ -614,6 +636,10 @@ Home = React.createClass({
             isVideo: {
                  uiAction() { $('#video-overlay').toggle(); },
                 dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AADkN3PPq18_oZ-uk47WMzNia?dl=0')
+            },
+            isConsole: {
+                uiAction() { modalConsole.open("#modalOptions");},
+                dbAction : new TextMessageAction("Hello, World!")
             }
         };
          let isHudOption = actionMap.hasOwnProperty(optionName);
@@ -630,18 +656,11 @@ Home = React.createClass({
             Object.keys(actionMap).forEach( v => nextState[v] = false );
         } else if ( optionName === 'isIntroVideo') {
             dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
-        }
-         else if (optionName === "isDualHeadset") {
+        } else if (optionName === "isDualHeadset") {
             this.setState({isDualHeadset : !this.state.isDualHeadset });
             let dual = this.state.isDualHeadset;
         } 
-        else if (optionName === "isConsole") {
-            this.setState({isConsole : !this.state.isConsole});
-            if (!this.state.isConsole) 
-                this.refs.consoleMoldalOptions.open("#modalOptions");
-            dbAction = new TextMessageAction("Hello, World!");
-        } 
-        
+                
         nextState[optionName] = changedOption;
         // setState is not synchronous, this causes issues when _getHud() relies on the state
         // so do the hud updates and subsequent db updates in the callback
