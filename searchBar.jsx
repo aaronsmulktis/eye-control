@@ -70,46 +70,33 @@ updateObjCall : function(obj){
     return (
         <div>
           <div id="searchOptions" className="col-sm-12">
-              <div id="searchMap">
-                  <form className="navbar-form navbar-left noPadding" role="search" action="javascript:;">
-                      <div className="form-group">
-                          <div className="input-group">
-                              <div className="input-min input-group-addon ">UK</div>
-                              <input ref="searchMapInput" id="searchMapInput" type="text" className="font4 form-control input-min" placeholder="Enter Address, City, State or ZIP" onChange={this.handleChange}></input>
-                              <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
-                          </div>
-                 
-                          <div className="checkbox">
-                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label>
-                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label>
-                              <label> <input className="font4 form-control input-min" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label>
-                          </div>
-                          </div>
+              <div id="searchMap" className="clearfix">
+                  <form className="form-inline search-form" role="search" action="javascript:;">
+                      <div className="input-group search-input">
+                          <div className="input-min input-group-addon ">UK</div>
+                          <input ref="searchMapInput" id="searchMapInput" type="text" className="font4 form-control input-min" placeholder="Enter Address, City, State or ZIP" onChange={this.handleChange}></input>
+                          <div className="input-group-addon input-min"><i className="glyphicon glyphicon-search"/></div>
+                      </div>
+             
+                      <div className="input-group search-radios">
+                          <label className="radio-inline"> <input className="font4" type="radio" ref="types" name="types" id="types-all" onChange={this.handleChange} value="all" /> All </label>
+                          <label className="radio-inline"> <input className="font4" type="radio" ref="types" name="types" id="types-sale" onChange={this.handleChange} value="sale"/> For Sale </label>
+                          <label className="radio-inline"> <input className="font4" type="radio" ref="types" name="types" id="types-rent" onChange={this.handleChange} value="rent"/> For Rent  </label>
+                      </div>
                   </form> 
-                          <div id="currencyOptions">
-                              <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select value={this.state.options.currency} name="currency" ref="currency"  id="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
-                              </div>
-                              <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select  value={this.state.options.minValue}  name="min" ref="min" id="min" placeholder="No Min" options={SearchOptions.get('minValue').toArray()} onChange={this.handleChange}/>
-                              </div>
-                              <label className="navbar-form form-group pull-left middle-label">to </label>
-                              <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select value={this.state.options.maxValue}  name="max" ref="max" id="max" placeholder="No Max" options={SearchOptions.get('maxValue').toArray()} onChange={this.handleChange}/>
-                              </div>
-                          </div>
+                  <div id="currencyOptions" className="">
+                      <Select value={this.state.options.currency} name="currency" ref="currency"  id="currency" placeholder="Usd" options={SearchOptions.get('currencies').toArray()} onChange={this.handleChange}/>
+                      <Select  value={this.state.options.minValue}  name="min" ref="min" id="min" placeholder="No Min" options={SearchOptions.get('minValue').toArray()} onChange={this.handleChange}/>
+                      <label className="middle-label">to </label>
+                      <Select value={this.state.options.maxValue}  name="max" ref="max" id="max" placeholder="No Max" options={SearchOptions.get('maxValue').toArray()} onChange={this.handleChange}/>
+                  </div>
               
-                          <div id="propOptions">
-                              <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select value={this.state.options.numBedrooms} name="bedrooms" id="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
-                              </div>
-                              <div className="navbar-form form-group pull-left input-min-select">
-                                  <Select value={this.state.options.numBathrooms} name="baths" ref="baths" id="baths" placeholder="Baths" options={SearchOptions.get('bathOptions').toArray()} onChange={this.handleChange}/>
-                              </div>
-                          </div>
-              
-                          <label className="navbar-form form-group pull-left middle-label" onClick={this.moreOptions}>More <i className="glyphicon glyphicon-plus-sign"/> </label>
-                   
+                  <div id="propOptions" className="">
+                      <Select value={this.state.options.numBedrooms} name="bedrooms" id="bedrooms" ref="bedrooms" placeholder="Beds" options={SearchOptions.get('bedOptions').toArray()} onChange={this.handleChange}/>
+                      <Select value={this.state.options.numBathrooms} name="baths" ref="baths" id="baths" placeholder="Baths" options={SearchOptions.get('bathOptions').toArray()} onChange={this.handleChange}/>
+                      <label className="middle-label" onClick={this.moreOptions}>More <i className="glyphicon glyphicon-plus-sign"/> </label>
+                  </div>
+
               </div>
        
         </div>

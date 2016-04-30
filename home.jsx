@@ -324,9 +324,44 @@ Home = React.createClass({
 
                 <div id="mainContent" className="col-sm-12 noPadding">
 
-                    {this.props.header}
+                    <div>{this.props.header}</div>
 
-                    <div id="rooms" className="col-sm-4">
+                    <div id="content" className="col-sm-8 col-sm-push-4">
+
+                      <div id="viewVR" className={this.state.isDualHeadset? "dual":""}>
+                          <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
+                          <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
+                          <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
+                          <video id="video-overlay" width="320" style={videoStyle} className="generic-overlay" src={videoPath} height="240" controls muted>
+                                <source src="movie.mp4" type="video/mp4"/>
+                          </video>
+                          
+                          {this.renderSphere()}
+                          {this.state.isDualHeadset ? this.renderSphere() : ""}
+                      </div>
+
+                      <div id="propDetails" className={this.state.isDualHeadset? "dualB":""}>
+
+                        <div id="viewDetails" className="col-sm-12">
+                            <h4>Viewer Options:</h4>
+                            {this._renderViewOptions()}
+
+                            <hr></hr>
+
+                            <div>
+                                <h4>Room Details</h4>
+                                <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
+                            </div>
+                        </div>
+
+                        <div id="plaque" className="col-sm-4">
+                           // {this._renderPlaque()}
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div id="rooms" className="col-sm-4 col-sm-pull-8">
 
                         <div className="row-fluid">
                             <h2 id="propTitle">{this.data.home.name}</h2>
@@ -401,7 +436,7 @@ Home = React.createClass({
                       </div>
                     </div>
 
-                    {this._renderAddRoom()}
+                    <div>{this._renderAddRoom()}</div>
 
                 </div>
 

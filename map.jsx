@@ -287,9 +287,9 @@ Map = React.createClass({
                        
                         <div id="mainMap" className="col-sm-12 noPadding"></div>
 
-                        <div className="mapList col-sm-6">
+                        <div className="mapList col-xs-12 col-sm-6 col-md-5">
 
-                            <div className="listOptions">
+                            <div className="listOptions clearfix">
                                 
                                 <h3 className="results-label"></h3>
                                 

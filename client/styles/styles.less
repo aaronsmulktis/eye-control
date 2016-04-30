@@ -41,6 +41,9 @@ i#logoEye.90degCC {
 
 #viewVR {
   height: 450px;
+  @media (max-width: 768px) {
+      height: 200px;
+  }
   background: #d2edf4;
   background-image: linear-gradient(left bottom, darkgrey, grey 100%);
   background-position: center center;
@@ -54,6 +57,9 @@ i#logoEye.90degCC {
 .vr-iframe {
     overflow:hidden;
     height:450px;
+    @media (max-width: 768px) {
+        height: 200px;
+    }
     border: 0;
 }
 
@@ -167,6 +173,9 @@ i#logoEye.90degCC {
   border: 2px solid #888;
 }
 
+#viewOptions li {
+    margin-bottom: 5px;
+}
 #viewOptions li button.btn-default {
   /*border-radius: 50%;
   width: 35px;*/
@@ -181,15 +190,17 @@ i#logoEye.90degCC {
 #viewOptions ul#viewOptionsBtns li:last-child {}
 
 .mapList {
-  height: 100%;
-  width: 38%;
-  position: fixed;
-  overflow: scroll;
-  padding: 55px 0 100px 10px;
+  @media (max-width: 768px) {
+      height: initial;
+  }
   .transition;
 
   .filter-results {
       padding: 10px 0;
+  }
+  .propList {
+      height: 65vh;
+      overflow-y: scroll;
   }
 }
 
@@ -208,27 +219,26 @@ i#logoEye.90degCC {
   background: @brand;
   color: white;
 }
-input[type="radio"].input-min {
-    vertical-align: bottom!important;
-    margin-left: 10px;
-}
 .Select {
   width: 100px;
-}
-.input-min-select {
-    margin-left: 4px;
-    padding: 0px 0px 0px;
+  display: inline-block;
+  margin: 0 10px;
+  @media (max-width: 768px) {
+      margin: 0 2px;
+      width: 80px;
+  }
 }
 #search-homes, #searchMapInput {
     background: white;
     border: none;
-    width: 250px;
+    min-width: 250px;
     font-size: smaller;
 }
 .middle-label  {
-       margin-top: 12px;
-    padding: 6px;
-    }
+    text-align: center;
+    margin: 10px 0;
+    vertical-align: bottom;
+}
 
 .checkbox {
   margin-left: 0;
@@ -516,16 +526,6 @@ modal {
     
 }
 
-.modal-content{
- min-width: 700px;  
-   max-height: 400px;
-}
-.modal-login{
-    min-width: 350px;
-    width: 600px;
-    height: 380px;
-}
-
 .modal-header{
     background: #013a55;
     color: white;
@@ -729,7 +729,7 @@ modal {
   color: white;
   position: relative;
   z-index: 999;
-  padding: 0 10px;
+  padding: 5px 10px;
    font-size: smaller;
 }
 
@@ -857,4 +857,41 @@ color: black;
     color: white;
 }
 
-
+.icon-bar {
+    background-color: white;
+}
+.navbar {
+    z-index: 1;
+}
+#react-root,
+#contentContainer {
+    height: 100%;
+}
+.search-form,
+#currencyOptions,
+#propOptions {
+    float: left;
+}
+.search-radios .radio-inline {
+    margin: auto 10px;
+    line-height: 2;
+}
+@media (max-width: 768px) {
+    .search-input,
+    #currencyOptions,
+    #propOptions {
+        width: 100%;
+    }
+}
+#currencyOptions,
+#propOptions {
+  @media (max-width: 1200px) {
+    margin-top: 5px;
+  }
+}
+#modalSearchOptions form {
+    .input-group .form-control,
+    .input-group-addon {
+        width: auto;
+    }
+}
