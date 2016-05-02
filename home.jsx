@@ -151,7 +151,8 @@ class InfoWindowAction extends ShowHudAction {
 class TextMessageAction extends ShowHudAction {
     constructor(msg) {
         super();
-        this.text = msg; 
+        this.text = msg.text;
+        this.position = msg.position;
         this.class = 'textMessage';
         this.timestamp =  Date.now();
     }
@@ -160,7 +161,7 @@ class TextMessageAction extends ShowHudAction {
             text : this.text,
             timestamp: this.timestamp,
             anchorX:0.5,
-            anchorY:0.5 
+            anchorY: this.position == 'top' ? 0.7 : 0.5 
         };
     }
 }
@@ -576,7 +577,6 @@ Home = React.createClass({
 
     toggleHud(action) {
         console.log(this.data.sphere);
-        console.log(consoleMsg);
         console.log(this.state);
     },
 
@@ -612,7 +612,6 @@ Home = React.createClass({
 
     _toggleViewOption(optionName) {
 
-console.log("volvie");
     /**
          * React seems to make changing states a little more difficult than *I* think necessary.
          */
