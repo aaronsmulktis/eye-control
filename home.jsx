@@ -669,8 +669,8 @@ Home = React.createClass({
                 dbAction: new FloorplanAction('https://dl.dropboxusercontent.com/u/60203355/eyecontrol/floorplan.png')
             },
             isVideo: {
-                 uiAction() { $('#video-overlay').toggle(); },
-                dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AADkN3PPq18_oZ-uk47WMzNia?dl=0')
+                uiAction() { $('#video-overlay').toggle(); },
+                dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AACMzzljkEk-_agq1XOHsN5fa/virtuocity.mp4?dl=1&pv=1')
             },
             isConsole: {
                 uiAction() { modalConsole.open("#modalOptions");},
