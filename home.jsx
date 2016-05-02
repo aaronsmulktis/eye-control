@@ -215,6 +215,7 @@ Home = React.createClass({
             isConsole: false,
             isVideo: false,
             rooms: [],
+            consoleMsg: ""
             // items: [] // Added automatically by the mixin
         }
     },
@@ -256,8 +257,7 @@ Home = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         this.setState({items: nextProps.rooms,
-                       isMap: nextProps.hud.isMap,
-                       
+                       isMap: nextProps.hud.isMap,                       
                        isIntroVideo: nextProps.hud.isIntroVideo,
                        isPlaque: nextProps.hud.isPlaque,
                        isFloorplan: nextProps.hud.isFloorplan,
@@ -326,14 +326,13 @@ Home = React.createClass({
 
                     <div>{this.props.header}</div>
 
-                    <div id="content" className="col-sm-8 col-sm-push-4">
+                    <div id="content" className="col-sm-8 col-sm-push-4 heightFull">
 
                       <div id="viewVR" className={this.state.isDualHeadset? "dual":""}>
                           <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
                           <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
                           <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
                           <video id="video-overlay" width="320" style={videoStyle} className="generic-overlay" src={videoPath} height="240" controls muted>
-                                <source src="movie.mp4" type="video/mp4"/>
                           </video>
                           
                           {this.renderSphere()}
@@ -400,44 +399,6 @@ Home = React.createClass({
                             </div>
                         </div>
                     </div>
-
-                    <div id="content" className="col-sm-8 noPadding">
-
-                      <div id="viewVR" className={this.state.isDualHeadset? "dual":""}>
-                          <img id="map-overlay" style={mapStyle} className="generic-overlay" src={mapPath} />
-                          <img id="floorplan-overlay" style={floorplanStyle} className="generic-overlay" src={floorplanPath} />
-                          <img id="info-overlay" style={infoStyle} className="generic-overlay" src={infoPath} />
-                          <video id="video-overlay" width="320" style={videoStyle} className="generic-overlay" src={videoPath} height="240" controls muted>
-                                <source src="movie.mp4" type="video/mp4"/>
-                          </video>
-                          {this.renderSphere()}
-                          {this.state.isDualHeadset ? this.renderSphere() : ""}
-                          {this.setSplash()}
-                      </div>
-
-                      <div id="propDetails" className={this.state.isDualHeadset? "dualB":""}>
-
-                        <div id="viewDetails" className="col-sm-8">
-                            <h4>Viewer Options:</h4>
-                            {this._renderViewOptions()}
-
-                            <hr></hr>
-
-                            <div>
-                                <h4>Room Details</h4>
-                                <p id="desc">{this.state.items.length ? this.state.items[0].desc : ""}</p>
-                            </div>
-                        </div>
-
-                        <div id="plaque" className="col-sm-4">
-                           // {this._renderPlaque()}
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <div>{this._renderAddRoom()}</div>
-
                 </div>
 
             </div>
@@ -520,7 +481,7 @@ Home = React.createClass({
             dualHeadsetClasses = classNames(defaultClasses, {active: this.state.isDualHeadset});
             videoClasses = classNames(defaultClasses, {active: this.state.isVideo});
             consoleClasses = classNames(defaultClasses, {active: this.state.isConsole});
-
+        this.consoleMsg = "";
         return (
             <div id="viewOptions">
                 <ul className="list-inline">
@@ -555,7 +516,7 @@ Home = React.createClass({
                         </button>
                     </li>
                     <li>
-                        <button onClick={this._toggleViewOption.bind(this, "isConsole")} type="button" className={consoleClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
+                        <button onClick={this.consoleClickEvent} type="button" className={consoleClasses} data-toggle="button" aria-pressed="false" autoComplete="off">
                            Console
                         </button>
                     </li>
@@ -565,8 +526,8 @@ Home = React.createClass({
                         </button>
                     </li>
                 </ul>
-                 <Modal options={modalOptions} callback={this.consoleModalCallback} objCall={this.consoleModalObjCall} id="consoleMoldalOptions" ref="consoleMoldalOptions">
-                     <ConsoleOptionsModal callback={this.consoleModalCallback}  updateObjCall={this.updateObjCall}/>
+                 <Modal options={modalOptions} id="consoleMoldalOptions" ref="consoleMoldalOptions">
+                     <ConsoleOptionsModal onChange={this.consoleChange} callback={this.consoleModalCallback}  updateObjCall={this.consoleMsg}/>
                 </Modal>
 
                 {/*
@@ -577,7 +538,16 @@ Home = React.createClass({
             </div>
         );
     },
+    consoleClickEvent(){
+        this.refs.consoleMoldalOptions.open("#modalOptions");
+    },
+    consoleChange(msg){
+         this.setState({consoleMsg:msg});
+    },
+    consoleModalCallback(newmsg){
+        this._toggleViewOption("isConsole");
 
+    },
     _renderPlaque() {
         return (
             <div id="circ" className="center-block">
@@ -606,6 +576,7 @@ Home = React.createClass({
 
     toggleHud(action) {
         console.log(this.data.sphere);
+        console.log(consoleMsg);
         console.log(this.state);
     },
 
@@ -641,6 +612,7 @@ Home = React.createClass({
 
     _toggleViewOption(optionName) {
 
+console.log("volvie");
     /**
          * React seems to make changing states a little more difficult than *I* think necessary.
          */
@@ -650,12 +622,10 @@ Home = React.createClass({
         // state is updated to next state at end of function
         let nextState = {};
         let home = this.data.home;
+        let consoleMsg = this.state.consoleMsg;
         let modalConsole = this.refs.consoleMoldalOptions;
         let actionMap = {
-            isFloorLogo: { 
-                uiAction() {  },
-                dbAction: new LogoAction("http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png")
-            },
+         
             isInfoWindow: { 
                 uiAction() { $('#info-overlay').toggle(); },
                 dbAction: new InfoWindowAction(home)
@@ -673,8 +643,8 @@ Home = React.createClass({
                 dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AACMzzljkEk-_agq1XOHsN5fa/virtuocity.mp4?dl=1&pv=1')
             },
             isConsole: {
-                uiAction() { modalConsole.open("#modalOptions");},
-                dbAction : new TextMessageAction("Hello, World!")
+                uiAction() { },
+                dbAction : new TextMessageAction(consoleMsg)
             }
         };
          let isHudOption = actionMap.hasOwnProperty(optionName);
@@ -688,9 +658,11 @@ Home = React.createClass({
             dbAction = changedOption ? actionSet.dbAction : new HideHudAction();
             // HUD actions are mutually exclusive, so we set all actions to false
             // We update the nextState just outside of this if/elseif block
-            Object.keys(actionMap).forEach( v => nextState[v] = false );
+            Object.keys(actionMap).forEach( v => nextState[v] = false );            
         } else if ( optionName === 'isIntroVideo') {
             dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
+        } else if ( optionName === 'isFloorLogo') {
+            dbAction = new LogoAction("http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png");
         } else if (optionName === "isDualHeadset") {
             this.setState({isDualHeadset : !this.state.isDualHeadset });
             let dual = this.state.isDualHeadset;

@@ -10,9 +10,10 @@ Modal = React.createClass({
        modalSelector = "#"+this.props.id;
        var callback = this.props.callback;
        var callbackChild = (this.props.children && this.props.children.props) ? this.props.children.props.callback : null;
+       var _thisChildren= this.props.children ;
        $(modalSelector).modal('show');
        $(modalSelector).on('hidden.bs.modal', function () {
-         if (callbackChild) {callbackChild();  }
+         if (callbackChild) {callbackChild(_thisChildren);  }
          else if (callback) {callback(); }
          return true;
       })       
