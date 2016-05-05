@@ -24,7 +24,8 @@ HomeBox = React.createClass({
   editThisHome(evt) {
       evt.nativeEvent.stopImmediatePropagation();
       evt.cancelBubble = true
-      this.refs.editModal.open("#modalOptions");
+      console.log(this.refs);
+      this.refs["editModal"+this.props.home._id].open("#modalOptions");
       return false;
   },
   editCallBack(result){
@@ -95,7 +96,6 @@ HomeBox = React.createClass({
     let isViewed =Cookie.getViewed().indexOf(this.props.home._id) >= 0;    
     const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
-    var name = this.props.home.name;
     var price = this.props.home.price;
     console.log(this.props.edit);
     let editMode = this.props.edit == "1" ? true : false;
@@ -134,9 +134,9 @@ HomeBox = React.createClass({
               <Modal options={deleteModalOptions} ref="deleteModal"  id="deleteModal"  onDone={this.deleteCallBack}>
                 <strong>  {"Are you sure you want to delete " + this.props.home.name + "?"}</strong>     
               </Modal>
-              <Modal options={editModalOptions} ref="editModal" id="editModal"  onDone={this.editCallBack}>
+              <Modal options={editModalOptions} ref={"editModal"+this.props.home._id} id={"editModal"+this.props.home._id}  onDone={this.editCallBack}>
                 <strong> Property Name:  </strong>   
-                  <input type="text" placeholder={name} ref="editName" />
+                  <input type="text" placeholder={this.props.home.name} ref="editName" />
               </Modal>
           </li>
       );

@@ -20,7 +20,7 @@ Modal = React.createClass({
       })       
     }, 
     done(){
-     this.props.onDone(true);
+     if (this.props.onDone) this.props.onDone(true);
     },
     
     render : function() {
