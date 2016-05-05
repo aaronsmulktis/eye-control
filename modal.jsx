@@ -11,13 +11,17 @@ Modal = React.createClass({
        var callback = this.props.callback;
        var callbackChild = (this.props.children && this.props.children.props) ? this.props.children.props.callback : null;
        var _thisChildren= this.props.children ;
+       var _this= this.props ;
        $(modalSelector).modal('show');
        $(modalSelector).on('hidden.bs.modal', function () {
          if (callbackChild) {callbackChild(_thisChildren);  }
-         else if (callback) {callback(); }
+         else if (callback) {callback(_this); }
          return true;
       })       
     }, 
+    done(){
+     this.props.onDone(true);
+    },
     
     render : function() {
        
@@ -38,7 +42,7 @@ Modal = React.createClass({
       <div className="modal-footer">
         { this.props.options.optButton ? <button type="button"  className="btn btn-primary" > <span className={this.props.options.optButtonIcon}></span>{this.props.options.optButton}</button> : ""}
          { this.props.options.opt2Button ?<button type="button"  className="btn btn-primary" > <span className={this.props.options.opt2ButtonIcon}></span>{this.props.options.opt2Button}</button> : ""}
-         <button type="button"  className="btn btn-default " data-dismiss="modal"> <span className={this.props.options.doneButtonIcon}></span>{this.props.options.doneButton}</button>
+         <button type="button"  className="btn btn-default " onClick={this.done} data-dismiss="modal"> <span className={this.props.options.doneButtonIcon}></span>{this.props.options.doneButton}</button>
       </div>
       }
     </div>

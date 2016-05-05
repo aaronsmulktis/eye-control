@@ -566,6 +566,7 @@ Home = React.createClass({
                 'isFloorplan': this.state.isFloorplan,
                 'isInfoWindow': this.state.isInfoWindow,
                 'isVideo': this.state.isVideo,
+                'isConsole': this.state.Console,
                 'text': $('#circTitle').text()}
     },
 
@@ -611,8 +612,22 @@ Home = React.createClass({
      },
 
     _toggleViewOption(optionName) {
+       /* let groups = {
+            first : ["isVideo","isFloorplan","isMap","isInfoWindow"],
+        }
+        let nextState = {};
+        // cambiar de de valor a sus hermanos
+        if (groups.first.indexOf(optionName)>=0){
+            groups.first.forEach( o => nextState[o ] = false );
+            nextState[optionName] = !this.state[optionName];
+        }
 
-    /**
+        nextState["isConsole"] = this.state.consoleMsg != "" ? true : false;
+        
+
+        this.setState(nextState);
+        */
+        /**
          * React seems to make changing states a little more difficult than *I* think necessary.
          */
         let changedOption = !this.state[optionName];
@@ -675,6 +690,8 @@ Home = React.createClass({
             data.hud = JSON.stringify(this._getHud());
             Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: data });
         });
+    
+
     }
 
 
