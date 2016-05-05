@@ -216,7 +216,8 @@ Home = React.createClass({
             isConsole: false,
             isVideo: false,
             rooms: [],
-            consoleMsg: ""
+            consoleMsg: "",
+            logoShowed: false
             // items: [] // Added automatically by the mixin
         }
     },
@@ -308,7 +309,6 @@ Home = React.createClass({
                 </div>
             )
         }
-
         var price = this.data.home.price;
         price = price && accounting.formatMoney(price, "£", 0, ".", ",");
         var mapPath = "/img/map-round.png";
@@ -338,6 +338,7 @@ Home = React.createClass({
                           
                           {this.renderSphere()}
                           {this.state.isDualHeadset ? this.renderSphere() : ""}
+                          {!this.state.logoShowed ? this.setSplash() : ""}
                       </div>
 
                       <div id="propDetails" className={this.state.isDualHeadset? "dualB":""}>
@@ -583,7 +584,9 @@ Home = React.createClass({
 
     setSplash(){
         let color = $("#topBar").css('background-color');
+        console.log(color);
         if (color){
+            this.setState({logoShowed:true});
             console.log(Session.get('template') );
             let bg = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
             let logoUrl = "http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png";
@@ -671,10 +674,7 @@ Home = React.createClass({
         });
 
     },
- componentWillMount(){
-        this.setSplash();
-    },
-
+ 
 });
 
 HomeWrapper = React.createClass({
