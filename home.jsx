@@ -590,11 +590,12 @@ Home = React.createClass({
             console.log(Session.get('template') );
             let bg = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
             let logoUrl = "http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png";
+            let showLogo = (Session.get('template') == "eye-control-test") || (Session.get('template') == "eye-control") ? false : true;
             // add intro information
              Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: {
                 "intro" : { 
                         // show realtor logo
-                        "showLogo":true,
+                        "showLogo": "eye-control-test",
                         
                         // logo image, should be a png with alpha, and have a lot of alpha space around the logo for the blur fx
                         "logoUrl": logoUrl,
