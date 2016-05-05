@@ -612,34 +612,7 @@ Home = React.createClass({
      },
 
     _toggleViewOption(optionName) {
-         /*    
-        let hud = [];
-
-        let groups = {
-            first : ["isVideo","isFloorplan","isMap","isInfoWindow"],
-        }
-        let nextState = {};
-        // cambiar de de valor a sus hermanos
-        if (groups.first.indexOf(optionName)>=0){
-            groups.first.forEach( o => nextState[o ] = false );
-            nextState[optionName] = !this.state[optionName];
-            Object.assign(hud)
-        }
-
-       if (optionName === "isDualHeadset") {
-            this.setState({isDualHeadset : !this.state.isDualHeadset });
-            let dual = this.state.isDualHeadset;
-        }
-
-        nextState["isConsole"] = this.state.consoleMsg != "" ? true : false;
-        
-         
-        this.setState(nextState);
-        */
-        /**
-         * React seems to make changing states a little more difficult than *I* think necessary.
-         */
-        let changedOption = !this.state[optionName];
+          let changedOption = !this.state[optionName];
         // dbAction is executed at the end of this function (if there is an action)
         let dbAction = undefined;
         // state is updated to next state at end of function
@@ -647,7 +620,6 @@ Home = React.createClass({
         let home = this.data.home;
         let consoleMsg = this.state.consoleMsg;
         let modalConsole = this.refs.consoleMoldalOptions;
-        let data = [];
         let actionMap = {
          
             isInfoWindow: { 
@@ -665,8 +637,8 @@ Home = React.createClass({
             isVideo: {
                 uiAction() { $('#video-overlay').toggle(); },
                 dbAction: new VideoAction('https://www.dropbox.com/sh/zk8yv34cpnl8a13/AACMzzljkEk-_agq1XOHsN5fa/virtuocity.mp4?dl=1&pv=1')
-            }
-        };  
+            }          
+        };
          let isHudOption = actionMap.hasOwnProperty(optionName);
         if ( isHudOption ) {
             let actionSet = actionMap[optionName];
@@ -675,31 +647,29 @@ Home = React.createClass({
                 actionSet.uiAction();
             }
             // if we are turning a button off, then we do  a HudHideAction
-            dbAction = (isHudOption && changedOption) ? actionSet.dbAction : new HideHudAction();
+            dbAction = changedOption ? actionSet.dbAction : new HideHudAction();
             // HUD actions are mutually exclusive, so we set all actions to false
             // We update the nextState just outside of this if/elseif block
-            Object.keys(actionMap).forEach( v => nextState[v] = false );   
-            data = dbAction.getData();
-            data.hudObjects = this.state.isFloorLogo  ? data.hudObjects.concat((new LogoAction("http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png")).getData().hudObjects): data.hudObjects;
-            console.log(data);
+            Object.keys(actionMap).forEach( v => nextState[v] = false );            
         } else if ( optionName === 'isIntroVideo') {
-            dbActionVideo = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
+            dbAction = changedOption ? new IntroVideoAction() : new NoIntroVideoAction();
         } else if ( optionName === 'isFloorLogo') {
-            dbActionLogo = new LogoAction("http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png");
+            dbAction = new LogoAction("http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png");
         } else if (optionName === "isDualHeadset") {
             this.setState({isDualHeadset : !this.state.isDualHeadset });
             let dual = this.state.isDualHeadset;
+        }  else if (optionName === "isConsole") {
+            dbAction =  new TextMessageAction(consoleMsg);
         } 
-        data.hudObjects = (consoleMsg != "") ? data.hudObjects.concat((new TextMessageAction(consoleMsg)).getData().hudObjects) : data.hudObjects;
+                
         nextState[optionName] = changedOption;
         // setState is not synchronous, this causes issues when _getHud() relies on the state
         // so do the hud updates and subsequent db updates in the callback
         this.setState(nextState, () => {
-            
+            let data = dbAction ? dbAction.getData() : {};
             data.hud = JSON.stringify(this._getHud());
             Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: data });
         });
-
 
     }
 

@@ -33,17 +33,39 @@ RoomBox = React.createClass({
   },
 
   deleteThisRoom(evt) {
-      evt.preventDefault();
-      var result = confirm("Are you sure you want to delete " + this.props.room.name + "?");
-      if (result === true) {
-          Rooms.remove(this.props.room._id);
-      }
+    console.log("da");
+      evt.stopPropagation();
+      evt.nativeEvent.stopImmediatePropagation();
+      evt.cancelBubble = true
+      this.refs.deleteModal.open("#modalOptions");
       return false;
   },
+  deleteRoomCallBack(result){
+    console.log("do");
+    if (result === true) {
+         var id = this.props.room._id;
+         Rooms.remove({"_id": id});
+    }
+    return false;
+  },
+  editThisRoom(evt) {
+      evt.nativeEvent.stopImmediatePropagation();
+      evt.cancelBubble = true
+      this.refs["editModal"+this.props.room._id].open("#modalOptions");
+      return false;
+  },
+  editRoomCallBack(result){
+    if (result === true) {
+        Rooms.update({ _id: this.props.room._id }, { $set: {
+            name: this.refs.editName.value
+        }});
+    }
+    return false;
+  },
  selectRoom(evt) {
-      evt.preventDefault();
-
-      if (!$(evt.currentTarget).hasClass("is-positioning-post-drag")) {
+      evt.nativeEvent.stopImmediatePropagation();
+      evt.cancelBubble = true
+      if (!$(evt.currentTarget).hasClass("is-positioning-post-drag") && $(evt.target).hasClass("roomBox")) {
           let sphere = Spheres.findOne('5ff7bef11efaf8b657d709b9'); 
           let transitionStyle = sphere.transition;
           let url = this.props.room.picUrl;
@@ -53,8 +75,8 @@ RoomBox = React.createClass({
           let data = Object.assign({sphereUrl: url, momentName: name, momentDesc: desc}, transition.getData());
 
           Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: data});  
-      }
-      return true;
+          return true;
+      } else return false;
   },
   getInitialState() {
       return {
@@ -67,15 +89,25 @@ RoomBox = React.createClass({
   },
 
   render() {
+      let deleteModalOptions = {
+          title: "Delete Room",
+          doneButton:"Delete",
+          doneButtonIcon:"glyphicon glyphicon-close",
+      };
+        let editModalOptions = {
+          title: "Edit Room",
+          doneButton:"Edit",
+          doneButtonIcon:"glyphicon glyphicon-edit",
+      };
       // Give rooms a different className when they are checked off,
       // so that we can style them nicely in CSS
       const roomClassName = this.props.room.name,
-            vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.room.picUrl) + '&resize=1&width=200';
+      vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.room.picUrl) + '&resize=1&width=200';
       let editMode = this.props.edit == "1" ? true : false;
       return (
           <li onClick={this.selectRoom} className={roomClassName + ' roomBox container-fluid'}>
               <div className="boxBorder"></div>
-             {editMode ?  <a href="javascript:;" id="editToggle" className="edit"><i className="fa fa-pencil"></i></a>  :  ""}
+             {editMode ?  <a href="javascript:;" className="edit" onClick={this.editThisRoom}><i className="fa fa-pencil"></i></a>  :  ""}
              {editMode ?  <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a> :  ""}
               <div className="roomPic col-sm-4 noPadding">
                   <img data-url={this.props.room.picUrl} src={vaultUrl} />
@@ -84,6 +116,13 @@ RoomBox = React.createClass({
                   <h4 className="roomName">{this.props.room.name}</h4>
                   <p className="roomDesc">{this.props.room.desc.substring(0,30) + "..."}</p>
               </div>
+               <Modal options={deleteModalOptions} ref="deleteModal"  id="deleteModal"  onDone={this.deleteRoomCallBack}>
+                <strong>  {"Are you sure you want to delete " + this.props.room.name + "?"}</strong>     
+              </Modal>
+              <Modal options={editModalOptions} ref={"editModal"+this.props.room._id} id={"editModal"+this.props.room._id}  onDone={this.editRoomCallBack}>
+                <strong> Room Name:  </strong>   
+                  <input type="text" placeholder={this.props.room.name} ref="editName" />
+              </Modal>
           </li>
       );
   }
