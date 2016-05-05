@@ -595,7 +595,7 @@ Home = React.createClass({
              Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: {
                 "intro" : { 
                         // show realtor logo
-                        "showLogo": "eye-control-test",
+                        "showLogo": showLogo,
                         
                         // logo image, should be a png with alpha, and have a lot of alpha space around the logo for the blur fx
                         "logoUrl": logoUrl,
