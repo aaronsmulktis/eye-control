@@ -583,9 +583,8 @@ Home = React.createClass({
 
     setSplash(){
         let color = $("#topBar").css('background-color');
-        console.log(color);
         if (color){
-
+            console.log(Session.get('template') );
             let bg = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
             let logoUrl = "http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png";
             // add intro information
@@ -671,8 +670,10 @@ Home = React.createClass({
             Spheres.update({ _id: '5ff7bef11efaf8b657d709b9' }, { $set: data });
         });
 
-    }
-
+    },
+ componentWillMount(){
+        this.setSplash();
+    },
 
 });
 
