@@ -5,7 +5,7 @@ Modal = React.createClass({
             visible : false
         }
     },
-    open(modalSelector){
+    open(){
 
        modalSelector = "#"+this.props.id;
        var callback = this.props.callback;
@@ -20,6 +20,7 @@ Modal = React.createClass({
       })       
     }, 
     done(){
+      console.log("done");
      if (this.props.onDone) this.props.onDone(true);
     },
     

@@ -584,7 +584,6 @@ Home = React.createClass({
 
     setSplash(){
         let color = $("#topBar").css('background-color');
-        console.log(color);
         if (color){
             this.setState({logoShowed:true});
             console.log(Session.get('template') );

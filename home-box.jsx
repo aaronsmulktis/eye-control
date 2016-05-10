@@ -40,8 +40,8 @@ HomeBox = React.createClass({
         evt.nativeEvent.stopImmediatePropagation();
         evt.cancelBubble = true
           
-        if ($(evt.target).hasClass("homeBox") )        
-            window.location = 'home/' + this.props.home.name+"/"+this.props.home._id;
+        if ($(evt.target).hasClass("homeBox") )  
+            window.location = 'home/' + this.props.home.name+"/"+this.props.home._id + (this.props.edit == "1"  ? "?edit=1" :"");
         else return false;
         
     },
@@ -97,7 +97,6 @@ HomeBox = React.createClass({
     const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
     var price = this.props.home.price;
-    console.log(this.props.edit);
     let editMode = this.props.edit == "1" ? true : false;
     price = price && accounting.formatMoney(price, "£", 0, ".", ",");
     var vaultUrl = 'http://vault.ruselaboratories.com/proxy?url=' + encodeURIComponent(this.props.home.propPic) + '&resize=1&width=200';

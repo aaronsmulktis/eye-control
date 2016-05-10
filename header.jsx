@@ -179,7 +179,7 @@ Header = React.createClass({
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a href="/" className="navbar-brand"><span id="innerLogo">Eye <i id="logoEye" className="fa fa-eye 90degCC"></i> Control</span></a>
+              <a href={this.props.edit == "1"  ? "/?edit=1" :"/"} className="navbar-brand"><span id="innerLogo">Eye <i id="logoEye" className="fa fa-eye 90degCC"></i> Control</span></a>
             </div>
 
             <div id="nav" className="collapse navbar-collapse">

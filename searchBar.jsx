@@ -5,7 +5,8 @@ SearchBar = React.createClass({
             // state enable when the modal more options is show
             openMoreOptions : false,
             // state contains
-            options : {}
+            options : {},
+            showLogin : true
         }
     },
     // This function handled the instant seach event
@@ -103,9 +104,7 @@ updateObjCall : function(obj){
          <Modal options={modalOptions} callback={this.searchModalCallback} objCall={this.searchModalObjCall} id="searchMoldalOptions" ref="searchMoldalOptions">
             <MoreOptionsModal callback={this.searchModalCallback}  updateObjCall={this.updateObjCall}/>
          </Modal>
-         <Modal options={loginOptions} id="loginOptions" ref="loginOptions">
-            <Login/>
-         </Modal>
+         { this.state.showLogin ? <Modal options={loginOptions} id="loginOptions" ref="loginOptions"><Login/></Modal> : ""}
       </div>
     );
   },
@@ -118,9 +117,14 @@ updateObjCall : function(obj){
       return true;
     },
     componentDidUpdate(){
+
       if (!($("#types-rent").prop( "checked") || $("#types-rent").prop("checked") || $("#types-sale").prop("checked")))
-        $("#types-all").prop( "checked", true );
-        if (!(Session.get('currentUser'))) this.refs.loginOptions.open("#loginOptions");
+            $("#types-all").prop( "checked", true );
+      if (!(Session.get('currentUser'))) 
+            if (this.refs.loginOptions) {
+              this.refs.loginOptions.open("#loginOptions"); 
+              this.setState({showLogin : false});
+            }
     }
 });
 

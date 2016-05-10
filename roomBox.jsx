@@ -24,20 +24,16 @@ class Transition extends Action {
 }
 
 RoomBox = React.createClass({
-  mixins: [sortable.ItemMixin],
+  //mixins: [sortable.ItemMixin],
 
   propTypes: {
       // This component gets the room to display through a React prop.
       // We can use propTypes to indicate it is required
-      roomBox: React.PropTypes.object.isRequired
+     // roomBox: React.PropTypes.object.isRequired
   },
 
-  deleteThisRoom(evt) {
-    console.log("da");
-      evt.stopPropagation();
-      evt.nativeEvent.stopImmediatePropagation();
-      evt.cancelBubble = true
-      this.refs.deleteModal.open("#modalOptions");
+  deleteThisRoom(evt) {      
+      this.refs["deleteModalRoom"+this.props.room._id].open();
       return false;
   },
   deleteRoomCallBack(result){
@@ -49,12 +45,14 @@ RoomBox = React.createClass({
     return false;
   },
   editThisRoom(evt) {
+    console.log("editEvent");
       evt.nativeEvent.stopImmediatePropagation();
       evt.cancelBubble = true
-      this.refs["editModal"+this.props.room._id].open("#modalOptions");
+      this.refs["editModalRoom"+this.props.room._id].open();
       return false;
   },
   editRoomCallBack(result){
+    console.log("editCAll")
     if (result === true) {
         Rooms.update({ _id: this.props.room._id }, { $set: {
             name: this.refs.editName.value
@@ -63,9 +61,10 @@ RoomBox = React.createClass({
     return false;
   },
  selectRoom(evt) {
+  console.log("d");
       evt.nativeEvent.stopImmediatePropagation();
       evt.cancelBubble = true
-      if (!$(evt.currentTarget).hasClass("is-positioning-post-drag") && $(evt.target).hasClass("roomBox")) {
+      if (!$(evt.currentTarget).hasClass("is-positioning-post-drag") && ($(evt.target).hasClass("roomBox") || $(evt.target).hasClass("propDetails") || $(evt.target).hasClass("clickPic") )) {
           let sphere = Spheres.findOne('5ff7bef11efaf8b657d709b9'); 
           let transitionStyle = sphere.transition;
           let url = this.props.room.picUrl;
@@ -110,17 +109,17 @@ RoomBox = React.createClass({
              {editMode ?  <a href="javascript:;" className="edit" onClick={this.editThisRoom}><i className="fa fa-pencil"></i></a>  :  ""}
              {editMode ?  <a href="javascript:;" className="delete" onClick={this.deleteThisRoom}><i className="fa fa-close"></i></a> :  ""}
               <div className="roomPic col-sm-4 noPadding">
-                  <img data-url={this.props.room.picUrl} src={vaultUrl} />
+                  <img className="clickPic" data-url={this.props.room.picUrl} src={vaultUrl} />
               </div>
               <div className="propDetails col-sm-8">
                   <h4 className="roomName">{this.props.room.name}</h4>
                   <p className="roomDesc">{this.props.room.desc.substring(0,30) + "..."}</p>
               </div>
-               <Modal options={deleteModalOptions} ref="deleteModal"  id="deleteModal"  onDone={this.deleteRoomCallBack}>
+               <Modal options={deleteModalOptions} ref={"deleteModalRoom"+this.props.room._id}  id={"deleteModalRoom"+this.props.room._id}  onDone={this.deleteRoomCallBack}>
                 <strong>  {"Are you sure you want to delete " + this.props.room.name + "?"}</strong>     
               </Modal>
-              <Modal options={editModalOptions} ref={"editModal"+this.props.room._id} id={"editModal"+this.props.room._id}  onDone={this.editRoomCallBack}>
-                <strong> Room Name:  </strong>   
+              <Modal options={editModalOptions} ref={"editModalRoom"+this.props.room._id} id={"editModalRoom"+this.props.room._id}  onDone={this.editRoomCallBack}>
+                  <strong> Room Name:  </strong>   
                   <input type="text" placeholder={this.props.room.name} ref="editName" />
               </Modal>
           </li>
