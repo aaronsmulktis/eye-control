@@ -319,6 +319,7 @@ Home = React.createClass({
         var floorplanStyle = {display: this.state.isFloorplan ? 'block' : 'none'};
         var infoStyle = {display: this.state.isInfoWindow ? 'block' : 'none'};
         var videoStyle = {display: this.state.isVideo ? 'block' : 'none'};
+        console.log(this.refs);
         return (
 
             <div id="contentContainer">
