@@ -88,11 +88,14 @@ HomeBox = React.createClass({
     return true;
   },
 
-
   render() {
     // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
-    
+    $(function() {
+            $( "#rooms-list" ).sortable();
+            $( "#rooms-list" ).disableSelection();
+        });
+        console.log("mount");
     let isViewed =Cookie.getViewed().indexOf(this.props.home._id) >= 0;    
     const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;

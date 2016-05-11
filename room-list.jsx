@@ -17,6 +17,6 @@ List = React.createClass({
 			return <Item key={item} item={item} index={i} {...this.movableProps}/>;
 	    }, this);
 
-	    return <ul>{items}</ul>;
+	    return <li>{items}</li>;
 	}
 });

@@ -37,22 +37,19 @@ RoomBox = React.createClass({
       return false;
   },
   deleteRoomCallBack(result){
-    console.log("do");
     if (result === true) {
          var id = this.props.room._id;
          Rooms.remove({"_id": id});
     }
     return false;
   },
-  editThisRoom(evt) {
-    console.log("editEvent");
+  editThisRoom(evt) {    
       evt.nativeEvent.stopImmediatePropagation();
       evt.cancelBubble = true
       this.refs["editModalRoom"+this.props.room._id].open();
       return false;
   },
   editRoomCallBack(result){
-    console.log("editCAll")
     if (result === true) {
         Rooms.update({ _id: this.props.room._id }, { $set: {
             name: this.refs.editName.value
@@ -61,7 +58,6 @@ RoomBox = React.createClass({
     return false;
   },
  selectRoom(evt) {
-  console.log("d");
       evt.nativeEvent.stopImmediatePropagation();
       evt.cancelBubble = true
       if (!$(evt.currentTarget).hasClass("is-positioning-post-drag") && ($(evt.target).hasClass("roomBox") || $(evt.target).hasClass("propDetails") || $(evt.target).hasClass("clickPic") )) {

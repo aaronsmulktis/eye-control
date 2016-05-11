@@ -182,7 +182,7 @@ let searchTimeout;
 
 // Property component
 Home = React.createClass({
-    mixins: [ReactMeteorData, sortable.ListMixin],
+    mixins: [ReactMeteorData],
 
     getMeteorData() {
         let data = {}
@@ -269,7 +269,6 @@ Home = React.createClass({
     },
 
     renderRoomBoxes() {
-           
         let rooms = this.state.items;
         // Hay que refactorizar el codigo supongo que es asi porque habria problemas con positions repetidos
         let processedRooms = [];
@@ -279,7 +278,13 @@ Home = React.createClass({
                 position = room.position == null ? i : room.position;
             processedRooms[position] = <RoomBox edit={editMode} key={room._id} room={room} desc={room.desc} index={position} {...this.movableProps}/>
                                           }
-            return <ul>{processedRooms}</ul>;
+            return <ul id="rooms-list">{processedRooms} {this.setSorteable()}</ul>;
+    },
+     setSorteable(){
+        $(function() {
+            $( "#rooms-list" ).sortable();
+            $( "#rooms-list" ).disableSelection();
+        });
     },
 
     onBeforeSetState: function(items){
@@ -294,7 +299,6 @@ Home = React.createClass({
         }
         
         let sphere = "http://vault.ruselaboratories.com/vr?image_url=" + encodeURIComponent(this.data.sphere.sphereUrl) + "&resize=1&width=3000#0,0,1";
-
         return (
             <iframe src={sphere} frameBorder="0" className="vr-iframe" height="100%" width={this.state.isDualHeadset ? "50%" : "100%"}></iframe>
 
@@ -577,16 +581,10 @@ Home = React.createClass({
         }});
     },
 
-    toggleHud(action) {
-        console.log(this.data.sphere);
-        console.log(this.state);
-    },
-
     setSplash(){
         let color = $("#topBar").css('background-color');
         if (color){
-            this.setState({logoShowed:true});
-            console.log(Session.get('template') );
+            this.setState({logoShowed:true});            
             let bg = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
             let logoUrl = "http://eye-control.ruselaboratories.com/img/logos/"+(Session.get('template') ? Session.get('template') : "logo" )+".png";
             let showLogo = (Session.get('template') == "eye-control-test") || (Session.get('template') == "eye-control") ? false : true;
@@ -724,7 +722,6 @@ HomeWrapper = React.createClass({
 
               Spheres.update({_id:"5ff7bef11efaf8b657d709b9"}, {$set: data});  
               this.setState({inic:true});
-              console.log("move it");
           }   
     },
 
