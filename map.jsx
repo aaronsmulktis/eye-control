@@ -113,7 +113,7 @@ Map = React.createClass({
 
     createMarker(home,infowindow) {
        let state = this.state;
-       //let index = String.fromCharCode(home.position+97).toString();
+       let index = String.fromCharCode(home.position+65).toString();
        let colorViewed = '663366';
        let image = {
                         url: "/img/"+( ((typeof vistas === 'object') && (vistas.indexOf(home._id)>=0)) ? colorViewed : this.getBg())+".png",
@@ -128,7 +128,7 @@ Map = React.createClass({
                 position: new google.maps.LatLng(home.latitude, home.longitude),
                 map: state.mainMap,
                 icon: image,
-                label: "",//index,
+                label: index,
                 path: google.maps.SymbolPath.CIRCLE,
                 title: '',
                 id: home._id,
