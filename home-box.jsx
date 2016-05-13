@@ -31,7 +31,11 @@ HomeBox = React.createClass({
   editCallBack(result){
     if (result === true) {
         Homes.update({ _id: this.props.home._id }, { $set: {
-            name: this.refs.editName.value
+            name: this.refs.editName.value || this.props.home.name,
+            price : this.refs.editPrice.value || this.props.home.price,
+            address : this.refs.editAddress.value || this.props.home.address,
+            numBedrooms : this.refs.editNumBedrooms.value || this.props.home.numBedrooms,
+            numBathrooms : this.refs.editNumBathrooms.value || this.props.home.numBathrooms
         }});
     }
     return false;
@@ -91,11 +95,6 @@ HomeBox = React.createClass({
   render() {
     // Give homes a different className when they are checked off,
     // so that we can style them nicely in CSS
-    $(function() {
-            $( "#rooms-list" ).sortable();
-            $( "#rooms-list" ).disableSelection();
-        });
-        console.log("mount");
     let isViewed =Cookie.getViewed().indexOf(this.props.home._id) >= 0;    
     const homeClassName = this.props.home._id;
     const homeLink = 'home/' + this.props.home.name+"/"+this.props.home._id;
@@ -139,6 +138,19 @@ HomeBox = React.createClass({
               <Modal options={editModalOptions} ref={"editModal"+this.props.home._id} id={"editModal"+this.props.home._id}  onDone={this.editCallBack}>
                 <strong> Property Name:  </strong>   
                   <input type="text" placeholder={this.props.home.name} ref="editName" />
+                <br/>
+                <strong> Address:  </strong>   
+                  <input type="text" placeholder={this.props.home.address} ref="editAddress" />
+                <br/>
+                <strong> Price:  </strong>   
+                  <input type="number" min="1" placeholder={this.props.home.price} ref="editPrice" />
+                <br/>
+                <strong> Bedrooms:  </strong>   
+                  <input type="number" min="0" max="99" placeholder={this.props.home.numBedrooms} ref="editNumBedrooms" />
+                <br/>
+                <strong> Bathrooms:  </strong>   
+                  <input type="number" min="0" max="99" placeholder={this.props.home.numBathrooms} ref="editNumBathrooms" />
+                <br/>
               </Modal>
           </li>
       );
