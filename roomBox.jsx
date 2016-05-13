@@ -52,7 +52,8 @@ RoomBox = React.createClass({
   editRoomCallBack(result){
     if (result === true) {
         Rooms.update({ _id: this.props.room._id }, { $set: {
-            name: this.refs.editName.value
+            name: this.refs.editName.value || this.props.room.name,
+            desc: this.refs.editDesc.value || this.props.room.desc
         }});
     }
     return false;
@@ -117,6 +118,9 @@ RoomBox = React.createClass({
               <Modal options={editModalOptions} ref={"editModalRoom"+this.props.room._id} id={"editModalRoom"+this.props.room._id}  onDone={this.editRoomCallBack}>
                   <strong> Room Name:  </strong>   
                   <input type="text" placeholder={this.props.room.name} ref="editName" />
+                  <br/>
+                  <strong> Room Description:  </strong>   
+                  <input type="text" placeholder={this.props.room.desc} ref="editDesc" />
               </Modal>
           </li>
       );

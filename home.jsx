@@ -396,7 +396,7 @@ Home = React.createClass({
                                 <div id="addRoomBtn" className="pull-right">
                                     <a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus"></i> Add Room</a>
                                 </div>
-
+                                    {this._renderAddRoom()}
                             </div>
                             <div id="roomPics" className="noPadding">
 
@@ -435,11 +435,12 @@ Home = React.createClass({
             position: highest_position,
             createdAt: new Date()
         });
-
+        this.setState({ isPopup: !this.state.isPopup });
         // Clear form
         React.findDOMNode(this.refs.nameInput).value = "";
         React.findDOMNode(this.refs.descInput).value = "";
         React.findDOMNode(this.refs.picUrl).value = "";
+
     },
 
     _renderAddRoom() {
