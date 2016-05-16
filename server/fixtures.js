@@ -18,10 +18,18 @@ if (Coords.find().count() === 0) {
     var testCoordID1 = "headset";
     var testCoord = {
         _id: testCoordID1,
-        coord: "0,0,1"
+        coord: "0,0,1",
+        timestamp: 0
+    }
+    var testCoordID2 = "headset2";
+    var testCoord2 = {
+        _id: testCoordID2,
+        coord: "0,0,1",
+        timestamp: 1
     }
 
     Coords.insert(testCoord);
+    Coords.insert(testCoord2);
 }
 
 if (Homes.find().count() === 0) {

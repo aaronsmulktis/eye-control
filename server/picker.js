@@ -64,7 +64,12 @@ var _handlePart = function(res, data_obj, callback, part) {
    
 Picker.route('/api/v1/coord/update', function(params, req, res, next) {
     var coord = params['query']["coord"];
-    Coords.update({_id:"headset"}, {$set: {coord: coord}});
+    var time = params['query']["timestamp"];
+    var headset = Coords.findOne({ 'timestamp' : time });
+    if (!headset) {
+        headset= Coords.findOne({},{sort: {timestamp : 1}});
+    };
+    Coords.update({_id:headset._id}, {$set: {coord: coord, timestamp: time}});
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.write(JSON.stringify({ok: true}));
     res.end();

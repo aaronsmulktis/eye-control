@@ -226,13 +226,21 @@ Home = React.createClass({
         let handle_coords = Meteor.subscribe("coords");
 
         let updateFrame = function(id, coord) {
-            if (id !== "headset") {
-                return;
-            }
-            let frame = $('.vr-iframe').first()[0];
+       
+            let frame = $('.vr-iframe');       
             if (!frame) {
                 return;
             }
+            if (frame.length == 1){ 
+                frame = $('.vr-iframe')[0];
+            } else if (frame.length > 1 ){
+                if (!$($('.vr-iframe')[0]).data("id") || ($($('.vr-iframe')[0]).data("id") == id.toString())){
+                    frame = $('.vr-iframe')[0];
+                } else {
+                    frame = $('.vr-iframe')[1];
+                }
+            }
+            $(frame).data("id",id);
             let idx = frame.src.indexOf('#'), url = frame.src;
             if ( idx > -1 ){
                 url = url.substr(0, idx);
