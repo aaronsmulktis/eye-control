@@ -66,7 +66,6 @@ Picker.route('/api/v1/coord/update', function(params, req, res, next) {
     var coord = params['query']["coord"];
     var time = params['query']["timestamp"];
     var uid = params['query']["uid"];
-    
     Coords.update({_id:uid}, {$set: {coord:coord, timestamp:time}},{upsert:true});
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.write(JSON.stringify({ok: true}));

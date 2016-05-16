@@ -236,11 +236,11 @@ Home = React.createClass({
             } else if (frame.length > 1 ){
                 if (!$($('.vr-iframe')[0]).data("id") || ($($('.vr-iframe')[0]).data("id") == id.toString())){
                     frame = $('.vr-iframe')[0];
-                } else {
+                } else (!$($('.vr-iframe')[1]).data("id") || ($($('.vr-iframe')[1]).data("id") == id.toString())){
                     frame = $('.vr-iframe')[1];
                 }
             }
-            $(frame).data("id",id);
+            if (!$(frame).data) $(frame).data("id",id);
             let idx = frame.src.indexOf('#'), url = frame.src;
             if ( idx > -1 ){
                 url = url.substr(0, idx);
