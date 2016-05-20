@@ -186,10 +186,11 @@ Header = React.createClass({
               <ul className="navbar-nav navbar-right">
                 <li><a href="/"><i className="fa fa-navicon"></i>&nbsp;Listings</a></li>
                 {editMode ? (<li><a href="javascript:;" onClick={this._togglePopup}><i className="fa fa-plus-circle"></i>&nbsp;Add Property</a></li>) : ""}
-                {!editMode ? <li><a href="/?edit=1"><i className="fa fa-info-circle"></i>&nbsp;Admin</a></li>: ""}
+                {editMode ? (<li><a href="?edit=0"><i className="fa fa-info-circle"></i>&nbsp;Exit Admin</a></li>) : ""}
+                {!editMode ? <li><a href="?edit=1"><i className="fa fa-info-circle"></i>&nbsp;Admin</a></li>: ""}
                 <li><a href="/about"><i className="fa fa-info-circle"></i>&nbsp;About</a></li>
-                <li><a href="javascript:;"><i className="fa fa-home" />&nbsp;Thompson Family</a></li>
-                <li><a href="javascript:;"><i className="fa fa-user" />&nbsp;<span id="userName">Agent Profile</span></a></li>
+                <li><a href="javascript:;"><i className="fa fa-home" />&nbsp;Smith Family</a></li>
+                <li><a href="javascript:;"><i className="fa fa-user" />&nbsp;<span id="userName">Profile</span></a></li>
               </ul>
             </div>
           </div>
