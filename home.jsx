@@ -217,15 +217,14 @@ Home = React.createClass({
             isVideo: false,
             rooms: [],
             consoleMsg: "",
-            logoShowed: false,
-            headsets: []
+            logoShowed: false
             // items: [] // Added automatically by the mixin
         }
     },
 
     componentDidMount() {
         let handle_coords = Meteor.subscribe("coords");
-        var headsets = this.state.headsets;
+
         let updateFrame = function(id, coord) {
        
             let frame = $('.vr-iframe');       
@@ -235,12 +234,12 @@ Home = React.createClass({
             if (frame.length == 1){ 
                 frame = $('.vr-iframe')[0];
             } else if (frame.length > 1 ){
-                if ((!headsets[0]) || ([0] == id.toString())){
+                if (!$($('.vr-iframe')[0]).data("id") || ($($('.vr-iframe')[0]).data("id") == id.toString())){
                     frame = $('.vr-iframe')[0];
-                    headsets[0] = id.toString();
-                } else if ((!headsets[1]) || ([1] == id.toString())){
+                    $(frame).data("id",id);
+                } else if (!$($('.vr-iframe')[1]).data("id") || ($($('.vr-iframe')[1]).data("id") == id.toString())){
                     frame = $('.vr-iframe')[1];
-                    headsets[1] = id.toString();
+                    $(frame).data("id",id);
                 }
             }
             let idx = frame.src.indexOf('#'), url = frame.src;
