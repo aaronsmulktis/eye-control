@@ -1,0 +1,108 @@
+@one : #000033;
+@two : white;
+@three : white;
+@four : #000033;
+
+@brand : darken(@one, 10%);
+@brandLight : lighten(@one, 10%);
+
+@accent : lighten(@three, 10%);
+@accentLight : lighten(@three, 40%);
+
+@sky : lighten(@three, 20%);
+@skyLight : lighten(@three, 30%);
+
+@grey : #b3b3b3;
+.noPadding {padding: 0 !important;}
+
+.noMargin {margin: 0 !important;}
+
+.noPadRight {padding-right: 0 !important;}
+
+.noPadBottom {padding-bottom: 0 !important;}
+
+.noPadTop {padding-top: 0 !important;}
+
+.noMarBottom {margin-bottom: 0 !important;}
+
+.pad10 {padding: 10px !important;}
+
+.pad20 {padding: 20px !important;}
+
+.verMar10 {margin: 10px auto !important;}
+
+.verMar15 {margin: 15px auto !important;}
+
+.horMar10 {margin: auto 10px !important;}
+
+.pad10Bottom {padding-bottom: 10px !important;}
+
+.vertMargin10 {margin: 10px 0 !important;}
+
+.vertCenter {padding: 40vh 0px !important;}
+
+.90degCC {
+	-webkit-transform: rotate(-90deg) !important;
+	   -moz-transform: rotate(-90deg) !important;
+		 -o-transform: rotate(-90deg) !important;
+	        transform: rotate(-90deg) !important;
+}
+
+.90degC {
+	-webkit-transform: rotate(90deg) !important;
+	        transform: rotate(90deg) !important;
+}
+
+.tint:before {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 100%;
+    height: 333px;
+	background: rgba(0,155,255, 0.20);
+	transition: all .3s linear;
+}
+
+.borderBottom {
+	border-bottom: 1px solid #eee;
+}
+
+/* --- GRADIENTS --- */
+
+.brandGradient {
+	background-color: @brand;
+	/*background-image: linear-gradient(left top, @brand, @two 140%);*/
+	background: -webkit-linear-gradient(left top, @brand, @two); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, @brand, @two); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, @brand, @two); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, @brand, @two);
+}
+
+.brandGradientLight {
+	background-color: @brand;
+	/*background-image: linear-gradient(left top, @brand, @two 140%);*/
+	background: -webkit-linear-gradient(left top, @brandLight, @accentLight); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, @brandLight, @accentLight); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, @brandLight, @accentLight); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, @brandLight, @accentLight);
+}
+
+.transition {
+	-webkit-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
